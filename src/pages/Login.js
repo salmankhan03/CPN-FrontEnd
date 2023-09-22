@@ -47,7 +47,7 @@ const Login = () => {
                     label="Email"
                     name="email"
                     type="email"
-                    placeholder="john@doe.com"
+                    placeholder="john@johndoe.com"
                   />
                   <Error errorName={errors.email} />
                   <div className="mt-6"></div>
