@@ -43,7 +43,6 @@ const Header = () => {
     Cookies.remove("adminInfo");
     reduxDisPatch(emptySideBarMenu());
     reduxDisPatch(emptySetting());
-    window.location.replace(`https://${process.env.REACT_APP_ADMIN_DOMAIN}/login`);
   };
 
   useEffect(() => {
