@@ -10,6 +10,7 @@ const useLoginSubmit = () => {
   const [loading, setLoading] = useState(false);
   const { dispatch } = useContext(AdminContext);
   const history = useHistory();
+  const [phone, setPhoneValue] = useState('');
   const location = useLocation();
   const {
     register,
@@ -41,7 +42,7 @@ const useLoginSubmit = () => {
     }
 
     if (location.pathname === '/signup') {
-      AdminServices.registerAdmin({ name, email, password, role })
+      AdminServices.registerAdmin({ name, email, password, phone })
         .then((res) => {
           if (res) {
             setLoading(false);
@@ -77,6 +78,7 @@ const useLoginSubmit = () => {
     handleSubmit,
     errors,
     loading,
+    setPhoneValue
   };
 };
 

@@ -1118,6 +1118,11 @@ body
   z-index: 20001 !important;
 }
 
+.signUpPhoneInput input{
+  width: 100% !important;
+  height: 3rem;
+}
+
 /* @media (min-width: 1920px) {
   .container {
     max-width: 1920px !important;
