@@ -339,7 +339,7 @@ const Header = () => {
                 {adminInfo.image ? (
                   <Avatar className="align-middle" src={`${adminInfo.image}`} aria-hidden="true" />
                 ) : (
-                  <span>{adminInfo.email[0].toUpperCase()}</span>
+                  <span>{adminInfo?.data ? adminInfo?.data.email[0].toUpperCase() : adminInfo?.email[0].toUpperCase() }</span>
                 )}
               </button>
 
