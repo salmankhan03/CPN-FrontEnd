@@ -49,33 +49,30 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             <TableCell>
               <CheckBox
                 type="checkbox"
-                name={product?.title?.en}
-                id={product._id}
+                name={product?.name}
+                id={product.id}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(product._id)}
+                isChecked={isCheck?.includes(product.id)}
               />
             </TableCell>
 
             <TableCell>
               <div className="flex items-center">
-                {product?.image[0] ? (
+                {/* {product?.image[0] ? (
                   <Avatar
                     className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"
                     src={product?.image[0]}
                     alt="product"
                   />
-                ) : (
+                ) : ( */}
                   <Avatar
                     src={`https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png`}
                     alt="product"
                   />
-                )}
+                {/* )} */}
                 <div>
                   <h2 className="text-sm font-medium">
-                    {showingTranslateValue(product?.title, lang)?.substring(
-                      0,
-                      28
-                    )}
+                    {product?.name.substring(0,28)}
                   </h2>
                 </div>
               </div>
@@ -83,26 +80,26 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
 
             <TableCell>
               <span className="text-sm">
-                {showingTranslateValue(product?.category?.name, lang)}
+                {product?.category}
               </span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm font-semibold">
                 {currency}
-                {Number(product?.prices?.originalPrice).toFixed(2)}
+                {Number(product?.price).toFixed(2)}
               </span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm font-semibold">
                 {currency}
-                {Number(product?.prices?.price).toFixed(2)}
+                {Number(product?.price).toFixed(2)}
               </span>
             </TableCell>
 
             <TableCell>
-              <span className="text-sm">{product.stock}</span>
+              <span className="text-sm">{product.package_quantity}</span>
             </TableCell>
             <TableCell>
               {product.stock > 0 ? (
@@ -130,7 +127,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             </TableCell>
             <TableCell>
               <EditDeleteButton
-                id={product._id}
+                id={product.id}
                 product={product}
                 isCheck={isCheck}
                 handleUpdate={handleUpdate}

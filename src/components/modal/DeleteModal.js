@@ -33,9 +33,10 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
       setIsSubmitting(true);
       if (location.pathname === "/products") {
         if (ids) {
-          const res = await ProductServices.deleteManyProducts({
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await ProductServices.deleteManyProducts(apiRequestBody);
           setIsUpdate(true);
           notifySuccess(res.message);
           setIsCheck([]);
@@ -48,7 +49,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           notifySuccess(res.message);
           setServiceId();
           closeModal();
-          setIsSubmitting(false);
+          setIsSubmitting(false); 
         }
       }
 
@@ -76,9 +77,10 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
       if (location.pathname === "/categories" || category) {
         if (ids) {
           //  console.log('delete modal categorices',ids)
-          const res = await CategoryServices.deleteManyCategory({
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await CategoryServices.deleteManyCategory(apiRequestBody);
           //  console.log('delete many category res',res)
           setIsUpdate(true);
           notifySuccess(res.message);

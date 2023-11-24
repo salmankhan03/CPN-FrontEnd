@@ -74,7 +74,7 @@ const Products = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data?.products.map((li) => li._id));
+    setIsCheck(data?.list?.data.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -240,14 +240,14 @@ const Products = () => {
             <ProductTable
               lang={lang}
               isCheck={isCheck}
-              products={data?.products}
+              products={data?.list?.data}
               setIsCheck={setIsCheck}
               currency={currency}
             />
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={data?.totalDoc}
+              totalResults={data?.list?.last_page}
               resultsPerPage={limitData}
               onChange={handleChangePage}
               label="Product Page Navigation"

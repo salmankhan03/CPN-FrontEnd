@@ -8,6 +8,7 @@ const useCategorySubmit = (id, data) => {
   const { isDrawerOpen, closeDrawer, setIsUpdate, lang } =
     useContext(SidebarContext);
   const [resData, setResData] = useState({});
+  const [categories, setCategories] = useState({});
   const [checked, setChecked] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [children, setChildren] = useState([]);
@@ -28,23 +29,23 @@ const useCategorySubmit = (id, data) => {
   // console.log("lang", lang, language);
 
   const onSubmit = async ({ name, description }) => {
+    console.log("checked", checked)
+    console.log("selectCategoryName", selectCategoryName)
+
     try {
+      console.log("checked", checked)
+
       setIsSubmitting(true);
       const categoryData = {
-        name: {
-          [language]: name,
-        },
-        description: { [language]: description ? description : "" },
-        parentId: checked ? checked : undefined,
+        id: id ? id: "",
+        name:name,
+        description:description ? description :"",
+        parent_id: checked ? checked : null,
         parentName: selectCategoryName ? selectCategoryName : "Home",
-        // parentName: selectCategoryName ? selectCategoryName : 'Home',
-
-        icon: imageUrl,
-        status: published ? "show" : "hide",
-        lang: language,
+        status: published ? "show" : "hide"
       };
 
-      // console.log('category submit', categoryData);
+      console.log('category submit', categoryData);
 
       if (id) {
         const res = await CategoryServices.updateCategory(id, categoryData);
@@ -76,6 +77,7 @@ const useCategorySubmit = (id, data) => {
   };
 
   useEffect(() => {
+    console.log("useEffect CALL",data)
     if (!isDrawerOpen) {
       setResData({});
       setValue("name");
@@ -102,17 +104,21 @@ const useCategorySubmit = (id, data) => {
       (async () => {
         try {
           const res = await CategoryServices.getCategoryById(id);
+          const categoryListres = await CategoryServices.getAllCategories();
+          console.log("categoryListres category", categoryListres);
           console.log("res category", res);
-
+          if (categoryListres) {
+            setCategories(categoryListres[0])
+          }
           if (res) {
-            setResData(res);
-            setValue("name", res.name[language ? language : "en"]);
+            setResData(res.category);
+            setValue("name", res.category.name);//[language ? language : "en"]
             setValue(
               "description",
-              res.description[language ? language : "en"]
+              res.category.description //[language ? language : "en"]
             );
             setValue("language", language);
-            setValue("parentId", res.parentId);
+            setValue("parentId", res.category.parent_id);
             setValue("parentName", res.parentName);
             setSelectCategoryName(res.parentName);
             setChecked(res.parentId);

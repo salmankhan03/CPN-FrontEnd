@@ -17,7 +17,7 @@ import CategoryServices from "services/CategoryServices";
 import { notifyError } from "utils/toast";
 import { showingTranslateValue } from "utils/translate";
 
-const CategoryDrawer = ({ id, data, lang }) => {
+const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
   const { t } = useTranslation();
 
   const {
@@ -62,20 +62,21 @@ const CategoryDrawer = ({ id, data, lang }) => {
 
   const renderCategories = (categories) => {
     let myCategories = [];
+    if(categories){
     for (let category of categories) {
-      myCategories.push({
-        title: showingTranslateValue(category.name, lang),
-        key: category._id,
+     myCategories.push({
+       title: category.name, 
+        key: category.id,
         children:
-          category.children.length > 0 && renderCategories(category.children),
+          category.descendants?.length > 0 && renderCategories(category.descendants),
       });
     }
-
-    return myCategories;
+  }
+      return myCategories;
   };
 
   const findObject = (obj, target) => {
-    return obj._id === target
+    return obj.id === target
       ? obj
       : obj?.children?.reduce(
           (acc, obj) => acc ?? findObject(obj, target),
@@ -91,25 +92,25 @@ const CategoryDrawer = ({ id, data, lang }) => {
 
       if (id === key) {
         return notifyError("This can't be select as a parent category!");
-      } else if (id === parentCategoryId.parentId) {
+      } else if (id === parentCategoryId.parent_id) {
         return notifyError("This can't be select as a parent category!");
       } else {
         if (key === undefined) return;
         setChecked(key);
 
-        const obj = data[0];
+        const obj = categoriesList?.category;
         const result = findObject(obj, key);
 
-        setSelectCategoryName(showingTranslateValue(result?.name, lang));
+        setSelectCategoryName(result?.name);
       }
     } else {
       if (key === undefined) return;
       setChecked(key);
 
-      const obj = data[0];
+      const obj = categoriesList?.category.find(item => item.id === key);
       const result = findObject(obj, key);
 
-      setSelectCategoryName(showingTranslateValue(result?.name, lang));
+      setSelectCategoryName(result?.name);
     }
   };
 
@@ -184,7 +185,7 @@ const CategoryDrawer = ({ id, data, lang }) => {
                   <style dangerouslySetInnerHTML={{ __html: STYLE }} />
                   <Tree
                     expandAction="click"
-                    treeData={renderCategories(data)}
+                    treeData={renderCategories(categoriesList?.category)}
                     selectedKeys={[checked]}
                     onSelect={(v) => handleSelect(v[0])}
                     motion={motion}

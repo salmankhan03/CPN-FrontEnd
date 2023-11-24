@@ -38,6 +38,8 @@ const Category = () => {
 
   const { data, loading } = useAsync(CategoryServices.getAllCategory);
   const { data: getAllCategories } = useAsync(CategoryServices.getAllCategories);
+  // const originalListData = getAllCategories?.list?.data;
+  // const filteredListData = originalListData.filter(item => item.parent_id === null);
 
   const { handleDeleteMany, allId, handleUpdateMany, serviceId } = useToggleDrawer();
 
@@ -56,7 +58,7 @@ const Category = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data[0]?.children ? data[0]?.children : data);
+  } = useFilter(data?.list?.data ? data?.list?.data : data);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -65,7 +67,7 @@ const Category = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data[0]?.children.map((li) => li._id));
+    setIsCheck(data?.list?.data.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -76,12 +78,12 @@ const Category = () => {
      <PageTitle>{t("Category")}</PageTitle>
       <DeleteModal ids={allId} setIsCheck={setIsCheck} />
 
-      <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={data} isCheck={isCheck} />
+      {/* <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={data} isCheck={isCheck} /> */}
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} lang={lang} />
-      </MainDrawer>
-
+        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategories} lang={lang} />
+      </MainDrawer> 
+    
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody className="">
           {/* <div className="flex md:flex-row flex-col gap-3 justify-end items-end"> */}
@@ -191,18 +193,19 @@ const Category = () => {
             </TableHeader>
 
             <CategoryTable
-              data={data}
+              data={data.list.data}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
               setIsCheck={setIsCheck}
               showChild={showChild}
+              categoriesList={getAllCategories}
             />
           </Table>
 
           <TableFooter>
             <Pagination
-              totalResults={totalResults}
+              totalResults={data?.list?.last_page}
               resultsPerPage={resultsPerPage}
               onChange={handleChangePage}
               label="Table navigation"

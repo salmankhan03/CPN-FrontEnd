@@ -7,15 +7,15 @@ const ProductServices = {
     const searchPrice = price !== null ? price : "";
 
     return requests.get(
-      `/products?page=${page}&limit=${limit}&category=${searchCategory}&title=${searchTitle}&price=${searchPrice}`
+      `/product/list?page=${page}&pageSize=${limit}`
     );
   },
 
   getProductById: async (id) => {
-    return requests.post(`/products/${id}`);
+    return requests.get(`/product/${id}/data`);
   },
   addProduct: async (body) => {
-    return requests.post("/products/add", body);
+    return requests.post("/product/save", body);
   },
   addAllProducts: async (body) => {
     return requests.post("/products/all", body);
@@ -30,11 +30,11 @@ const ProductServices = {
     return requests.put(`/products/status/${id}`, body);
   },
 
-  deleteProduct: async (id) => {
-    return requests.delete(`/products/${id}`);
+  deleteProduct: async (id,body) => {
+    return requests.delete(`/product/${id}/delete`, body);
   },
   deleteManyProducts: async (body) => {
-    return requests.patch("/products/delete/many", body);
+    return requests.post("/product/multiple_delete", body);
   },
 };
 
