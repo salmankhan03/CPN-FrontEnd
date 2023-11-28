@@ -27,9 +27,9 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
     const { id, checked } = e.target;
     console.log("id", id, checked);
 
-    setIsCheck([...isCheck, id]);
+    setIsCheck([...isCheck, JSON.parse(id)]);
     if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== JSON.parse(id)));
     }
   };
 

@@ -26,9 +26,9 @@ const CategoryTable = ({
 
   const handleClick = (e) => {
     const { id, checked } = e.target;
-    setIsCheck([...isCheck, id]);
+    setIsCheck([...isCheck, JSON.parse(id)]);
     if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== JSON.parse(id)));
     }
   };
 
