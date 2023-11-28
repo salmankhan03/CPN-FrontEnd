@@ -41,14 +41,14 @@ const ParentCategory = ({
     if(categories){
     for (let category of categories) {
      myCategories.push({
-       title: category?.name, 
-        key: category?.id,
+       title: category.name, 
+        key: category.id,
         children:
-          category?.descendants?.length > 0 && renderCategories(category.descendants),
+          category.children?.length > 0 && renderCategories(category.children),
       });
     }
   }
-    return myCategories;
+      return myCategories;
   };
 
   const findObject = (obj, target) => {
@@ -66,9 +66,23 @@ const ParentCategory = ({
     //   if (x) return x;
     // }
   };
-
+  const findObjectById = (data, targetId) => {
+    for (const item of data) {
+        if (item.id === targetId) {
+            return item;
+        }
+        if (item.children) {
+            const nestedResult = findObjectById(item.children, targetId);
+            if (nestedResult) {
+                return nestedResult;
+            }
+        }
+    }
+    return null;
+};
   const handleSelect = (key) => {
-    const obj = getAllCategories?.category.find(item => item.id === key);
+    const obj = findObjectById(getAllCategories?.tree, key);
+   
     const result = findObject(obj, key);
 
     if (result !== undefined) {
@@ -123,7 +137,7 @@ const ParentCategory = ({
           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
           <Tree
             expandAction="click"
-            treeData={renderCategories(getAllCategories?.category)}
+            treeData={renderCategories(getAllCategories?.tree)}
             // defaultCheckedKeys={id}
             onSelect={(v) => handleSelect(v[0])}
             motion={motion}

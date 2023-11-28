@@ -58,7 +58,7 @@ const Category = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data?.list?.data ? data?.list?.data : data);
+  } = useFilter(data?.list ? data?.list : data);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -67,7 +67,7 @@ const Category = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data?.list?.data.map((li) => li.id));
+    setIsCheck(data?.list?.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -78,10 +78,10 @@ const Category = () => {
      <PageTitle>{t("Category")}</PageTitle>
       <DeleteModal ids={allId} setIsCheck={setIsCheck} />
 
-      {/* <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={data} isCheck={isCheck} /> */}
+      <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={getAllCategories} isCheck={isCheck} />
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategories} lang={lang} />
+        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategories?.tree} lang={lang} />
       </MainDrawer> 
     
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
@@ -193,13 +193,13 @@ const Category = () => {
             </TableHeader>
 
             <CategoryTable
-              data={data.list.data}
+              data={getAllCategories?.tree}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
               setIsCheck={setIsCheck}
               showChild={showChild}
-              categoriesList={getAllCategories}
+              categoriesList={getAllCategories?.tree}
             />
           </Table>
 

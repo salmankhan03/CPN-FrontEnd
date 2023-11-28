@@ -39,19 +39,19 @@ const CategoryTable = ({
       )}
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data.list} categoriesList={categoriesList} lang={lang} />
+        <CategoryDrawer id={serviceId} data={data?.list} categoriesList={data} lang={lang} />
       </MainDrawer>
 
       <TableBody>
-        {categoriesList?.category?.map((category) =>(
+        {categoriesList?.map((category) =>(
           <TableRow key={category.id}>
             <TableCell>
               <CheckBox
                 type="checkbox"
                 name="category"
-                id={category.id}
+                id={category?.id}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(category.id)}
+                isChecked={isCheck?.includes(category?.id)}
               />
             </TableCell>
 
@@ -76,7 +76,7 @@ const CategoryTable = ({
             </TableCell>
             
             <TableCell className="font-medium text-sm ">
-              {category?.descendants.length > 0 ? (
+              {category?.children?.length > 0 ? (
                 <Link
                   to={`/categories/${category?.id}`}
                   className="text-blue-700"
@@ -88,7 +88,7 @@ const CategoryTable = ({
                       <>
                         {" "}
                         <div className="pl-2 ">
-                          {category?.descendants?.map((child) => (
+                          {category?.children?.map((child) => (
                             <div key={child.id}>
                               <Link
                                 to={`/categories/${child?.id}`}
@@ -120,7 +120,7 @@ const CategoryTable = ({
 
             <TableCell className="text-center">
               <ShowHideButton
-                id={category._id}
+                id={category?.id}
                 category
                 status={category?.status}
               />

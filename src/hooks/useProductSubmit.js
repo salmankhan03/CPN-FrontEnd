@@ -122,7 +122,7 @@ const useProductSubmit = (id) => {
         quantity:variants?.length < 1 ? data.stock : Number(totalStock),
         tags:JSON.stringify(tag),
         sku: data.sku || "",
-        category_id:selectedCategory[0].id.tostring(),
+        category_id:selectedCategory[0].id,
         // category: defaultCategory[0].id,
         isCombination: updatedVariants?.length > 0 ? isCombination : false,
         variants: isCombination ? updatedVariants : [],

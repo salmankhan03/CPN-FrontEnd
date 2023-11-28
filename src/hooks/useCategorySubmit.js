@@ -41,7 +41,7 @@ const useCategorySubmit = (id, data) => {
         name:name,
         description:description ? description :"",
         parent_id: checked ? checked : null,
-        parentName: selectCategoryName ? selectCategoryName : "Home",
+        parentName: selectCategoryName ? selectCategoryName : "",
         status: published ? "show" : "hide"
       };
 
@@ -91,7 +91,7 @@ const useCategorySubmit = (id, data) => {
       clearErrors("parentId");
       clearErrors("parentName");
       clearErrors("description");
-      setSelectCategoryName("Home");
+      setSelectCategoryName("");
       setLanguage(lang);
       setValue("language", language);
 

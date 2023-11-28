@@ -61,19 +61,20 @@ const BulkActionDrawer = ({
     onLeaveStart: (node) => ({ height: node.offsetHeight }),
     onLeaveActive: () => ({ height: 0 }),
   };
-
+  
   const renderCategories = (categories) => {
     let myCategories = [];
+    if(categories){
     for (let category of categories) {
-      myCategories.push({
-        title: showingTranslateValue(category?.name, lang),
-        key: category._id,
+     myCategories.push({
+       title: category.name, 
+        key: category.id,
         children:
-          category.children.length > 0 && renderCategories(category.children),
+          category.children?.length > 0 && renderCategories(category.children),
       });
     }
-
-    return myCategories;
+  }
+      return myCategories;
   };
 
   const findObject = (obj, target) => {
@@ -100,7 +101,7 @@ const BulkActionDrawer = ({
 
       const obj = data[0];
       const result = findObject(obj, key);
-      setSelectCategoryName(showingTranslateValue(result?.name, lang));
+      setSelectCategoryName(result?.name, lang);
     }
   };
 
@@ -313,7 +314,7 @@ const BulkActionDrawer = ({
                         <div className="draggable-demo capitalize">
                           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
                           <Tree
-                            treeData={renderCategories(data)}
+                            treeData={renderCategories(data?.tree)}
                             selectedKeys={[checked]}
                             onSelect={(v) => handleSelect(v[0])}
                             motion={motion}
@@ -372,13 +373,13 @@ const BulkActionDrawer = ({
 
                         <div className="draggable-demo capitalize">
                           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
-                          <Tree
+                          {/* <Tree
                             treeData={renderCategories(data)}
                             selectedKeys={[checked]}
                             onSelect={(v) => handleSelect(v[0])}
                             motion={motion}
                             animation="slide-up"
-                          />
+                          /> */}
                         </div>
                       </div>
                     </div>

@@ -68,7 +68,7 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
        title: category.name, 
         key: category.id,
         children:
-          category.descendants?.length > 0 && renderCategories(category.descendants),
+          category.children?.length > 0 && renderCategories(category.children),
       });
     }
   }
@@ -84,6 +84,20 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
         );
   };
 
+  const findObjectById = (data, targetId) => {
+    for (const item of data) {
+        if (item.id === targetId) {
+            return item;
+        }
+        if (item.children) {
+            const nestedResult = findObjectById(item.children, targetId);
+            if (nestedResult) {
+                return nestedResult;
+            }
+        }
+    }
+    return null;
+};
   const handleSelect = async (key) => {
     // console.log('key', key, 'id', id);
     if (key === undefined) return;
@@ -98,17 +112,17 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
         if (key === undefined) return;
         setChecked(key);
 
-        const obj = categoriesList?.category;
+        const obj = findObjectById(categoriesList, key);;
         const result = findObject(obj, key);
 
         setSelectCategoryName(result?.name);
       }
     } else {
       if (key === undefined) return;
-      setChecked(key);
+      setChecked(key);     
 
-      const obj = categoriesList?.category.find(item => item.id === key);
-      const result = findObject(obj, key);
+      const foundObject = findObjectById(categoriesList, key);
+      const result = findObject(foundObject, key);
 
       setSelectCategoryName(result?.name);
     }
@@ -175,7 +189,7 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
                     required: false,
                   })}
                   name="parent"
-                  value={selectCategoryName ? selectCategoryName : "Home"}
+                  value={selectCategoryName ? selectCategoryName : ""}
                   placeholder={t("ParentCategory")}
                   type="text"
                   className="border h-12 w-full text-sm focus:outline-none block bg-gray-100 dark:bg-white border-transparent focus:bg-white"
@@ -185,7 +199,7 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
                   <style dangerouslySetInnerHTML={{ __html: STYLE }} />
                   <Tree
                     expandAction="click"
-                    treeData={renderCategories(categoriesList?.category)}
+                    treeData={renderCategories(categoriesList)}
                     selectedKeys={[checked]}
                     onSelect={(v) => handleSelect(v[0])}
                     motion={motion}
