@@ -88,7 +88,7 @@ const ChildCategory = () => {
   }
     if (!loading) {
       let newID = JSON.parse(id)
-      const result = findNestedData(data?.tree, newID);
+      const result = findNestedData(data?.tree?.data, newID);
       const res = getAncestors(id, result?.children);
       console.log("res",res)
       if (result?.children?.length > 0) {
@@ -215,8 +215,8 @@ const ChildCategory = () => {
             </TableHeader>
 
             <CategoryTable
-              categories={data?.tree}
-              data={data?.tree}
+              categories={data?.tree?.data}
+              data={data?.tree?.data}
               lang={lang}
               isCheck={isCheck}
               setIsCheck={setIsCheck}

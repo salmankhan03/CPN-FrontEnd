@@ -106,7 +106,7 @@ const handleNameSorting = () => {
       <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={getAllCategorie} isCheck={isCheck} />
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategorie?.tree} lang={lang} />
+        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategorie?.tree?.data} lang={lang} />
       </MainDrawer> 
     
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
@@ -218,19 +218,19 @@ const handleNameSorting = () => {
             </TableHeader>
 
             <CategoryTable
-              data={getAllCategorie?.tree}
+              data={getAllCategorie?.tree?.data}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
               setIsCheck={setIsCheck}
               showChild={showChild}
-              categoriesList={getAllCategorie?.tree}
+              categoriesList={getAllCategorie?.tree?.data}
             />
           </Table>
 
           <TableFooter>
             <Pagination
-              totalResults={data?.list?.last_page}
+              totalResults={getAllCategorie?.tree?.last_page}
               resultsPerPage={resultsPerPage}
               onChange={handleChangePage}
               label="Table navigation"

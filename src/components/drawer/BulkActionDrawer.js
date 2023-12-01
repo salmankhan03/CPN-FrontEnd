@@ -314,7 +314,7 @@ const BulkActionDrawer = ({
                         <div className="draggable-demo capitalize">
                           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
                           <Tree
-                            treeData={renderCategories(data?.tree)}
+                            treeData={renderCategories(data?.tree?.data)}
                             selectedKeys={[checked]}
                             onSelect={(v) => handleSelect(v[0])}
                             motion={motion}

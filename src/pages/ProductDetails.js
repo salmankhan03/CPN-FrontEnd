@@ -35,27 +35,29 @@ const ProductDetails = () => {
 
   const { data, loading } = useAsync(() => ProductServices.getProductById(id));
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
-
   const currency = globalSetting?.default_currency || "$";
 
   const { handleChangePage, totalResults, resultsPerPage, dataTable } =
-    useFilter(data?.variants);
+    useFilter(data?.data?.variants);
   // console.log('data',data)
 
   useEffect(() => {
     if (!loading) {
-      const res = Object.keys(Object.assign({}, ...data?.variants));
+      // Note:=> currently i get variants but i need if null then [] array. 
+      //  after this issue fixed then this all comments remove
+      
+      //const res = Object.keys(Object.assign({}, ...data?.data?.variants));
 
-      const varTitle = attribue?.filter((att) =>
-        // res.includes(att.title.replace(/[^a-zA-Z0-9]/g, ''))
-        res.includes(att._id)
-      );
+      // const varTitle = attribue?.filter((att) =>
+      //   // res.includes(att.title.replace(/[^a-zA-Z0-9]/g, ''))
+      //   res.includes(att.id)
+      // );
 
-      setVariantTitle(varTitle);
+      // setVariantTitle(varTitle);
     }
-  }, [attribue, data?.variants, loading, lang]);
+  }, [attribue, data?.data?.variants, loading, lang]);
 
-  // console.log("data.variants", globalSetting);
+  console.log("data.variants", globalSetting);
 
   return (
     <>
@@ -70,8 +72,8 @@ const ProductDetails = () => {
         <div className="inline-block overflow-y-auto h-full align-middle transition-all transform">
           <div className="flex flex-col lg:flex-row md:flex-row w-full overflow-hidden">
             <div className="flex-shrink-0 flex items-center justify-center h-auto">
-              {data?.image[0] ? (
-                <img src={data?.image[0]} alt="product" className="h-64 w-64" />
+              {data?.data?.images[0] ? (
+                <img src={data?.data.images[0]?.name} alt="product" className="h-64 w-64" />
               ) : (
                 <img
                   src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
@@ -84,7 +86,7 @@ const ProductDetails = () => {
                 <div className="font-serif font-semibold py-1 text-sm">
                   <p className="text-sm text-gray-500 pr-4">
                     {t("Status")}:{" "}
-                    {data.status === "show" ? (
+                    {data?.data?.status === "show" ? (
                       <span className="text-green-400">
                         {t("ThisProductShowing")}
                       </span>
@@ -96,30 +98,30 @@ const ProductDetails = () => {
                   </p>
                 </div>
                 <h2 className="text-heading text-lg md:text-xl lg:text-2xl font-semibold font-serif dark:text-gray-400">
-                  {showingTranslateValue(data?.title, lang)}
+                  {data?.data?.name}
                 </h2>
                 <p className="uppercase font-serif font-medium text-gray-500 dark:text-gray-400 text-sm">
                   {t("Sku")} :{" "}
                   <span className="font-bold text-gray-500 dark:text-gray-500">
                     {/* {data?._id !== undefined && data?._id.substring(18, 24)} */}
-                    {data?.sku}
+                    {data?.data?.sku}
                   </span>
                 </p>
               </div>
               <div className="font-serif product-price font-bold dark:text-gray-400">
                 <span className="inline-block text-2xl">
                   {currency}
-                  {data?.prices?.price}
-                  {data?.prices?.discount >= 1 && (
+                  {data?.data?.price}
+                  {/* {data?.prices?.discount >= 1 && (
                     <del className="text-gray-400 dark:text-gray-500 text-lg pl-2">
                       {currency}
-                      {data?.prices?.originalPrice}
+                      {data?.quantity.prices?.originalPrice}
                     </del>
-                  )}
+                  )} */}
                 </span>
               </div>
               <div className="mb-3">
-                {data?.stock <= 0 ? (
+                {data?.data?.quantity <= 0 ? (
                   <Badge type="danger">
                     <span className="font-bold">{t("StockOut")}</span>{" "}
                   </Badge>
@@ -130,21 +132,21 @@ const ProductDetails = () => {
                   </Badge>
                 )}
                 <span className="text-sm text-gray-500 dark:text-gray-400 font-medium pl-4">
-                  {t("Quantity")}: {data?.stock}
+                  {t("Quantity")}: {data?.data?.quantity}
                 </span>
               </div>
               <p className="text-sm leading-6 text-gray-500 dark:text-gray-400 md:leading-7">
-                {showingTranslateValue(data?.description, lang)}
+                {data?.data?.description}
               </p>
               <div className="flex flex-col mt-4">
                 <p className="font-serif font-semibold py-1 text-gray-500 text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
                     {t("Category")}:{" "}
                   </span>{" "}
-                  {showingTranslateValue(data?.category?.name, lang)}
+                  {data?.data?.category?.name}
                 </p>
                 <div className="flex flex-row">
-                  {JSON.parse(data?.tag).map((t, i) => (
+                  {JSON.parse(data?.data?.tags).map((t, i) => (
                     <span
                       key={i + 1}
                       className="bg-gray-200 mr-2 border-0 text-gray-500 rounded-full inline-flex items-center justify-center px-2 py-1 text-xs font-semibold font-serif mt-2 dark:bg-gray-700 dark:text-gray-300"

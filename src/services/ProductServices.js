@@ -5,9 +5,13 @@ const ProductServices = {
     const searchCategory = category !== null ? category : "";
     const searchTitle = title !== null ? title : "";
     const searchPrice = price !== null ? price : "";
-
-    return requests.get(
-      `/product/list?page=${page}&pageSize=${limit}`
+      let body ={
+        category:searchCategory,
+        title:searchTitle,
+        price:searchPrice,
+      }
+    return requests.post(
+      `/product/list?page=${page}&pageSize=${limit}`,body
     );
   },
 
@@ -21,7 +25,7 @@ const ProductServices = {
     return requests.post("/products/all", body);
   },
   updateProduct: async (id, body) => {
-    return requests.patch(`/products/${id}`, body);
+    return requests.post("/product/save", body);
   },
   updateManyProducts: async (body) => {
     return requests.patch("products/update/many", body);

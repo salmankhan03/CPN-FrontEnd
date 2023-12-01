@@ -99,10 +99,10 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             </TableCell>
 
             <TableCell>
-              <span className="text-sm">{product.package_quantity}</span>
+              <span className="text-sm">{product.quantity}</span>
             </TableCell>
             <TableCell>
-              {product.stock > 0 ? (
+              {product.quantity > 0 ? (
                 <Badge type="success">{t("Selling")}</Badge>
               ) : (
                 <Badge type="danger">{t("SoldOut")}</Badge>
@@ -110,7 +110,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             </TableCell>
             <TableCell>
               <Link
-                to={`/product/${product._id}`}
+                to={`/product/${product.id}`}
                 className="flex justify-center text-gray-400 hover:text-green-600"
               >
                 <Tooltip

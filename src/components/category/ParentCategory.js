@@ -81,7 +81,7 @@ const ParentCategory = ({
     return null;
 };
   const handleSelect = (key) => {
-    const obj = findObjectById(getAllCategories?.tree, key);
+    const obj = findObjectById(getAllCategories?.tree?.data, key);
    
     const result = findObject(obj, key);
 
@@ -137,7 +137,7 @@ const ParentCategory = ({
           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
           <Tree
             expandAction="click"
-            treeData={renderCategories(getAllCategories?.tree)}
+            treeData={renderCategories(getAllCategories?.tree?.data)}
             // defaultCheckedKeys={id}
             onSelect={(v) => handleSelect(v[0])}
             motion={motion}

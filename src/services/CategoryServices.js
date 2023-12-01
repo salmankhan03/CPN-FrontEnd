@@ -27,7 +27,7 @@ const CategoryServices = {
   },
 
   updateStatus: async (id, body) => {
-    return requests.put(`/category/status/${id}`, body);
+    return requests.post("/category/save", body);
   },
 
   deleteCategory: async (id, body) => {

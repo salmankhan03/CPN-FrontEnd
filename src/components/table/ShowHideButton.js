@@ -12,7 +12,7 @@ import LanguageServices from "services/LanguageServices";
 import ProductServices from "services/ProductServices";
 import { notifyError, notifySuccess } from "utils/toast";
 
-const ShowHideButton = ({ id, status, category, currencyStatusName }) => {
+const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
   // console.log('from staf')
   const location = useLocation();
   const { setIsUpdate } = useContext(SidebarContext);
@@ -28,9 +28,11 @@ const ShowHideButton = ({ id, status, category, currencyStatusName }) => {
       }
 
       if (location.pathname === "/categories" || category) {
-        const res = await CategoryServices.updateStatus(id, {
-          status: newStatus,
-        });
+        if(!data?.parent_id){
+          data['parent_id'] = null
+        }
+        data.status = newStatus
+        const res = await CategoryServices.updateStatus(id, data);
         setIsUpdate(true);
         notifySuccess(res.message);
       }

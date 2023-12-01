@@ -123,6 +123,7 @@ const CategoryTable = ({
                 id={category?.id}
                 category
                 status={category?.status}
+                data={category}
               />
             </TableCell>
             <TableCell>
