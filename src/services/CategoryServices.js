@@ -6,7 +6,7 @@ const CategoryServices = {
   },
 
   getAllCategories: async () => {
-    return requests.get("/category/tree");
+    return requests.post("/category/tree");
   },
 
   getCategoryById: async (id) => {
