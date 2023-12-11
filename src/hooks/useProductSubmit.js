@@ -55,6 +55,7 @@ const useProductSubmit = (id) => {
   const [openModal, setOpenModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [slug, setSlug] = useState("");
+  const [published, setPublished] = useState(true);
 
   // console.log("lang", lang);
 
@@ -109,7 +110,51 @@ const useProductSubmit = (id) => {
       setBarcode(data.barcode);
       setSku(data.sku);
       setOriginalPrice(data.originalPrice);
+      // let newImages = imageUrl
+      // const filteredUrls = imageUrl.filter(url => url.startsWith("blob:http:"));
+      // console.log(filteredUrls);
+      // let newImages =[];
+      // imageUrl.forEach((image, index) => {
+      //   const file = new File([blob], image.path, { type: blob.type });
 
+      //   // const imageStream = fs.createReadStream(`/C:/Users/Admin/Downloads/${image.path}`);
+      //   newImages.push(file)
+      //  ;
+      // });
+
+      // imageUrl.forEach((image, index) => {
+      //   // Assuming 'preview' contains a blob URL, use fetch to get the file blob
+      //   fetch(image.preview)
+      //     .then((response) => response.blob())
+      //     .then((blob) => {
+      //       console.log(blob)
+      //       const customfile = new File([blob], image.path, { type: blob.type });
+      //       console.log(customfile)
+      //       newImages.push(customfile)
+      //     });
+      // });
+      // console.log(newImages)
+
+      // static 
+    //   let newImages =[];
+
+    //   let obj ={
+    //     "id": "",
+    //     "product_id": "",
+    //     "name": "https://backend.kingsmankids.com/uploads/products/2023/10/laravel-f5011e53b385f2def4749b89ee09b524.jpg",
+    //     "original_name": "istockphoto-1080057124-612x612.jpg"
+    // }
+    // newImages.push(obj);
+    // console.log(newImages)
+
+    // let newImages =["blob:http://localhost:3000/28632b9c-6026-4207-a987-3f3511ac3b84"];
+
+
+
+
+    // 
+
+      console.log("Image URL",imageUrl)
       const productData = {
         id: productId ? productId :"",
         name: data?.title,
@@ -117,8 +162,8 @@ const useProductSubmit = (id) => {
         bar_code: data.barcode || "",
         description: data.description,
         slug: data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"),
-        
-        image: imageUrl,
+        // filteredUrls ? filteredUrls :
+        images: imageUrl,
         quantity:variants?.length < 1 ? data.stock : Number(totalStock),
         tags:JSON.stringify(tag),
         sku: data.sku || "",
@@ -162,17 +207,18 @@ const useProductSubmit = (id) => {
           setValue("description", res.description[language ? language : "en"]);
           setValue("slug", res.slug);
           setValue("show", res.show);
-          setValue("barcode", res.barcode);
+          setValue("barcode", res.bar_code);
           setValue("stock", res.stock);
           setTag(JSON.parse(res.tag));
-          setImageUrl(res.image);
+          setImageUrl(res?.images);
           setVariants(res.variants);
           setValue("productId", res.productId);
           setProductId(res.productId);
           setOriginalPrice(res?.prices?.originalPrice);
           setPrice(res?.prices?.price);
-          setBarcode(res.barcode);
+          setBarcode(res.bar_code);
           setSku(res.sku);
+          setPublished(res?.status)
           const result = res.variants.map(
             ({
               originalPrice,
@@ -286,16 +332,22 @@ const useProductSubmit = (id) => {
             setValue("slug", res.data.slug);
             setValue("show", res.data.show);
             setValue("sku", res.data.sku);
-            setValue("barcode", res.data.barcode);
+            setValue("barcode", res.data.bar_code);
             setValue("stock", res.data.stock);
             setValue("productId", res.data.productId);
             setValue("price", res?.data?.price);
             setValue("originalPrice", res?.data?.price);
-            setValue("stock", res.data.stock);
+            setValue("stock", res.data.quantity);
             setProductId(res.data.id);
+            // setValue("")
             setBarcode(res.data.barcode);
             setSku(res.data.sku);
-
+            const imagesData = res.data?.images;
+            if (imagesData) {
+              const imageNames = imagesData.map(image => image.name);
+              setImageUrl(imageNames);
+            }
+          
             res.categories.map((category) => {
               category.name = showingTranslateValue(category?.name, lang);
 
@@ -309,8 +361,7 @@ const useProductSubmit = (id) => {
 
             setSelectedCategory(res.categories);
             setDefaultCategory([res?.category]);
-            setTag(JSON.parse(res.tag));
-            setImageUrl(res.image);
+            setTag(JSON.parse(res.tag));         
             setVariants(res.variants);
             setIsCombination(res.isCombination);
             setQuantity(res?.stock);
@@ -630,6 +681,8 @@ const useProductSubmit = (id) => {
     setDefaultCategory,
     defaultCategory,
     handleProductSlug,
+    published,
+    setPublished,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,

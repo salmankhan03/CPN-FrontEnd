@@ -33,6 +33,7 @@ import AttributeOptionTwo from "components/attribute/AttributeOptionTwo";
 import DrawerButton from "components/form/DrawerButton";
 import AttributeListTable from "components/attribute/AttributeListTable";
 import { showingTranslateValue } from "utils/translate";
+import SwitchToggle from "components/form/SwitchToggle";
 
 //internal import
 
@@ -75,6 +76,8 @@ const ProductDrawer = ({ id }) => {
     setDefaultCategory,
     defaultCategory,
     handleProductSlug,
+    published,
+    setPublished,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,
@@ -203,6 +206,8 @@ const ProductDrawer = ({ id }) => {
                     folder="product"
                     imageUrl={imageUrl}
                     setImageUrl={setImageUrl}
+                    method={id ? "update" : "add" }
+                    id={id? id : ""}
                   />
                 </div>
               </div>
@@ -320,7 +325,7 @@ const ProductDrawer = ({ id }) => {
                     type="number"
                     placeholder={t("ProductQuantity")}
                   />
-                  <Error errorName={errors.stock} />
+                  <Error errorName={errors.quantity} />
                 </div>
               </div>
 
@@ -352,6 +357,15 @@ const ProductDrawer = ({ id }) => {
                   />
                 </div>
               </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={t("Published")} />
+              <div className="col-span-8 sm:col-span-4">
+                <SwitchToggle
+                  handleProcess={setPublished}
+                  processOption={published}
+                />
+              </div>
+            </div>
             </div>
           )}
 
