@@ -168,6 +168,7 @@ const useProductSubmit = (id) => {
         tags:JSON.stringify(tag),
         sku: data.sku || "",
         category_id:selectedCategory[0].id,
+        status: published ? "show" : "hide",
         // category: defaultCategory[0].id,
         isCombination: updatedVariants?.length > 0 ? isCombination : false,
         variants: isCombination ? updatedVariants : [],
@@ -277,6 +278,7 @@ const useProductSubmit = (id) => {
       setValue("price");
       setValue("barcode");
       setValue("productId");
+      setPublished(true);
 
       setProductId("");
       // setValue('show');
