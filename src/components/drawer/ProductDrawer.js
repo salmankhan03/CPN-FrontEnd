@@ -9,7 +9,7 @@ import {
   Table,
 } from "@windmill/react-ui";
 import Multiselect from "multiselect-react-dropdown";
-import React from "react";
+import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MultiSelect } from "react-multi-select-component";
 import { Modal } from "react-responsive-modal";
@@ -35,12 +35,20 @@ import AttributeListTable from "components/attribute/AttributeListTable";
 import { showingTranslateValue } from "utils/translate";
 import SwitchToggle from "components/form/SwitchToggle";
 
+
 //internal import
 
-const ProductDrawer = ({ id }) => {
-  const { t } = useTranslation();
+const ProductDrawer = ({ id, }) => {
 
+  const { t } = useTranslation();
   const {
+    brands,
+    filteredBrandOptions,
+    setFilteredBrandOptions,
+    searchTerm,
+    setSearchTerm,
+    selectedBrand,
+    setSelectedBrand,
     tag,
     setTag,
     values,
@@ -87,9 +95,23 @@ const ProductDrawer = ({ id }) => {
     handleSelectImage,
     handleSelectInlineImage,
     handleGenerateCombination,
+    handleBrandSearch,
+    handleBrandsSelected
   } = useProductSubmit(id);
 
   const currency = globalSetting?.default_currency || "$";
+
+
+
+  // const handleSearch = (e) => {
+  //   console.log(brandOptions)
+  //   const term = e.target.value;
+  //   setSearchTerm(term);
+  //   const filtered = brandOptions?.filter((item) =>
+  //     item.name?.toLowerCase().includes(term?.toLowerCase())
+  //   );
+  //   setFilteredBrandOptions(filtered);
+  // };
 
   return (
     <>
@@ -206,8 +228,8 @@ const ProductDrawer = ({ id }) => {
                     folder="product"
                     imageUrl={imageUrl}
                     setImageUrl={setImageUrl}
-                    method={id ? "update" : "add" }
-                    id={id? id : ""}
+                    method={id ? "update" : "add"}
+                    id={id ? id : ""}
                   />
                 </div>
               </div>
@@ -241,6 +263,27 @@ const ProductDrawer = ({ id }) => {
                   <Error errorName={errors.barcode} />
                 </div>
               </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label="Brand" />
+                <div className="col-span-8 sm:col-span-4">
+                  <input
+                    type="text"
+                    placeholder="Search Brands... "
+                    value={searchTerm.brandName}
+                    onChange={handleBrandSearch}
+                    className="border react-tag-input__input  h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white  "
+                    style={{border:"1px solid #ccc"}}
+                  />
+                  <ul>
+                    {filteredBrandOptions?.map((item, index) => (
+                      <li key={index} onClick={() => handleBrandsSelected(item)} style={{padding:5}}>
+                        {item.name}
+                      </li>
+                    ))}
+                  </ul>
+                  <Error errorName={errors.barcode} />
+                </div>
+              </div>
 
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("Category")} />
@@ -263,9 +306,9 @@ const ProductDrawer = ({ id }) => {
                     singleSelect={true}
                     ref={resetRefTwo}
                     hidePlaceholder={true}
-                    onKeyPressFn={function noRefCheck() {}}
-                    onRemove={function noRefCheck() {}}
-                    onSearch={function noRefCheck() {}}
+                    onKeyPressFn={function noRefCheck() { }}
+                    onRemove={function noRefCheck() { }}
+                    onSearch={function noRefCheck() { }}
                     onSelect={(v) => setDefaultCategory(v)}
                     selectedValues={defaultCategory}
                     options={selectedCategory}
@@ -358,14 +401,14 @@ const ProductDrawer = ({ id }) => {
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={t("Published")} />
-              <div className="col-span-8 sm:col-span-4">
-                <SwitchToggle
-                  handleProcess={setPublished}
-                  processOption={published}
-                />
+                <LabelArea label={t("Published")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <SwitchToggle
+                    handleProcess={setPublished}
+                    processOption={published}
+                  />
+                </div>
               </div>
-            </div>
             </div>
           )}
 

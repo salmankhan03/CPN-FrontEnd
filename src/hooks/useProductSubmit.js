@@ -12,14 +12,19 @@ import ProductServices from "services/ProductServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import SettingServices from "services/SettingServices";
 import { showingTranslateValue } from "utils/translate";
+import BrandServices from "services/BrandServices";
 
 const useProductSubmit = (id) => {
   const location = useLocation();
-  const { isDrawerOpen, closeDrawer, setIsUpdate, lang } =
+  const { isDrawerOpen, closeDrawer, setIsUpdate, lang, currentPage, limitData } =
     useContext(SidebarContext);
 
   const { data: attribue } = useAsync(AttributeServices.getShowingAttributes);
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
+  const { data: getAllBrands, } = useAsync(() => BrandServices?.getAllBrands({
+    page: currentPage,
+    limit: limitData
+  }));
 
   // react ref
   const resetRef = useRef([]);
@@ -56,6 +61,32 @@ const useProductSubmit = (id) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [slug, setSlug] = useState("");
   const [published, setPublished] = useState(true);
+  const [searchTerm, setSearchTerm] = useState({
+    brandName: '',
+    brand_Id: null,
+  });
+  const [selectedBrand, setSelectedBrand] = useState();
+  const [filteredBrandOptions, setFilteredBrandOptions] = useState();
+
+const handleBrandSearch = (e) => {
+  const term = e.target.value;
+
+  setSearchTerm((prevSearchTerm) => ({
+    ...prevSearchTerm,
+    brandName: term,
+    brand_Id: null,
+  }));
+  const filtered = getAllBrands?.list?.data?.filter((item) =>
+    item.name?.toLowerCase().includes(term?.toLowerCase())
+  );
+  setFilteredBrandOptions(filtered);
+};
+const handleBrandsSelected = (data)=>{
+  setSearchTerm({
+    brandName: data?.name,
+    brand_Id: data?.id,
+  });
+}
 
   // console.log("lang", lang);
 
@@ -160,6 +191,8 @@ const useProductSubmit = (id) => {
         name: data?.title,
         price: Number(data.price) || 0,
         bar_code: data.barcode || "",
+        brand: searchTerm?.brandName,
+        brand_id : searchTerm.brand_Id ?  searchTerm.brand_Id  : null,
         description: data.description,
         slug: data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"),
         // filteredUrls ? filteredUrls :
@@ -648,6 +681,12 @@ const useProductSubmit = (id) => {
   };
 
   return {
+    filteredBrandOptions,
+    setFilteredBrandOptions,
+    searchTerm,
+    setSearchTerm,
+    selectedBrand,
+    setSelectedBrand,
     tag,
     setTag,
     values,
@@ -694,6 +733,8 @@ const useProductSubmit = (id) => {
     handleSelectImage,
     handleSelectInlineImage,
     handleGenerateCombination,
+    handleBrandSearch,
+    handleBrandsSelected
   };
 };
 
