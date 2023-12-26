@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { showDateTimeFormat } from "utils/dateFormate";
+import moment from 'moment';
 
 const OrderTable = ({ orders, currency, globalSetting }) => {
   // console.log('globalSetting',globalSetting)
@@ -20,18 +21,21 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
           <TableRow key={i + 1}>
             <TableCell>
               <span className="font-semibold uppercase text-xs">
-                {order?.invoice}
-              </span>
+                {order?.id}
+                {/* {order?.invoice} */}
+                </span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm">
-                {showDateTimeFormat(
+                {moment(order?.created_at).format('DD/MM/YYYY')}
+
+            {/* {showDateTimeFormat(
                   order?.updatedDate,
                   globalSetting?.default_date_format,
                   "h:mm A"
-                )}
-              </span>
+                )}       */}       
+                </span> 
             </TableCell>
 
             <TableCell className="text-xs">
@@ -47,7 +51,7 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             <TableCell>
               <span className="text-sm font-semibold">
                 {currency}
-                {parseFloat(order?.total)?.toFixed(2)}
+                {parseFloat(order?.total_amount)?.toFixed(2)}
               </span>
             </TableCell>
 

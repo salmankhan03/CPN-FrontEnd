@@ -25,6 +25,10 @@ const OrderServices = {
     );
   },
 
+  getAllOrderList: async ({ page, limit }) => {
+    return requests.get(
+      `/order/list?page=${page}&pageSize=${limit}`);
+  },
   getAllOrdersTwo: async ({ invoice, body, headers }) => {
     const searchInvoice = invoice !== null ? invoice : "";
     return requests.get(`/orders/all?invoice=${searchInvoice}`, body, headers);

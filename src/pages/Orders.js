@@ -51,19 +51,27 @@ const Orders = () => {
   const { t } = useTranslation();
   const [loadingExport, setLoadingExport] = useState(false);
 
+  // const { data, loading } = useAsync(() =>
+  //   OrderServices.getAllOrders({
+  //     customerName: searchText,
+  //     status,
+  //     page: currentPage,
+  //     limit: resultsPerPage,
+  //     day: time,
+  //     startDate,
+  //     endDate,
+  //   })
+  // );
   const { data, loading } = useAsync(() =>
-    OrderServices.getAllOrders({
-      customerName: searchText,
-      status,
+    OrderServices.getAllOrderList({
       page: currentPage,
       limit: resultsPerPage,
-      day: time,
-      startDate,
-      endDate,
     })
   );
 
-  const { dataTable, serviceData, globalSetting } = useFilter(data?.orders);
+  console.log(" ORDER LIST DATA ==>", data)
+
+  const { dataTable, serviceData, globalSetting } = useFilter(data?.list?.data);
 
   const handleDownloadOrders = async () => {
     try {
@@ -243,7 +251,7 @@ const Orders = () => {
 
           <TableFooter>
             <Pagination
-              totalResults={data?.totalDoc}
+              totalResults={data?.list?.last_page}
               resultsPerPage={resultsPerPage}
               onChange={handleChangePage}
               label="Table navigation"
