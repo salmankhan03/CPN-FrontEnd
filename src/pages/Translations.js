@@ -242,6 +242,16 @@ export const translationEn = {
   CatName: "Name",
   CatDescription: "Description",
 
+  // Brand
+  AddBrand:"Add Brand",
+  SearchBrand : "Search by Brand name",
+  UpdateBrand:"Update brand",
+  UpdateBrandDescription: "Updated your Product Brand and necessary information from here",
+  AddBrandDescription: "Add your Product Brand and necessary information from here",
+  Brandtitle:"Brand title",
+
+
+
   //Coupons
   CouponspageTitle: "Coupon",
   SelectedCoupon: "Selected Coupon",
@@ -1288,6 +1298,15 @@ export const translationDe = {
   ParentCategoryPlaceholder: "Titel der Kategorie",
   CatName: "Name",
   CatDescription: "Description",
+
+
+  // Brand
+  AddBrand:"Marke hinzufügen",
+  SearchBrand:"Suche nach Markenname",
+  UpdateBrand:"Marke aktualisieren",
+  Brandtitle:"Markentitel"
+
+
 
   //Coupons
 

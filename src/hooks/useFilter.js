@@ -17,6 +17,7 @@ import ProductServices from "services/ProductServices";
 import SettingServices from "services/SettingServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import useAsync from "./useAsync";
+import BrandServices from "services/BrandServices";
 
 const categorySchema = {
   type: "object",
@@ -36,6 +37,18 @@ const attributeSchema = {
     title: { type: "object" },
     name: { type: "object" },
     variants: { type: "array" },
+    option: { type: "string" },
+    type: { type: "string" },
+  },
+  required: ["name", "title"],
+};
+const brandSchema = {
+  type: "object",
+  properties: {
+    status: { type: "string" },
+    title: { type: "object" },
+    name: { type: "object" },
+    description: { type: "array" },
     option: { type: "string" },
     type: { type: "string" },
   },
@@ -76,6 +89,7 @@ const useFilter = (data) => {
   const [searchOrder, setSearchOrder] = useState("");
   const [categoryType, setCategoryType] = useState("");
   const [attributeTitle, setAttributeTitle] = useState("");
+  const [brandTitle, setBrandTitle] = useState("");
   const [country, setCountry] = useState("");
   const [zone, setZone] = useState("");
   const [language, setLanguage] = useState("");
@@ -103,6 +117,7 @@ const useFilter = (data) => {
   const orderRef = useRef("");
   const categoryRef = useRef("");
   const attributeRef = useRef("");
+  const brandRef = useRef("");
   const countryRef = useRef("");
   const languageRef = useRef("");
   const taxRef = useRef("");
@@ -337,14 +352,15 @@ const useFilter = (data) => {
     e.preventDefault();
     setSearchOrder(orderRef.current.value);
   };
-  const handleSubmitCategory = (e) => {
+  const handleSubmitBrands = (e) => {
     e.preventDefault();
-    setCategoryType(categoryRef.current.value);
+    setBrandTitle(brandRef.current.value);
   };
   const handleSubmitAttribute = (e) => {
     e.preventDefault();
     setAttributeTitle(attributeRef.current.value);
   };
+
 
   const handleSubmitCountry = (e) => {
     e.preventDefault();
@@ -708,6 +724,30 @@ const useFilter = (data) => {
           notifyError("Please enter valid data!");
         }
       }
+      if (location.pathname === "/brands") {
+        setLoading(true);
+        let attributeDataValidation = selectedFile.map((value) =>
+          ajv.validate(brandSchema, value)
+        );
+
+        const isBelowThreshold = (currentValue) => currentValue === true;
+        const validationData = attributeDataValidation.every(isBelowThreshold);
+
+        if (validationData) {
+          // BrandServices.addAllBrands(selectedFile)
+          //   .then((res) => {
+          //     setLoading(false);
+          //     setIsUpdate(true);
+          //     notifySuccess(res.message);
+          //   })
+          //   .catch((err) => {
+          //     setLoading(false);
+          //     notifyError(err ? err.response.data.message : err.message);
+          //   });
+        } else {
+          notifyError("Please enter valid data!");
+        }
+      }
 
       if (location.pathname === "/languages") {
         LanguageServices.addAllLanguage(selectedFile)
@@ -770,7 +810,7 @@ const useFilter = (data) => {
     handleSubmitForAll,
     handleSubmitCoupon,
     handleSubmitOrder,
-    handleSubmitCategory,
+    handleSubmitBrands,
     handleSubmitAttribute,
     handleOnDrop,
     handleUploadProducts,

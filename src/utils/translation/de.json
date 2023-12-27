@@ -172,10 +172,12 @@
   "CategorySearchplaceholder": "Suche nach Kategorietyp",
   "AddCategoryBtn": "Kategorie hinzufügen",
   "AddCategory": "Kategorie hinzufügen",
+  "AddBrand":"Marke hinzufügen",
   "CatTbName": "Name",
   "CatTbDescription": "Description",
   "View": "View",
   "SearchCategory": "Suchen Sie nach Kategorienamen",
+  "SearchBrand": "Suche nach Markenname",
   "ParentsOnly": "Nur für Eltern",
   "All": " Alle",
   "Categoryformenu": "Kategorie für Menü",
@@ -191,6 +193,7 @@
   "UpdateCategory": "Kategorie aktualisieren",
   "UpdateCategoryDescription": "Aktualisierte Ihre Produktkategorie und die erforderlichen Informationen von hier aus",
   "AddCategoryTitle": "Kategorie hinzufügen",
+  "UpdateBrand":"Marke aktualisieren",
   "AddCategoryDescription": "Fügen Sie hier Ihre Produktkategorie und die erforderlichen Informationen hinzu",
   "CategoryIcon": "Kategorie-Image",
   "ChildCategoryPlaceholder": "Untergeordnete Kategorie (Schreiben Sie und drücken Sie dann die Eingabetaste, um eine neue untergeordnete Kategorie hinzuzufügen)",
@@ -936,5 +939,7 @@
   "InternationalCustomTooltipText": "Sie können entweder das internationale metrische/imperiale System oder Ihre eigenen benutzerdefinierten Einheiten verwenden.",
   "RestaurantMenu": "SPEISEKARTE",
   "OrginalPrice": "OrginalPrice",
-  "SR": "SR"
+  "SR": "SR",
+  "Brandtitle":"Markentitel"
+
 }

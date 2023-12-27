@@ -11,9 +11,10 @@ import CurrencyServices from "services/CurrencyServices";
 import LanguageServices from "services/LanguageServices";
 import ProductServices from "services/ProductServices";
 import { notifyError, notifySuccess } from "utils/toast";
+import BrandServices from "services/BrandServices";
 
 const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
-  // console.log('from staf')
+  // console.log('from staf', status)
   const location = useLocation();
   const { setIsUpdate } = useContext(SidebarContext);
   //  console.log('coupns')
@@ -21,10 +22,10 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
     // return notifyError("CRUD operation is disabled for this option!");
     try {
       let newStatus;
-      if (status === "show") {
-        newStatus = "hide";
+      if (status === "show" || status === 1) {
+        newStatus = status === 1 ? 0 : "hide";
       } else {
-        newStatus = "show";
+        newStatus = status === 0 ? 1: "show";
       }
 
       if (location.pathname === "/categories" || category) {
@@ -33,6 +34,12 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
         }
         data.status = newStatus
         const res = await CategoryServices.updateStatus(id, data);
+        setIsUpdate(true);
+        notifySuccess(res.message);
+      }
+      if (location.pathname === "/brands" ) {
+        data.is_active = newStatus
+        const res = await BrandServices.updateBrand(id, data);
         setIsUpdate(true);
         notifySuccess(res.message);
       }
@@ -111,7 +118,7 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
   return (
     <Switch
       onChange={() => handleChangeStatus(id)}
-      checked={status === "show" ? true : false}
+      checked={status === "show" || status === 1 ? true : false}
       className="react-switch md:ml-0"
       uncheckedIcon={
         <div
