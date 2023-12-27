@@ -39,7 +39,7 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
       }
       if (location.pathname === "/brands" ) {
         data.is_active = newStatus
-        const res = await BrandServices.updateBrand(id, data);
+        const res = await BrandServices.addUpdateBrand(data);
         setIsUpdate(true);
         notifySuccess(res.message);
       }

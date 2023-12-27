@@ -28,26 +28,25 @@ const useBrandSubmit = (id, data) => {
     try {
       setIsSubmitting(true);
       const brandData = {
-        id: id ? id: "",
+        id: id ? id: '',
         name:name,
         is_active: published ? 1 : 0
       };
 
 
       if (id) {
-        const res = await BrandServices.updateBrand(id, brandData);
+        const res = await BrandServices.addUpdateBrand(brandData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
         closeDrawer();
         reset();
       } else {
-        //Brand Add
-        // const res = await CategoryServices.addCategory(brandData);
-        // setIsUpdate(true);
-        // setIsSubmitting(false);
-        // notifySuccess(res.message);
-        // closeDrawer();
+        const res = await BrandServices.addUpdateBrand(brandData);
+        setIsUpdate(true);
+        setIsSubmitting(false);
+        notifySuccess(res.message);
+        closeDrawer();
       }
     } catch (err) {
       setIsSubmitting(false);

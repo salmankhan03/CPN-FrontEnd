@@ -6,7 +6,7 @@ const BrandServices = {
   getBrandById: async (id) => {
     return requests.get(`/product-brand/${id}/data`);
   },
-  updateBrand: async (id, body) => {
+  addUpdateBrand: async (body) => {
     return requests.post("/product-brand/save", body);
   },
   

@@ -56,23 +56,6 @@ const BrandTable = ({ brands, isCheck, setIsCheck, lang }) => {
             <TableCell className="font-semibold uppercase text-xs">
               {product?.id}
             </TableCell>
-
-            <TableCell>
-              {product?.icon ? (
-                <Avatar
-                  className="hidden mr-3 md:block bg-gray-50 p-1"
-                  src={product?.icon}
-                  alt={product?.parent}
-                />
-              ) : (
-                <Avatar
-                  src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                  alt="product"
-                  className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"
-                />
-              )}
-            </TableCell>
-
             <TableCell className="font-semibold uppercase text-xs">
               <h2 className="text-sm font-medium">
                 {product?.name.substring(0, 28)}
