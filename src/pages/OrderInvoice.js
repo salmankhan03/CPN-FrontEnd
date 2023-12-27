@@ -24,6 +24,7 @@ import PageTitle from "components/Typography/PageTitle";
 import InvoiceForDownload from "components/invoice/InvoiceForDownload";
 import SettingServices from "services/SettingServices";
 import { useTranslation } from "react-i18next";
+import moment from 'moment';
 
 const OrderInvoice = () => {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const OrderInvoice = () => {
 
   const { data, loading } = useAsync(() => OrderServices.getOrderById(id));
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
-
+  // console.log("Order Details", data.order  )
   const currency = globalSetting?.default_currency || "$";
   return (
     <>
@@ -52,7 +53,7 @@ const OrderInvoice = () => {
                   {t("InvoiceStatus")}
                   <span className="pl-2 font-medium text-xs capitalize">
                     {" "}
-                    <Status status={data.status} />
+                    <Status status={data.order.status} />
                   </span>
                 </p>
               </h1>
@@ -75,8 +76,8 @@ const OrderInvoice = () => {
                   {t("InvoiceDate")}
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400 block">
-                  {data.createdAt !== undefined && (
-                    <span>{dayjs(data?.createdAt).format("MMMM D, YYYY")}</span>
+                  {data.order.created_at !== undefined && (
+                    <span>{moment(data.order?.created_at).format('DD/MM/YYYY')}</span>
                   )}
                 </span>
               </div>
@@ -85,7 +86,7 @@ const OrderInvoice = () => {
                   {t("InvoiceNo")}
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400 block">
-                  #{data?.invoice}
+                  #{data.order?.id}
                 </span>
               </div>
               <div className="flex flex-col lg:text-right text-left">
@@ -93,14 +94,13 @@ const OrderInvoice = () => {
                   {t("InvoiceTo")}
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400 block">
-                  {data?.user_info?.name} <br />
-                  {data?.user_info?.email}{" "}
-                  <span className="ml-2">{data?.user_info?.contact}</span>
+                  {data.order?.billing_address?.first_name} <br />
+                  {data.order?.billing_address?.email}{" "}
+                  <span className="ml-2">{data.order?.billing_address?.phone}</span>
                   <br />
-                  {data?.user_info?.address?.substring(0, 30)}
                   <br />
-                  {data?.user_info?.city}, {data?.user_info?.country},{" "}
-                  {data?.user_info?.zipCode}
+                  {data.order?.billing_address?.city}, {data.order?.billing_address?.country},{" "}
+                  {data.order?.billing_address?.zipCode}
                 </span>
               </div>
             </div>
@@ -126,7 +126,7 @@ const OrderInvoice = () => {
                   </tr>
                 </TableHeader>
                 <Invoice
-                  data={data}
+                  data={data.order}
                   currency={currency}
                   globalSetting={globalSetting}
                 />
@@ -143,7 +143,7 @@ const OrderInvoice = () => {
                   {t("InvoicepaymentMethod")}
                 </span>
                 <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold font-serif block">
-                  {data.paymentMethod}
+                  {data?.order?.payment?.type}
                 </span>
               </div>
               <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
@@ -170,7 +170,7 @@ const OrderInvoice = () => {
                 </span>
                 <span className="text-xl font-serif font-bold text-red-500 dark:text-green-500 block">
                   {currency}
-                  {parseFloat(data.total).toFixed(2)}
+                  {parseFloat(data?.order?.total_amount).toFixed(2)}
                 </span>
               </div>
             </div>

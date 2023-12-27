@@ -49,8 +49,8 @@ const OrderServices = {
     return requests.get(`/orders/customer/${id}`, body);
   },
 
-  getOrderById: async (id, body) => {
-    return requests.get(`/orders/${id}`, body);
+  getOrderById: async (id) => {
+    return requests.get(`/order/${id}/data`);
   },
 
   updateOrder: async (body) => {
