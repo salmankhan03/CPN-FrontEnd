@@ -39,7 +39,7 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             </TableCell>
 
             <TableCell className="text-xs">
-              <span className="text-sm">{order?.user_info?.name}</span>{" "}
+              <span className="text-sm">{order?.billign_address?.first_name}</span>{" "}
             </TableCell>
 
             <TableCell>
@@ -60,7 +60,7 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             </TableCell>
 
             <TableCell className="text-center">
-              <SelectStatus id={order._id} order={order} />
+              <SelectStatus id={order.id} order={order} />
             </TableCell>
 
             <TableCell className="text-right flex justify-end">

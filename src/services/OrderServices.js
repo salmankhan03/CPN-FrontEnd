@@ -53,8 +53,8 @@ const OrderServices = {
     return requests.get(`/orders/${id}`, body);
   },
 
-  updateOrder: async (id, body, headers) => {
-    return requests.put(`/orders/${id}`, body, headers);
+  updateOrder: async (body) => {
+    return requests.post(`/order/update-status`, body);
   },
 
   deleteOrder: async (id) => {

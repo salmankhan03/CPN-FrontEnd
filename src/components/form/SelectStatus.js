@@ -10,7 +10,11 @@ const SelectStatus = ({ id, order }) => {
   const { setIsUpdate } = useContext(SidebarContext);
   const handleChangeStatus = (id, status) => {
     // return notifyError("CRUD operation is disabled for this option!");
-    OrderServices.updateOrder(id, { status: status })
+    let body ={
+      id:id,
+      status:status
+    }
+    OrderServices.updateOrder(body)
       .then((res) => {
         notifySuccess(res.message);
         setIsUpdate(true);
