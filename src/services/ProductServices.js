@@ -38,7 +38,7 @@ const ProductServices = {
     return requests.delete(`/product/${id}/delete`, body);
   },
   deleteManyProducts: async (body) => {
-    return requests.post("/product/multiple_delete", body);
+    return requests.post("/product/multiple-delete", body);
   },
 };
 
