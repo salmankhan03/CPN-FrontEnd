@@ -26,7 +26,7 @@ const OrderServices = {
   },
 
   getAllOrderList: async ({ page, limit }) => {
-    return requests.get(
+    return requests.post(
       `/order/list?page=${page}&pageSize=${limit}`);
   },
   getAllOrdersTwo: async ({ invoice, body, headers }) => {
