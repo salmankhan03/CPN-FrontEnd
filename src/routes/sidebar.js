@@ -92,6 +92,11 @@ const sidebar = [
     path: "http://localhost:3000",
     outside: "store",
   },
+  {
+    path: "/staticPage", // the url
+    icon: FiGrid, // icon
+    name: "Static Page", // name that appear in Sidebar
+  },
 
   {
     icon: FiSlack,
@@ -109,6 +114,8 @@ const sidebar = [
       },
     ],
   },
+  
+
 ];
 
 export default sidebar;

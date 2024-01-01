@@ -31,7 +31,7 @@ const SidebarContent = () => {
           <img src={logoDark} alt="ecommerce" width="135" className="pl-6" />
         )}
       </a>
-      <ul className="mt-8">
+      <ul className="mt-8 mb-12">
         {sidebar.map((route) =>
           route.routes ? (
             <SidebarSubMenu route={route} key={route.name} />
