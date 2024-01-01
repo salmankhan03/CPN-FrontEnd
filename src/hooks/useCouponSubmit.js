@@ -101,12 +101,10 @@ const useCouponSubmit = (id) => {
           const res = await CouponServices.getCouponById(id);
           if (res) {
             // console.log('res coupon', res);
-            console.log('res-----------------------------', res,res.data.code)
             setResData(res.data);
-            setValue('title', res.title[language ? language : 'en']);
-            setValue('productType', res.productType);
-            setValue('couponCode', '123456789');
-
+            // setValue('title', res?.title[language ? language : 'en']);
+            // setValue('productType', res?.productType);
+            setValue('couponCode', res?.data?.code);
             setValue('endTime', dayjs(res.data.expires_at).format('YYYY-MM-DD HH:mm'));
             setValue('discountPercentage', res.data.amount);
             setValue('minimumAmount', res.data.minimum_amount);
