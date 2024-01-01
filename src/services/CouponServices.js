@@ -2,16 +2,16 @@ import requests from './httpService';
 
 const CouponServices = {
   addCoupon: async (body) => {
-    return requests.post('/coupon/add', body);
+    return requests.post('/coupon-code/save', body);
   },
   addAllCoupon: async (body) => {
     return requests.post('/coupon/add/all', body);
   },
   getAllCoupons: async () => {
-    return requests.get('/coupon');
+    return requests.post('/coupon-code/list');
   },
   getCouponById: async (id) => {
-    return requests.get(`/coupon/${id}`);
+    return requests.get(`/coupon-code/${id}/data`);
   },
   updateCoupon: async (id, body) => {
     return requests.put(`/coupon/${id}`, body);

@@ -32,8 +32,9 @@ import  UploadManyTwo  from 'components/common/UploadManyTwo';
 
 const Coupons = () => {
   const { toggleDrawer, lang } = useContext(SidebarContext);
-  const { data, loading } = useAsync(CouponServices.getAllCoupons);
-  // console.log('data',data)
+  const { data , loading } = useAsync(CouponServices.getAllCoupons);
+  const data1 = data?.list?.data
+  console.log('data-----------------------------?',data1)
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
 
@@ -52,11 +53,11 @@ const Coupons = () => {
     isDisabled,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data);
+  } = useFilter(data1);
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data?.map((li) => li._id));
+    setIsCheck(data1?.map((li) => li._id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -80,7 +81,7 @@ const Coupons = () => {
             <div className="flex justify-start xl:w-1/2  md:w-full">
               <UploadManyTwo
                 title="Coupon"
-                exportData={data}
+                exportData={data1}
                 filename={filename}
                 isDisabled={isDisabled}
                 handleSelectFile={handleSelectFile}
@@ -169,7 +170,7 @@ const Coupons = () => {
                 <TableCell>{t("CoupTblCode")}</TableCell>
                 <TableCell>{t("Discount")}</TableCell>
 
-                <TableCell className="text-center">{t("catPublishedTbl")}</TableCell>
+                {/*<TableCell className="text-center">{t("catPublishedTbl")}</TableCell>*/}
                 <TableCell>{t("CoupTblStartDate")}</TableCell>
                 <TableCell>{t("CoupTblEndDate")}</TableCell>
                 <TableCell>{t("CoupTblStatus")}</TableCell>
