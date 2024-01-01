@@ -9,6 +9,8 @@ const InputArea = ({
   label,
   type,
   placeholder,
+  min,
+  max
 }) => {
   return (
     <>
@@ -21,6 +23,8 @@ const InputArea = ({
         placeholder={placeholder}
         name={name}
         className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+        min={min}
+        max={max}
       />
     </>
   );

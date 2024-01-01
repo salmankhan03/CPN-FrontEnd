@@ -23,10 +23,10 @@ const CouponServices = {
     return requests.put(`/coupon/status/${id}`, body);
   },
   deleteCoupon: async (id) => {
-    return requests.delete(`/coupon/${id}`);
+    return requests.delete(`/coupon-code/${id}/delete`);
   },
   deleteManyCoupons: async (body) => {
-    return requests.patch(`/coupon/delete/many`, body);
+    return requests.post(`/coupon-code/multiple-delete`, body);
   },
 };
 

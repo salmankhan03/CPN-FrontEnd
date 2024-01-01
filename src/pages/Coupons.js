@@ -57,7 +57,7 @@ const Coupons = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data1?.map((li) => li._id));
+    setIsCheck(data1?.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -166,7 +166,7 @@ const Coupons = () => {
                     isChecked={isCheckAll}
                   />
                 </TableCell>
-                <TableCell>{t("CoupTblCampaignsName")}</TableCell>
+                {/*<TableCell>{t("CoupTblCampaignsName")}</TableCell>*/}
                 <TableCell>{t("CoupTblCode")}</TableCell>
                 <TableCell>{t("Discount")}</TableCell>
 

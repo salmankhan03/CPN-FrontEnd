@@ -63,19 +63,36 @@ const CouponDrawer = ({ id }) => {
             {/*  </div>*/}
             {/*</div>*/}
 
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={t("CampaignName")} />
-              <div className="col-span-8 sm:col-span-4">
-                <InputArea
-                  register={register}
-                  label="Coupon title"
-                  name="title"
-                  type="text"
-                  placeholder={t("CampaignName")}
-                />
-                <Error errorName={errors.title} />
-              </div>
-            </div>
+            {/*<div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">*/}
+            {/*  <LabelArea label={t("Product Id")} />*/}
+            {/*  <div className="col-span-8 sm:col-span-4">*/}
+            {/*    <InputArea*/}
+            {/*      register={register}*/}
+            {/*      label="Coupon title"*/}
+            {/*      name="title"*/}
+            {/*      type="text"*/}
+            {/*      placeholder={t("CampaignName")}*/}
+            {/*    />*/}
+            {/*    <Error errorName={errors.title} />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
+
+            {/*<div className="sm:col-span-3">*/}
+            {/*  <Select*/}
+            {/*      {...register(`default_date_format`, {*/}
+            {/*        required: "Default date formate is required",*/}
+            {/*      })}*/}
+            {/*      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"*/}
+            {/*  >*/}
+            {/*    <option value="" defaultValue hidden>*/}
+            {/*      {t("DefaultDateFormat")}*/}
+            {/*    </option>*/}
+            {/*    <option value="MMM D, YYYY">MM/DD/YYYY</option>*/}
+            {/*    <option value="D MMM, YYYY">DD/MM/YYYY</option>*/}
+            {/*    <option value="YYYY,MMM D">YYYY/MM/DD</option>*/}
+            {/*  </Select>*/}
+            {/*  <Error errorName={errors.default_date_format} pos />*/}
+            {/*</div>*/}
 
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={t("CampaignCode")} />
@@ -156,6 +173,23 @@ const CouponDrawer = ({ id }) => {
                 <Error errorName={errors.minimumAmount} />
               </div>
             </div>
+
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={t("Free Shipping")} />
+              <div className="col-span-8 sm:col-span-4">
+                <InputArea
+                    register={register}
+                    label="Free Shipping"
+                    name="is_eligible_for_free_shipping"
+                    type="number"
+                    placeholder={t("Free Sheeping")}
+                    min="0"
+                    max="1"
+                />
+                <Error errorName={errors.is_eligible_for_free_shipping} />
+              </div>
+            </div>
+
 
             {/*<div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">*/}
             {/*  <LabelArea label={t("Published")} />*/}

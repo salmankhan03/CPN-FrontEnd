@@ -29,11 +29,12 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
   const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
 
+
   const handleClick = (e) => {
     const { id, checked } = e.target;
-    setIsCheck([...isCheck, id]);
+    setIsCheck([...isCheck, JSON.parse(id)]);
     if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== JSON.parse(id)));
     }
   };
 
@@ -76,27 +77,27 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
               />
             </TableCell>
 
-            <TableCell>
-              <div className="flex items-center">
-                {/*{coupon?.logo ? (*/}
-                {/*  <Avatar*/}
-                {/*    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"*/}
-                {/*    src={coupon?.logo}*/}
-                {/*    alt="product"*/}
-                {/*  />*/}
-                {/*) : (*/}
-                {/*  <Avatar*/}
-                {/*    src={`https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png`}*/}
-                {/*    alt="product"*/}
-                {/*  />*/}
-                {/*)}*/}
-                <div>
-                  <span className="text-sm">
-                    {showingTranslateValue(coupon?.productType, lang)}
-                  </span>{" "}
-                </div>
-              </div>{" "}
-            </TableCell>
+            {/*<TableCell>*/}
+            {/*  <div className="flex items-center">*/}
+            {/*    /!*{coupon?.logo ? (*!/*/}
+            {/*    /!*  <Avatar*!/*/}
+            {/*    /!*    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"*!/*/}
+            {/*    /!*    src={coupon?.logo}*!/*/}
+            {/*    /!*    alt="product"*!/*/}
+            {/*    /!*  />*!/*/}
+            {/*    /!*) : (*!/*/}
+            {/*    /!*  <Avatar*!/*/}
+            {/*    /!*    src={`https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png`}*!/*/}
+            {/*    /!*    alt="product"*!/*/}
+            {/*    /!*  />*!/*/}
+            {/*    /!*)}*!/*/}
+            {/*    <div>*/}
+            {/*      <span className="text-sm">*/}
+            {/*        {showingTranslateValue(coupon?.productType, lang)}*/}
+            {/*      </span>{" "}*/}
+            {/*    </div>*/}
+            {/*  </div>{" "}*/}
+            {/*</TableCell>*/}
 
             <TableCell>
               {" "}

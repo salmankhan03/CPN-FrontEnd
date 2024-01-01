@@ -56,9 +56,11 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
 
       if (location.pathname === "/coupons") {
         if (ids) {
-          const res = await CouponServices.deleteManyCoupons({
-            ids: ids,
-          });
+
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await CouponServices.deleteManyCoupons(apiRequestBody);
           setIsUpdate(true);
           notifySuccess(res.message);
           setIsCheck([]);
