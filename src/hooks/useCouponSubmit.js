@@ -37,16 +37,18 @@ const useCouponSubmit = (id) => {
     try {
       setIsSubmitting(true);
       const couponData = {
+        id: id ? id : null,
         code: data.couponCode,
         expires_at: data.endTime,
         minimum_amount: data.minimumAmount,
         amount: data.discountPercentage,
         calculation_type: discountType ? 'percentage' : 'fixed',
-        productType:data.title
+        productType:data.title,
+        is_eligible_for_free_shipping: data.is_eligible_for_free_shipping
       };
 
       if (id) {
-        const res = await CouponServices.updateCoupon(id, couponData);
+        const res = await CouponServices.addCoupon(couponData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
@@ -82,6 +84,7 @@ const useCouponSubmit = (id) => {
       setValue('endTime');
       setValue('discountPercentage');
       setValue('minimumAmount');
+      setValue('is_eligible_for_free_shipping');
       setImageUrl('');
       clearErrors('title');
       clearErrors('productType');
@@ -89,18 +92,18 @@ const useCouponSubmit = (id) => {
       clearErrors('endTime');
       clearErrors('discountPercentage');
       clearErrors('minimumAmount');
+      clearErrors('is_eligible_for_free_shipping');
       setLanguage(lang);
       setValue('language', language);
       return;
     }
-
-    console.log('id--------------------------------', id)
+    
     if (id) {
       (async () => {
         try {
           const res = await CouponServices.getCouponById(id);
           if (res) {
-            // console.log('res coupon', res);
+            console.log('res coupon', res);
             setResData(res.data);
             // setValue('title', res?.title[language ? language : 'en']);
             // setValue('productType', res?.productType);
@@ -112,6 +115,7 @@ const useCouponSubmit = (id) => {
             setDiscountType(
               res.data.calculation_type === 'percentage' ? true : false
             );
+            setValue('is_eligible_for_free_shipping', res?.data?.is_eligible_for_free_shipping);
             // setImageUrl(res.logo);
           }
         } catch (err) {
