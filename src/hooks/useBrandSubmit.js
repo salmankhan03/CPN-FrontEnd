@@ -1,20 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SidebarContext } from "context/SidebarContext";
-import CategoryServices from "services/CategoryServices";
 import { notifyError, notifySuccess } from "utils/toast";
+import BrandServices from "services/BrandServices";
 
-const useCategorySubmit = (id, data) => {
+const useBrandSubmit = (id, data) => {
   const { isDrawerOpen, closeDrawer, setIsUpdate, lang } =
     useContext(SidebarContext);
   const [resData, setResData] = useState({});
-  const [categories, setCategories] = useState({});
   const [checked, setChecked] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [children, setChildren] = useState([]);
   const [language, setLanguage] = useState(lang);
   const [published, setPublished] = useState(true);
-  const [selectCategoryName, setSelectCategoryName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -29,33 +25,24 @@ const useCategorySubmit = (id, data) => {
   // console.log("lang", lang, language);
 
   const onSubmit = async ({ name, description }) => {
-    console.log("checked", checked)
-    console.log("selectCategoryName", selectCategoryName)
-
     try {
-      console.log("checked", checked)
-
       setIsSubmitting(true);
-      const categoryData = {
-        id: id ? id: "",
+      const brandData = {
+        id: id ? id: '',
         name:name,
-        description:description ? description :"",
-        parent_id: checked ? checked : null,
-        parentName: selectCategoryName ? selectCategoryName : "",
-        status: published ? "show" : "hide"
+        is_active: published ? 1 : 0
       };
 
-      console.log('category submit', categoryData);
 
       if (id) {
-        const res = await CategoryServices.updateCategory(id, categoryData);
+        const res = await BrandServices.addUpdateBrand(brandData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
         closeDrawer();
         reset();
       } else {
-        const res = await CategoryServices.addCategory(categoryData);
+        const res = await BrandServices.addUpdateBrand(brandData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
@@ -77,21 +64,11 @@ const useCategorySubmit = (id, data) => {
   };
 
   useEffect(() => {
-    console.log("useEffect CALL",data)
     if (!isDrawerOpen) {
       setResData({});
       setValue("name");
-      setValue("parentId");
-      setValue("parentName");
-      setValue("description");
-      setValue("icon");
-      setImageUrl("");
       setPublished(true);
       clearErrors("name");
-      clearErrors("parentId");
-      clearErrors("parentName");
-      clearErrors("description");
-      setSelectCategoryName("");
       setLanguage(lang);
       setValue("language", language);
 
@@ -103,27 +80,12 @@ const useCategorySubmit = (id, data) => {
     if (id) {
       (async () => {
         try {
-          const res = await CategoryServices.getCategoryById(id);
-          const categoryListres = await CategoryServices.getAllCategories();
-          console.log("categoryListres category", categoryListres);
-          console.log("res category", res);
-          if (categoryListres) {
-            setCategories(categoryListres[0])
-          }
+          const res = await BrandServices.getBrandById(id);
+     
           if (res) {
-            setResData(res.category);
-            setValue("name", res.category.name);//[language ? language : "en"]
-            setValue(
-              "description",
-              res.category.description //[language ? language : "en"]
-            );
-            setValue("language", language);
-            setValue("parentId", res.category.parent_id);
-            setValue("parentName", res.parentName);
-            setSelectCategoryName(res.parentName);
-            setChecked(res.parentId);
-            setImageUrl(res.icon);
-            setPublished(res.status === "show" ? true : false);
+            setResData(res.data);
+            setValue("name", res.data.name);//[language ? language : "en"]
+            setPublished(res.data.is_active === 1 ? true : false);
           }
         } catch (err) {
           notifyError(err ? err.response.data.message : err.message);
@@ -137,19 +99,13 @@ const useCategorySubmit = (id, data) => {
     handleSubmit,
     onSubmit,
     errors,
-    imageUrl,
-    setImageUrl,
-    children,
-    setChildren,
     published,
     setPublished,
     checked,
     setChecked,
     isSubmitting,
-    selectCategoryName,
-    setSelectCategoryName,
     handleSelectLanguage,
   };
 };
 
-export default useCategorySubmit;
+export default useBrandSubmit;

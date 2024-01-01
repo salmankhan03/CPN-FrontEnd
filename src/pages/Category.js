@@ -10,7 +10,7 @@ import {
   TableFooter,
   TableHeader,
 } from "@windmill/react-ui";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiEdit, FiPlus, FiTrash2 } from "react-icons/fi";
 
@@ -56,32 +56,59 @@ const Category = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data[0]?.children ? data[0]?.children : data);
+  } = useFilter(data?.list ? data?.list : data);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
   const [showChild, setShowChild] = useState(false);
+  const [isAscendingOrder, setIsAscendingOrder] = useState(false)
+  const [sortOrder, setSortOrder] = useState('default');
+  const [getAllCategorie, setGetAllCategorie] = useState();
+  useEffect(()=>{
+    setGetAllCategorie(getAllCategories)
+  },[getAllCategories])
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data[0]?.children.map((li) => li._id));
+    setIsCheck(data?.list?.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
   };
+  const handleIDSorting = () => {
+    let sortedData;
+    setIsAscendingOrder(!isAscendingOrder);
+    sortedData =  [...getAllCategories?.tree].sort((a, b) => (isAscendingOrder ? a.id - b.id : b.id - a.id));
+    setGetAllCategorie((prev) => ({ ...prev, tree: sortedData }));
+
+};
+const handleNameSorting = () => {
+  let sortedData;
+  if (sortOrder === 'default') {
+    sortedData =  [...getAllCategories?.tree].sort((a, b) => a.name.localeCompare(b.name));
+    setSortOrder('AtoZ');
+  } else if (sortOrder === 'AtoZ') {
+    sortedData =  [...getAllCategories?.tree].sort((a, b) => b.name.localeCompare(a.name));
+    setSortOrder('ZtoA');
+  } else {
+    sortedData = getAllCategories?.tree;
+    setSortOrder('default');
+  }
+  setGetAllCategorie((prev) => ({ ...prev, tree: sortedData }));
+};
 
   return (
     <>
      <PageTitle>{t("Category")}</PageTitle>
       <DeleteModal ids={allId} setIsCheck={setIsCheck} />
 
-      <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={data} isCheck={isCheck} />
+      <BulkActionDrawer ids={allId} title="Categories" lang={lang} data={getAllCategorie} isCheck={isCheck} />
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} lang={lang} />
-      </MainDrawer>
-
+        <CategoryDrawer id={serviceId} data={data} categoriesList={getAllCategorie?.tree?.data} lang={lang} />
+      </MainDrawer> 
+    
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody className="">
           {/* <div className="flex md:flex-row flex-col gap-3 justify-end items-end"> */}
@@ -90,7 +117,7 @@ const Category = () => {
             <div className="flex justify-start w-1/2 xl:w-1/2 md:w-full">
               <UploadManyTwo
                 title="Categories"
-                exportData={getAllCategories}
+                exportData={getAllCategorie}
                 filename={filename}
                 isDisabled={isDisabled}
                 handleSelectFile={handleSelectFile}
@@ -181,9 +208,9 @@ const Category = () => {
                   />
                 </TableCell>
 
-                <TableCell>{t("catIdTbl")}</TableCell>
+                <TableCell onClick={handleIDSorting}>{t("catIdTbl")}</TableCell>
                 <TableCell>{t("catIconTbl")}</TableCell>
-                <TableCell>{t("CatTbName")}</TableCell>
+                <TableCell onClick={handleNameSorting}>{t("CatTbName")}</TableCell>
                 <TableCell>{t("CatTbDescription")}</TableCell>
                 <TableCell className="text-center">{t("catPublishedTbl")}</TableCell>
                 <TableCell className="text-right">{t("catActionsTbl")}</TableCell>
@@ -191,18 +218,19 @@ const Category = () => {
             </TableHeader>
 
             <CategoryTable
-              data={data}
+              data={getAllCategorie?.tree?.data}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
               setIsCheck={setIsCheck}
               showChild={showChild}
+              categoriesList={getAllCategorie?.tree?.data}
             />
           </Table>
 
           <TableFooter>
             <Pagination
-              totalResults={totalResults}
+              totalResults={getAllCategorie?.tree?.last_page}
               resultsPerPage={resultsPerPage}
               onChange={handleChangePage}
               label="Table navigation"

@@ -37,20 +37,12 @@ const useCouponSubmit = (id) => {
     try {
       setIsSubmitting(true);
       const couponData = {
-        title: {
-          [language]: data.title,
-        },
-        couponCode: data.couponCode,
-        endTime: data.endTime,
-        minimumAmount: data.minimumAmount,
-        logo: imageUrl,
-        lang: language,
-        status: published ? 'show' : 'hide',
-        discountType: {
-          type: discountType ? 'percentage' : 'fixed',
-          value: data.discountPercentage,
-        },
-        productType:data.productType
+        code: data.couponCode,
+        expires_at: data.endTime,
+        minimum_amount: data.minimumAmount,
+        amount: data.discountPercentage,
+        calculation_type: discountType ? 'percentage' : 'fixed',
+        productType:data.title
       };
 
       if (id) {
@@ -74,6 +66,7 @@ const useCouponSubmit = (id) => {
   };
 
   const handleSelectLanguage = (lang) => {
+    console.log('lang======================', lang)
     setLanguage(lang);
     if (Object.keys(resData).length > 0) {
       setValue('title', resData.title[lang ? lang : 'en']);
@@ -100,25 +93,28 @@ const useCouponSubmit = (id) => {
       setValue('language', language);
       return;
     }
+
+    console.log('id--------------------------------', id)
     if (id) {
       (async () => {
         try {
           const res = await CouponServices.getCouponById(id);
           if (res) {
             // console.log('res coupon', res);
-            setResData(res);
+            console.log('res-----------------------------', res,res.data.code)
+            setResData(res.data);
             setValue('title', res.title[language ? language : 'en']);
             setValue('productType', res.productType);
-            setValue('couponCode', res.couponCode);
+            setValue('couponCode', '123456789');
 
-            setValue('endTime', dayjs(res.endTime).format('YYYY-MM-DD HH:mm'));
-            setValue('discountPercentage', res.discountType?.value);
-            setValue('minimumAmount', res.minimumAmount);
+            setValue('endTime', dayjs(res.data.expires_at).format('YYYY-MM-DD HH:mm'));
+            setValue('discountPercentage', res.data.amount);
+            setValue('minimumAmount', res.data.minimum_amount);
             setPublished(res.status === 'show' ? true : false);
             setDiscountType(
-              res.discountType?.type === 'percentage' ? true : false
+              res.data.calculation_type === 'percentage' ? true : false
             );
-            setImageUrl(res.logo);
+            // setImageUrl(res.logo);
           }
         } catch (err) {
           notifyError(err ? err?.response?.data?.message : err.message);

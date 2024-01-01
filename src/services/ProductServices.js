@@ -5,23 +5,27 @@ const ProductServices = {
     const searchCategory = category !== null ? category : "";
     const searchTitle = title !== null ? title : "";
     const searchPrice = price !== null ? price : "";
-
-    return requests.get(
-      `/products?page=${page}&limit=${limit}&category=${searchCategory}&title=${searchTitle}&price=${searchPrice}`
+      let body ={
+        category:searchCategory,
+        title:searchTitle,
+        price:searchPrice,
+      }
+    return requests.post(
+      `/product/list?page=${page}&pageSize=${limit}`,body
     );
   },
 
   getProductById: async (id) => {
-    return requests.post(`/products/${id}`);
+    return requests.get(`/product/${id}/data`);
   },
   addProduct: async (body) => {
-    return requests.post("/products/add", body);
+    return requests.post("/product/save", body);
   },
   addAllProducts: async (body) => {
     return requests.post("/products/all", body);
   },
   updateProduct: async (id, body) => {
-    return requests.patch(`/products/${id}`, body);
+    return requests.post("/product/save", body);
   },
   updateManyProducts: async (body) => {
     return requests.patch("products/update/many", body);
@@ -30,11 +34,11 @@ const ProductServices = {
     return requests.put(`/products/status/${id}`, body);
   },
 
-  deleteProduct: async (id) => {
-    return requests.delete(`/products/${id}`);
+  deleteProduct: async (id,body) => {
+    return requests.delete(`/product/${id}/delete`, body);
   },
   deleteManyProducts: async (body) => {
-    return requests.patch("/products/delete/many", body);
+    return requests.post("/product/multiple-delete", body);
   },
 };
 

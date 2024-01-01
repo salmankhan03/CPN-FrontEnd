@@ -13,6 +13,10 @@ const SettingServices = {
   updateGlobalSetting: async (body) => {
     return requests.put(`/setting/global/update`, body);
   },
+    // multidelete Media
+  removeMultiDeleteMedia: async (body) => {
+    return requests.post("/image/multiple-delete", body);
+  },
 };
 
 export default SettingServices;

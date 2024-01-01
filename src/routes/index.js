@@ -7,6 +7,7 @@ const ChildAttributes = lazy(() => import("../pages/ChildAttributes"));
 const Products = lazy(() => import("../pages/Products"));
 const ProductDetails = lazy(() => import("../pages/ProductDetails"));
 const Category = lazy(() => import("../pages/Category"));
+const Brand = lazy(() => import("../pages/Brand"));
 const ChildCategory = lazy(() => import("../pages/ChildCategory"));
 const Staff = lazy(() => import("../pages/Staff"));
 const Customers = lazy(() => import("../pages/Customers"));
@@ -56,6 +57,10 @@ const routes = [
   {
     path: "/categories",
     component: Category,
+  },
+  {
+    path: "/brands",
+    component: Brand,
   },
   {
     path: "/languages",

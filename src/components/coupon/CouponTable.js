@@ -70,29 +70,29 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
               <CheckBox
                 type="checkbox"
                 name={coupon?.title?.en}
-                id={coupon._id}
+                id={coupon.id}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(coupon._id)}
+                isChecked={isCheck?.includes(coupon.id)}
               />
             </TableCell>
 
             <TableCell>
               <div className="flex items-center">
-                {coupon?.logo ? (
-                  <Avatar
-                    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"
-                    src={coupon?.logo}
-                    alt="product"
-                  />
-                ) : (
-                  <Avatar
-                    src={`https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png`}
-                    alt="product"
-                  />
-                )}
+                {/*{coupon?.logo ? (*/}
+                {/*  <Avatar*/}
+                {/*    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"*/}
+                {/*    src={coupon?.logo}*/}
+                {/*    alt="product"*/}
+                {/*  />*/}
+                {/*) : (*/}
+                {/*  <Avatar*/}
+                {/*    src={`https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png`}*/}
+                {/*    alt="product"*/}
+                {/*  />*/}
+                {/*)}*/}
                 <div>
                   <span className="text-sm">
-                    {showingTranslateValue(coupon?.title, lang)}
+                    {showingTranslateValue(coupon?.productType, lang)}
                   </span>{" "}
                 </div>
               </div>{" "}
@@ -100,17 +100,17 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
 
             <TableCell>
               {" "}
-              <span className="text-sm"> {coupon.couponCode}</span>{" "}
+              <span className="text-sm"> {coupon.code}</span>{" "}
             </TableCell>
 
-            {coupon?.discountType?.type ? (
+            {coupon?.calculation_type ? (
               <TableCell>
                 {" "}
                 <span className="text-sm font-semibold">
                   {" "}
-                  {coupon?.discountType?.type === "percentage"
-                    ? `${coupon?.discountType?.value}%`
-                    : `${currency}${coupon?.discountType?.value}`}
+                  {coupon?.calculation_type === "percentage"
+                    ? `${coupon?.amount}%`
+                    : `${currency}${coupon?.amount}`}
                 </span>{" "}
               </TableCell>
             ) : (
@@ -120,15 +120,15 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
               </TableCell>
             )}
 
-            <TableCell className="text-center">
-              <ShowHideButton id={coupon._id} status={coupon.status} />
-            </TableCell>
+            {/*<TableCell className="text-center">*/}
+            {/*  <ShowHideButton id={coupon._id} status={coupon.status} />*/}
+            {/*</TableCell>*/}
 
             <TableCell>
               <span className="text-sm">
                 {/* {dayjs(coupon.startTime).format("MMM D, YYYY")} */}
                 {showDateFormat(
-                  coupon.startTime,
+                  coupon.created_at,
                   globalSetting?.default_date_format
                 )}
               </span>
@@ -138,14 +138,14 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
               <span className="text-sm">
                 {/* {dayjs(coupon.endTime).format("MMM D, YYYY")} */}
                 {showDateFormat(
-                  coupon.endTime,
+                  coupon.expires_at,
                   globalSetting?.default_date_format
                 )}
               </span>
             </TableCell>
 
             <TableCell className="align-middle ">
-              {dayjs().isAfter(dayjs(coupon.endTime)) ? (
+              {dayjs().isAfter(dayjs(coupon.expires_at)) ? (
                 <Badge type="danger">Expired</Badge>
               ) : (
                 <Badge type="success">Active</Badge>
@@ -154,7 +154,7 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
 
             <TableCell>
               <EditDeleteButton
-                id={coupon?._id}
+                id={coupon?.id}
                 isCheck={isCheck}
                 handleUpdate={handleUpdate}
                 handleModalOpen={handleModalOpen}

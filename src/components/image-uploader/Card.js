@@ -67,7 +67,7 @@ const Card = ({ id, image, index, moveCard, handleRemoveImage }) => {
       <div className="relative">
         <img
           className="inline-flex border rounded-md border-gray-100 dark:border-gray-600 w-24 max-h-24 p-2 m-2"
-          src={image}
+          src={image?.preview}
           alt="product"
         />
         {index === 0 && (

@@ -17,7 +17,7 @@ import CategoryServices from "services/CategoryServices";
 import { notifyError } from "utils/toast";
 import { showingTranslateValue } from "utils/translate";
 
-const CategoryDrawer = ({ id, data, lang }) => {
+const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
   const { t } = useTranslation();
 
   const {
@@ -62,20 +62,21 @@ const CategoryDrawer = ({ id, data, lang }) => {
 
   const renderCategories = (categories) => {
     let myCategories = [];
+    if(categories){
     for (let category of categories) {
-      myCategories.push({
-        title: showingTranslateValue(category.name, lang),
-        key: category._id,
+     myCategories.push({
+       title: category.name, 
+        key: category.id,
         children:
-          category.children.length > 0 && renderCategories(category.children),
+          category.children?.length > 0 && renderCategories(category.children),
       });
     }
-
-    return myCategories;
+  }
+      return myCategories;
   };
 
   const findObject = (obj, target) => {
-    return obj._id === target
+    return obj.id === target
       ? obj
       : obj?.children?.reduce(
           (acc, obj) => acc ?? findObject(obj, target),
@@ -83,6 +84,20 @@ const CategoryDrawer = ({ id, data, lang }) => {
         );
   };
 
+  const findObjectById = (data, targetId) => {
+    for (const item of data) {
+        if (item.id === targetId) {
+            return item;
+        }
+        if (item.children) {
+            const nestedResult = findObjectById(item.children, targetId);
+            if (nestedResult) {
+                return nestedResult;
+            }
+        }
+    }
+    return null;
+};
   const handleSelect = async (key) => {
     // console.log('key', key, 'id', id);
     if (key === undefined) return;
@@ -91,25 +106,25 @@ const CategoryDrawer = ({ id, data, lang }) => {
 
       if (id === key) {
         return notifyError("This can't be select as a parent category!");
-      } else if (id === parentCategoryId.parentId) {
+      } else if (id === parentCategoryId.parent_id) {
         return notifyError("This can't be select as a parent category!");
       } else {
         if (key === undefined) return;
         setChecked(key);
 
-        const obj = data[0];
+        const obj = findObjectById(categoriesList, key);;
         const result = findObject(obj, key);
 
-        setSelectCategoryName(showingTranslateValue(result?.name, lang));
+        setSelectCategoryName(result?.name);
       }
     } else {
       if (key === undefined) return;
-      setChecked(key);
+      setChecked(key);     
 
-      const obj = data[0];
-      const result = findObject(obj, key);
+      const foundObject = findObjectById(categoriesList, key);
+      const result = findObject(foundObject, key);
 
-      setSelectCategoryName(showingTranslateValue(result?.name, lang));
+      setSelectCategoryName(result?.name);
     }
   };
 
@@ -174,7 +189,7 @@ const CategoryDrawer = ({ id, data, lang }) => {
                     required: false,
                   })}
                   name="parent"
-                  value={selectCategoryName ? selectCategoryName : "Home"}
+                  value={selectCategoryName ? selectCategoryName : ""}
                   placeholder={t("ParentCategory")}
                   type="text"
                   className="border h-12 w-full text-sm focus:outline-none block bg-gray-100 dark:bg-white border-transparent focus:bg-white"
@@ -184,7 +199,7 @@ const CategoryDrawer = ({ id, data, lang }) => {
                   <style dangerouslySetInnerHTML={{ __html: STYLE }} />
                   <Tree
                     expandAction="click"
-                    treeData={renderCategories(data)}
+                    treeData={renderCategories(categoriesList)}
                     selectedKeys={[checked]}
                     onSelect={(v) => handleSelect(v[0])}
                     motion={motion}

@@ -12,6 +12,7 @@ const ParentCategory = ({
   lang,
 }) => {
   const { data, loading } = useAsync(CategoryServices?.getAllCategory);
+  const { data: getAllCategories } = useAsync(CategoryServices.getAllCategories);
   
 
   const STYLE = `
@@ -37,20 +38,21 @@ const ParentCategory = ({
 
   const renderCategories = (categories) => {
     let myCategories = [];
+    if(categories){
     for (let category of categories) {
-      myCategories.push({
-        title: showingTranslateValue(category.name, lang),
-        key: category._id,
+     myCategories.push({
+       title: category.name, 
+        key: category.id,
         children:
-          category?.children?.length > 0 && renderCategories(category.children),
+          category.children?.length > 0 && renderCategories(category.children),
       });
     }
-
-    return myCategories;
+  }
+      return myCategories;
   };
 
   const findObject = (obj, target) => {
-    return obj._id === target
+    return obj.id === target
       ? obj
       : obj?.children?.reduce(
           (acc, obj) => acc ?? findObject(obj, target),
@@ -64,14 +66,28 @@ const ParentCategory = ({
     //   if (x) return x;
     // }
   };
-
+  const findObjectById = (data, targetId) => {
+    for (const item of data) {
+        if (item.id === targetId) {
+            return item;
+        }
+        if (item.children) {
+            const nestedResult = findObjectById(item.children, targetId);
+            if (nestedResult) {
+                return nestedResult;
+            }
+        }
+    }
+    return null;
+};
   const handleSelect = (key) => {
-    const obj = data[0];
+    const obj = findObjectById(getAllCategories?.tree?.data, key);
+   
     const result = findObject(obj, key);
 
     if (result !== undefined) {
       const getCategory = selectedCategory.filter(
-        (value) => value._id === result._id
+        (value) => value.id === result.id
       );
 
       if (getCategory.length !== 0) {
@@ -81,14 +97,14 @@ const ParentCategory = ({
       setSelectedCategory((pre) => [
         ...pre,
         {
-          _id: result?._id,
-          name: showingTranslateValue(result?.name, lang),
+          id: result?.id,
+          name: result?.name,
         },
       ]);
       setDefaultCategory(() => [
         {
-          _id: result?._id,
-          name: showingTranslateValue(result?.name, lang),
+          id: result?._id,
+          name: result?.name,
         },
       ]);
     }
@@ -121,7 +137,7 @@ const ParentCategory = ({
           <style dangerouslySetInnerHTML={{ __html: STYLE }} />
           <Tree
             expandAction="click"
-            treeData={renderCategories(data)}
+            treeData={renderCategories(getAllCategories?.tree?.data)}
             // defaultCheckedKeys={id}
             onSelect={(v) => handleSelect(v[0])}
             motion={motion}

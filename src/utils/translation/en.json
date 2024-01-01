@@ -181,9 +181,11 @@
   "CategorySearchplaceholder": "Search by category type",
   "AddCategoryBtn": "Add Category",
   "AddCategory": "Add Category",
+  "AddBrand":"Add brand",
   "CatTbName": "Name",
   "CatTbDescription": "Description",
   "SearchCategory": "Search by Category name",
+  "SearchBrand": "Search by Brand name",
   "ParentsOnly": "Parents Only",
   "All": " All",
   "Categoryformenu": "Category for menu",
@@ -199,6 +201,8 @@
   "UpdateCategory": "Update Category",
   "UpdateCategoryDescription": "Updated your Product category and necessary information from here",
   "AddCategoryTitle": "Add Category",
+  "UpdateBrand":"Update brand",
+  "UpdateBrandDescription": "Updated your Product Brand and necessary information from here",
   "AddCategoryDescription": "Add your Product category and necessary information from here",
   "CategoryIcon": "Category Image",
   "ChildCategoryPlaceholder": "Child category  (Write then press enter to add new child category )",
@@ -883,5 +887,8 @@
   "Export": "Export",
   "Action": "Action",
   "OrginalPrice": "OrginalPrice",
-  "SR": "SR"
+  "SR": "SR",
+  "Brandtitle":"Brand title",
+  "AddBrandDescription": "Add your Product Brand and necessary information from here"
+
 }

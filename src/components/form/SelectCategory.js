@@ -21,9 +21,9 @@ const SelectCategory = ({ setCategory, lang }) => {
         <option value="All" defaultValue hidden>
           {t("Category")}
         </option>
-        {data?.map((cat) => (
-          <option key={cat._id} value={cat._id}>
-            {showingTranslateValue(cat?.name, lang)}
+        {data?.tree?.data?.map((cat) => (
+          <option key={cat.id} value={cat?.id}>
+            {cat?.name}
           </option>
         ))}
       </Select>

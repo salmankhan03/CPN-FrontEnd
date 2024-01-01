@@ -37,14 +37,14 @@ const ChildCategory = () => {
 
   const { toggleDrawer, lang } = useContext(SidebarContext);
   const { handleDeleteMany, allId, handleUpdateMany } = useToggleDrawer();
-  const { data, loading } = useAsync(CategoryServices.getAllCategory);
-
+  const { data, loading } = useAsync(CategoryServices.getAllCategories);
+  console.log(data)
   const { t } = useTranslation();
 
   useEffect(() => {
     const getAncestors = (target, children, ancestors = []) => {
       for (let node of children) {
-        if (node._id === target) {
+        if (node.id === target) {
           return ancestors.concat(node);
         }
         const found = getAncestors(
@@ -59,28 +59,45 @@ const ChildCategory = () => {
       return undefined;
     };
 
-    const findChildArray = (obj, target) => {
-      // console.log('obj', obj);
-      return obj._id === target
-        ? obj
-        : obj?.children?.reduce(
-            (acc, obj) => acc ?? findChildArray(obj, target),
-            undefined
-          );
-    };
-
+    // const findChildArray = (obj, target) => {
+    //   // console.log('obj', obj);
+    //   return obj.id === target
+    //     ? obj
+    //     : obj?.children?.reduce(
+    //         (acc, obj) => acc ?? findChildArray(obj, target),
+    //         undefined
+    //       );
+    // };
+    const findNestedData = (data, targetId) => {
+      for (let i = 0; i < data.length; i++) {
+          const current = data[i];
+  
+          if (current.id === targetId) {
+              return current; // Found the target ID
+          }
+  
+          if (current.children && current.children.length > 0) {
+              const nestedResult = findNestedData(current.children, targetId);
+              if (nestedResult) {
+                  return nestedResult; // Found in the nested children
+              }
+          }
+      }
+  
+      return null; // ID not found in the current structure
+  }
     if (!loading) {
-      const result = findChildArray(data[0], id);
-      const res = getAncestors(id, data[0]?.children);
-
+      let newID = JSON.parse(id)
+      const result = findNestedData(data?.tree?.data, newID);
+      const res = getAncestors(id, result?.children);
+      console.log("res",res)
       if (result?.children?.length > 0) {
         setChildCategory(result?.children);
         setSelectObj(res);
       }
-      // console.log("result", result, "res", res);
+            // console.log("result", result, "res", res);
     }
   }, [id, loading, data, childCategory]);
-
   const {
     totalResults,
     resultsPerPage,
@@ -123,8 +140,8 @@ const ChildCategory = () => {
                 <FiChevronRight />{" "}
               </li>
               <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer text-blue-700 hover:text-green-500 font-semibold ">
-                <Link to={`/categories/${child._id}`}>
-                  {showingTranslateValue(child?.name, lang)}
+                <Link to={`/categories/${child.id}`}>
+                  {child?.name}
                 </Link>
               </li>
             </span>
@@ -198,14 +215,16 @@ const ChildCategory = () => {
             </TableHeader>
 
             <CategoryTable
-              categories={dataTable}
-              data={data}
+              categories={data?.tree?.data}
+              data={data?.tree?.data}
               lang={lang}
               isCheck={isCheck}
               setIsCheck={setIsCheck}
               useParamId={id}
-             
+              categoriesList={childCategory}
             />
+
+             
           </Table>
           <TableFooter>
             <Pagination

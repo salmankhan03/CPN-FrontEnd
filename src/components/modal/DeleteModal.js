@@ -19,6 +19,7 @@ import useToggleDrawer from "hooks/useToggleDrawer";
 import AttributeServices from "services/AttributeServices";
 import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
+import BrandServices from "services/BrandServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -33,9 +34,10 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
       setIsSubmitting(true);
       if (location.pathname === "/products") {
         if (ids) {
-          const res = await ProductServices.deleteManyProducts({
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await ProductServices.deleteManyProducts(apiRequestBody);
           setIsUpdate(true);
           notifySuccess(res.message);
           setIsCheck([]);
@@ -48,7 +50,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           notifySuccess(res.message);
           setServiceId();
           closeModal();
-          setIsSubmitting(false);
+          setIsSubmitting(false); 
         }
       }
 
@@ -72,13 +74,36 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           setIsSubmitting(false);
         }
       }
+      if (location.pathname === "/brands") {
+        if (ids) {
+          console.log("DELETE MANY BRANDS",ids)
 
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await BrandServices.deleteManyBrands(apiRequestBody);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setIsCheck([]);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        } else {
+          const res = await BrandServices.deleteBrands(id);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        }
+      }
       if (location.pathname === "/categories" || category) {
         if (ids) {
           //  console.log('delete modal categorices',ids)
-          const res = await CategoryServices.deleteManyCategory({
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await CategoryServices.deleteManyCategory(apiRequestBody);
           //  console.log('delete many category res',res)
           setIsUpdate(true);
           notifySuccess(res.message);

@@ -52,16 +52,16 @@ const CouponDrawer = ({ id }) => {
       <Scrollbars className="w-full md:w-7/12 lg:w-8/12 xl:w-8/12 relative dark:bg-gray-700 dark:text-gray-200">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="px-6 pt-8 flex-grow scrollbar-hide w-full max-h-full pb-40">
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={t("CouponBannerImage")} />
-              <div className="col-span-8 sm:col-span-4">
-                <Uploader
-                  imageUrl={imageUrl}
-                  setImageUrl={setImageUrl}
-                  folder="coupon"
-                />
-              </div>
-            </div>
+            {/*<div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">*/}
+            {/*  <LabelArea label={t("CouponBannerImage")} />*/}
+            {/*  <div className="col-span-8 sm:col-span-4">*/}
+            {/*    <Uploader*/}
+            {/*      imageUrl={imageUrl}*/}
+            {/*      setImageUrl={setImageUrl}*/}
+            {/*      folder="coupon"*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
 
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={t("CampaignName")} />
@@ -157,16 +157,16 @@ const CouponDrawer = ({ id }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={t("Published")} />
-              <div className="col-span-8 sm:col-span-4">
-                <SwitchToggle
-                  handleProcess={setPublished}
-                  processOption={published}
-                />
-                <Error errorName={errors.productType} />
-              </div>
-            </div>
+            {/*<div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">*/}
+            {/*  <LabelArea label={t("Published")} />*/}
+            {/*  <div className="col-span-8 sm:col-span-4">*/}
+            {/*    <SwitchToggle*/}
+            {/*      handleProcess={setPublished}*/}
+            {/*      processOption={published}*/}
+            {/*    />*/}
+            {/*    <Error errorName={errors.productType} />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
           </div>
 
           <DrawerButton id={id} title="Coupon" isSubmitting={isSubmitting} />

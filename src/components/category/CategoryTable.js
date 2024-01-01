@@ -20,14 +20,15 @@ const CategoryTable = ({
   setIsCheck,
   useParamId,
   showChild,
+  categoriesList
 }) => {
   const { title, serviceId, handleModalOpen, handleUpdate } = useToggleDrawer();
 
   const handleClick = (e) => {
     const { id, checked } = e.target;
-    setIsCheck([...isCheck, id]);
+    setIsCheck([...isCheck, JSON.parse(id)]);
     if (!checked) {
-      setIsCheck(isCheck.filter((item) => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== JSON.parse(id)));
     }
   };
 
@@ -38,24 +39,25 @@ const CategoryTable = ({
       )}
 
       <MainDrawer>
-        <CategoryDrawer id={serviceId} data={data} lang={lang} />
+        <CategoryDrawer id={serviceId} data={data?.list} categoriesList={data} lang={lang} />
       </MainDrawer>
 
       <TableBody>
-        {categories?.map((category) => (
-          <TableRow key={category._id}>
+        {categoriesList?.map((category) =>(
+          <TableRow key={category.id}>
             <TableCell>
               <CheckBox
                 type="checkbox"
                 name="category"
-                id={category._id}
+                id={category?.id}
                 handleClick={handleClick}
-                isChecked={isCheck?.includes(category._id)}
+                isChecked={isCheck?.includes(category?.id)}
               />
             </TableCell>
 
             <TableCell className="font-semibold uppercase text-xs">
-              {category?._id?.substring(20, 24)}
+            {category?.id}
+              {/* {category?.id?.substring(20, 24)} */}
             </TableCell>
             <TableCell>
               {category?.icon ? (
@@ -72,14 +74,14 @@ const CategoryTable = ({
                 />
               )}
             </TableCell>
-
+            
             <TableCell className="font-medium text-sm ">
-              {category?.children.length > 0 ? (
+              {category?.children?.length > 0 ? (
                 <Link
-                  to={`/categories/${category?._id}`}
+                  to={`/categories/${category?.id}`}
                   className="text-blue-700"
                 >
-                  {showingTranslateValue(category?.name, lang)}
+                  {category?.name}
 
                   <>
                     {showChild && (
@@ -87,9 +89,9 @@ const CategoryTable = ({
                         {" "}
                         <div className="pl-2 ">
                           {category?.children?.map((child) => (
-                            <div key={child._id}>
+                            <div key={child.id}>
                               <Link
-                                to={`/categories/${child?._id}`}
+                                to={`/categories/${child?.id}`}
                                 className="text-blue-700"
                               >
                                 <div className="flex text-xs items-center  text-blue-800">
@@ -97,7 +99,7 @@ const CategoryTable = ({
                                     <IoRemoveSharp />
                                   </span>
                                   <span className="text-gray-500">
-                                    {showingTranslateValue(child.name, lang)}
+                                    {child.name}
                                   </span>
                                 </div>
                               </Link>
@@ -109,23 +111,24 @@ const CategoryTable = ({
                   </>
                 </Link>
               ) : (
-                <span>{showingTranslateValue(category?.name, lang)}</span>
+                <span>{category?.name}</span>
               )}
             </TableCell>
             <TableCell className="text-sm">
-              {showingTranslateValue(category?.description, lang)}
+            {category?.description}
             </TableCell>
 
             <TableCell className="text-center">
               <ShowHideButton
-                id={category._id}
+                id={category?.id}
                 category
-                status={category.status}
+                status={category?.status}
+                data={category}
               />
             </TableCell>
             <TableCell>
               <EditDeleteButton
-                id={category?._id}
+                id={category?.id}
                 parent={category}
                 isCheck={isCheck}
                 children={category?.children}

@@ -25,6 +25,10 @@ const OrderServices = {
     );
   },
 
+  getAllOrderList: async ({ page, limit }) => {
+    return requests.post(
+      `/order/list?page=${page}&pageSize=${limit}`);
+  },
   getAllOrdersTwo: async ({ invoice, body, headers }) => {
     const searchInvoice = invoice !== null ? invoice : "";
     return requests.get(`/orders/all?invoice=${searchInvoice}`, body, headers);
@@ -45,12 +49,12 @@ const OrderServices = {
     return requests.get(`/orders/customer/${id}`, body);
   },
 
-  getOrderById: async (id, body) => {
-    return requests.get(`/orders/${id}`, body);
+  getOrderById: async (id) => {
+    return requests.get(`/order/${id}/data`);
   },
 
-  updateOrder: async (id, body, headers) => {
-    return requests.put(`/orders/${id}`, body, headers);
+  updateOrder: async (body) => {
+    return requests.post(`/order/update-status`, body);
   },
 
   deleteOrder: async (id) => {

@@ -33,10 +33,13 @@ import DeleteModal from "components/modal/DeleteModal";
 import BulkActionDrawer from "components/drawer/BulkActionDrawer";
 import TableLoading from "components/preloader/TableLoading";
 import SettingServices from "services/SettingServices";
+import { useEffect } from "react";
 
 const Products = () => {
   const { title, allId, serviceId, handleDeleteMany, handleUpdateMany } =
     useToggleDrawer();
+  const [getAllProduct, setGetAllProduct] = useState();
+  const [sortOrder, setSortOrder] = useState('default');
 
   const { t } = useTranslation();
   const {
@@ -64,6 +67,9 @@ const Products = () => {
     })
   );
 
+  useEffect(()=>{
+    setGetAllProduct(data)
+  },[data])
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const currency = globalSetting?.default_currency || "$";
   // console.log("product page", data);
@@ -74,7 +80,7 @@ const Products = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data?.products.map((li) => li._id));
+    setIsCheck(data?.list?.data.map((li) => li.id));
     if (isCheckAll) {
       setIsCheck([]);
     }
@@ -89,6 +95,21 @@ const Products = () => {
     handleUploadMultiple,
     handleRemoveSelectFile,
   } = useProductFilter(data?.products);
+
+  const handleNameSorting = () => {
+    let sortedData;
+    if (sortOrder === 'default') {
+      sortedData =  [...data?.list?.data].sort((a, b) => a.name.localeCompare(b.name));
+      setSortOrder('AtoZ');
+    } else if (sortOrder === 'AtoZ') {
+      sortedData =  [...data?.list?.data].sort((a, b) => b.name.localeCompare(a.name));
+      setSortOrder('ZtoA');
+    } else {
+      sortedData = data?.list?.data;
+      setSortOrder('default');
+    }
+    setGetAllProduct((prev) => ({ ...prev, list: { ...prev.list, data: sortedData } }));
+  };
 
   return (
     <>
@@ -224,7 +245,7 @@ const Products = () => {
                     handleClick={handleSelectAll}
                   />
                 </TableCell>
-                <TableCell>{t("ProductNameTbl")}</TableCell>
+                <TableCell onClick={handleNameSorting}>{t("ProductNameTbl")}</TableCell>
                 <TableCell>{t("CategoryTbl")}</TableCell>
                 <TableCell>{t("PriceTbl")}</TableCell>
                 <TableCell>Sale Price</TableCell>
@@ -240,14 +261,14 @@ const Products = () => {
             <ProductTable
               lang={lang}
               isCheck={isCheck}
-              products={data?.products}
+              products={getAllProduct?.list?.data}
               setIsCheck={setIsCheck}
               currency={currency}
             />
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={data?.totalDoc}
+              totalResults={getAllProduct?.list?.last_page}
               resultsPerPage={limitData}
               onChange={handleChangePage}
               label="Product Page Navigation"

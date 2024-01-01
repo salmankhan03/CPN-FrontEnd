@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { showDateTimeFormat } from "utils/dateFormate";
+import moment from 'moment';
 
 const OrderTable = ({ orders, currency, globalSetting }) => {
   // console.log('globalSetting',globalSetting)
@@ -20,22 +21,25 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
           <TableRow key={i + 1}>
             <TableCell>
               <span className="font-semibold uppercase text-xs">
-                {order?.invoice}
-              </span>
+                {order?.id}
+                {/* {order?.invoice} */}
+                </span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm">
-                {showDateTimeFormat(
+                {moment(order?.created_at).format('DD/MM/YYYY')}
+
+            {/* {showDateTimeFormat(
                   order?.updatedDate,
                   globalSetting?.default_date_format,
                   "h:mm A"
-                )}
-              </span>
+                )}       */}       
+                </span> 
             </TableCell>
 
             <TableCell className="text-xs">
-              <span className="text-sm">{order?.user_info?.name}</span>{" "}
+              <span className="text-sm">{order?.billign_address?.first_name}</span>{" "}
             </TableCell>
 
             <TableCell>
@@ -47,7 +51,7 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             <TableCell>
               <span className="text-sm font-semibold">
                 {currency}
-                {parseFloat(order?.total)?.toFixed(2)}
+                {parseFloat(order?.total_amount)?.toFixed(2)}
               </span>
             </TableCell>
 
@@ -56,15 +60,15 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             </TableCell>
 
             <TableCell className="text-center">
-              <SelectStatus id={order._id} order={order} />
+              <SelectStatus id={order.id} order={order} />
             </TableCell>
 
             <TableCell className="text-right flex justify-end">
               <div className="flex justify-between items-center">
-                <PrintReceipt orderId={order._id} />
+                <PrintReceipt orderId={order.id} />
 
                 <span className="p-2 cursor-pointer text-gray-400 hover:text-green-600">
-                  <Link to={`/order/${order._id}`}>
+                  <Link to={`/order/${order.id}`}>
                     <Tooltip
                       id="view"
                       Icon={FiZoomIn}
