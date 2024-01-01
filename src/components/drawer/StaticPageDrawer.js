@@ -9,28 +9,24 @@ import useStaticPageSubmit from "hooks/useStaticPageSubmit";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import { useTranslation } from "react-i18next";
-// import { createReactEditorJS } from 'react-editor-js'
-// import CheckList from '@editorjs/checklist'
-//internal import
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
+
 
 const StaticPageDrawer = ({ id, data, brandList, lang }) => {
-  // const ReactEditorJS = createReactEditorJS()
-
-  // const initialBlocks = [
-  //   {
-  //     type: 'paragraph',
-  //     data: {
-  //       text: 'Hello, this is your initial content!',
-  //     },
-  //   },
-  // ];
 
   const { t } = useTranslation();
 
   const {
     checked,
     register,
+    defaultContent, 
+    setDefaultContent,
+    templatesContent,
+    setTemplatesContent,
     onSubmit,
+    handleEditorChange,
     handleSubmit,
     errors,
     published,
@@ -39,6 +35,8 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
     handleSelectLanguage,
     isSubmitting,
   } = useStaticPageSubmit(id, data);
+
+  
 
   const STYLE = `
   .rc-tree-child-tree {
@@ -90,30 +88,44 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
               <div className="col-span-8 sm:col-span-4">
                 <InputArea
                   register={register}
-                  label="Brand title"
+                  label="Templates title"
                   name="name"
                   type="text"
-                  placeholder={t("Brandtitle")}
+                  placeholder={"templates Name"}
                 />
                 <Error errorName={errors.name} />
               </div>
             </div>
 
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={t("Published")} />
+              <LabelArea label={"Templates Content"} />
               <div className="col-span-8 sm:col-span-4">
-                {/* <SwitchToggle
-                  handleProcess={setPublished}
-                  processOption={published}
-                /> */}
-                {/* <ReactEditorJS
-                  tools={{ checkList: CheckList }} /> */}
-                
+                <CKEditor
+                  editor={ClassicEditor}
+                  
+
+                  data={defaultContent ? atob(defaultContent) : "<p> HELLO </p>"}
+                  onReady={editor => {
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();                    
+                    handleEditorChange(data);
+                    // console.log('Content Updated:', data);
+                    // Call the parent component's onChange function with the updated data
+                  }}
+                  onBlur={(event, editor) => {
+                    // console.log('Blur.', editor);
+                  }}
+                  onFocus={(event, editor) => {
+                    // console.log('Focus.', editor);
+                  }}
+                />
+
               </div>
             </div>
           </div>
 
-          <DrawerButton id={id} title="Brand" isSubmitting={isSubmitting} />
+          <DrawerButton id={id} title="Templates" isSubmitting={isSubmitting} />
         </form>
       </Scrollbars>
     </>

@@ -6,16 +6,16 @@ const StaticPageServices = {
   getTemplatesById: async (id) => {
     return requests.get(`/temp/template/${id}/data`);
   },
-//   addUpdateBrand: async (body) => {
-//     return requests.post("/product-brand/save", body);
-//   },
+  addUpdateTemplates: async (body) => {
+    return requests.post("/temp/template/save", body);
+  },
   
-//   deleteBrands: async (id,body) => {
-//     return requests.delete(`/product-brand/${id}/delete`, body);
-//   },
-//   deleteManyBrands: async (body) => {
-//     return requests.post("/product-brand/multiple-delete", body);
-//   },
+  deleteTemplates: async (id,body) => {
+    return requests.delete(`/temp/template/${id}/delete`, body);
+  },
+  deleteManyTemplates: async (body) => {
+    return requests.post("/temp/template/multiple-delete", body);
+  },
 
 };
 export default StaticPageServices;

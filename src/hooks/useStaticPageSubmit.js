@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SidebarContext } from "context/SidebarContext";
 import { notifyError, notifySuccess } from "utils/toast";
-import BrandServices from "services/BrandServices";
 import StaticPageServices from "services/StaticPageServices";
 
 const useStaticPageSubmit = (id, data) => {
@@ -12,6 +11,8 @@ const useStaticPageSubmit = (id, data) => {
   const [checked, setChecked] = useState("");
   const [language, setLanguage] = useState(lang);
   const [published, setPublished] = useState(true);
+  const [templatesContent, setTemplatesContent] = useState();
+  const [defaultContent, setDefaultContent] = useState()
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
@@ -27,23 +28,26 @@ const useStaticPageSubmit = (id, data) => {
 
   const onSubmit = async ({ name, description }) => {
     try {
+      // console.log(atob(templatesContent))
+      // console.log(atob(defaultContent))
       setIsSubmitting(true);
-      const brandData = {
+      var encodedString = btoa(templatesContent);
+
+      const templatesData = {
         id: id ? id: '',
         name:name,
-        is_active: published ? 1 : 0
+        template: encodedString
       };
 
-
       if (id) {
-        const res = await StaticPageServices.addUpdateBrand(brandData);
+        const res = await StaticPageServices.addUpdateTemplates(templatesData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
         closeDrawer();
         reset();
       } else {
-        const res = await StaticPageServices.addUpdateBrand(brandData);
+        const res = await StaticPageServices.addUpdateTemplates(templatesData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
@@ -55,6 +59,11 @@ const useStaticPageSubmit = (id, data) => {
       closeDrawer();
     }
   };
+
+  const handleEditorChange = (data) => {
+    var encodedString = btoa(data);
+    setTemplatesContent(encodedString);
+};
 
   const handleSelectLanguage = (lang) => {
     setLanguage(lang);
@@ -84,9 +93,13 @@ const useStaticPageSubmit = (id, data) => {
           const res = await StaticPageServices.getTemplatesById(id);
           console.log(res)
           if (res) {
+            console.log(res.data.template)
+            var decodeString = atob(res?.data?.template)
+            console.log("decodeString",decodeString);
             setResData(res.data);
             setValue("name", res.data.name);//[language ? language : "en"]
-            setPublished(res.data.is_active === 1 ? true : false);
+            setDefaultContent(decodeString)
+            // setTemplatesContent(decodeString)
           }
         } catch (err) {
           notifyError(err ? err.response.data.message : err.message);
@@ -97,8 +110,13 @@ const useStaticPageSubmit = (id, data) => {
 
   return {
     register,
+    defaultContent, 
+    setDefaultContent,
+    templatesContent,
+    setTemplatesContent,
     handleSubmit,
     onSubmit,
+    handleEditorChange,
     errors,
     published,
     setPublished,

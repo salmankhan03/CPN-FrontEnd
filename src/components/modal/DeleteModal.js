@@ -20,6 +20,7 @@ import AttributeServices from "services/AttributeServices";
 import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import BrandServices from "services/BrandServices";
+import StaticPageServices from "services/StaticPageServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -31,6 +32,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const handleDelete = async () => {
     // return notifyError("CRUD operation is disabled for this option!");
     try {
+      console.log(location.pathname)
       setIsSubmitting(true);
       if (location.pathname === "/products") {
         if (ids) {
@@ -90,6 +92,28 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           setIsSubmitting(false);
         } else {
           const res = await BrandServices.deleteBrands(id);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        }
+      }
+      if (location.pathname === "/staticPage") {
+        if (ids) {
+
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await StaticPageServices.deleteManyTemplates(apiRequestBody);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setIsCheck([]);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        } else {
+          const res = await StaticPageServices.deleteTemplates(id);
           setIsUpdate(true);
           notifySuccess(res.message);
           setServiceId();
