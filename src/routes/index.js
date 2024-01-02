@@ -22,6 +22,8 @@ const EditProfile = lazy(() => import("../pages/EditProfile"));
 const Languages = lazy(() => import("../pages/Languages"));
 const Currencies = lazy(() => import("../pages/Currencies"));
 const Setting = lazy(() => import("../pages/Setting"));
+const StaticPage = lazy(() => import("../pages/StaticPage"));
+
 /*
 //  * ⚠ These are internal routes!
 //  * They will be rendered inside the app, using the default `containers/Layout`.
@@ -100,6 +102,7 @@ const routes = [
     component: Coupons,
   },
   { path: "/settings", component: Setting },
+  { path: "/staticPage", component: StaticPage },
   {
     path: "/404",
     component: Page404,
