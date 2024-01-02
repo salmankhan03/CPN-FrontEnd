@@ -4,8 +4,10 @@
   "description": "this is ecommerce-admin built with react.js and tailwindcss",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-basic-styles": "^40.2.0",
     "@ckeditor/ckeditor5-build-classic": "^40.2.0",
     "@ckeditor/ckeditor5-react": "^6.2.0",
+    "@ckeditor/ckeditor5-upload": "^40.2.0",
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.9.2",
     "@headlessui/react": "^1.4.1",

@@ -101,23 +101,40 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
               <LabelArea label={"Templates Content"} />
               <div className="col-span-8 sm:col-span-4">
                 <CKEditor
+                  type=""
+                  // name={name}
                   editor={ClassicEditor}
+                  
+                  config={{
+                    ckfinder: {
+                      uploadUrl: "https://backend.kingsmankids.com/api/temp/template/image-upload",
+                    },
+                    image: {
+                      toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
+                      upload: { types: ['jpeg', 'png','pdf', 'docx'] },
+                    },              
+                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList',  'insertTable',
+                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo' ,'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                      heading: {
+                        options: [
+                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+
+
+                        ]
+                    }
+                  }}
                   
 
                   data={defaultContent ? atob(defaultContent) : "<p> HELLO </p>"}
-                  onReady={editor => {
-                  }}
                   onChange={(event, editor) => {
-                    const data = editor.getData();                    
+                    const data = editor.getData();
                     handleEditorChange(data);
-                    // console.log('Content Updated:', data);
-                    // Call the parent component's onChange function with the updated data
-                  }}
-                  onBlur={(event, editor) => {
-                    // console.log('Blur.', editor);
-                  }}
-                  onFocus={(event, editor) => {
-                    // console.log('Focus.', editor);
                   }}
                 />
 
