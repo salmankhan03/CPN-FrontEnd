@@ -108,15 +108,18 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
               <div className="col-span-8 sm:col-span-4">
                 <CKEditor
                   type=""
-                  // name={name}
                   editor={ClassicEditor}
                   config={{
                     extraPlugins: [CustomUploadAdapterPlugin],
-                    image: {
-                      toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
-                      upload: { types: ['jpeg', 'png','pdf', 'docx'] },
-                    },              
-                    toolbar: ['heading', '|','bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable',
+                    // plugins:[Image],
+                    // image: {
+                    //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
+                    //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
+                    // },              
+                    toolbar: ['heading', '|','bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload',  'imageStyle:full',
+                    'imageStyle:alignLeft',
+                    'imageStyle:alignCenter',
+                    'imageStyle:alignRight','insertTable',
                       'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo' ,'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
                       heading: {
                         options: [
@@ -128,9 +131,8 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
                             { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
                             { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
                         ]
-                    }
+                    },
                   }}
-                  
 
                   data={defaultContent ? atob(defaultContent) : "<p> HELLO </p>"}
                   onChange={(event, editor) => {
