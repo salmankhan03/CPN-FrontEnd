@@ -11,6 +11,7 @@ import Scrollbars from "react-custom-scrollbars-2";
 import { useTranslation } from "react-i18next";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import UploadAdapter from "services/UploadAdapter";
 
 
 
@@ -60,6 +61,11 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
   };
 
 
+  function CustomUploadAdapterPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      return new UploadAdapter(loader);
+    };
+  }
   return (
     <>
       <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
@@ -104,16 +110,13 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
                   type=""
                   // name={name}
                   editor={ClassicEditor}
-                  
                   config={{
-                    ckfinder: {
-                      uploadUrl: "https://backend.kingsmankids.com/api/temp/template/image-upload",
-                    },
+                    extraPlugins: [CustomUploadAdapterPlugin],
                     image: {
                       toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
                       upload: { types: ['jpeg', 'png','pdf', 'docx'] },
                     },              
-                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList',  'insertTable',
+                    toolbar: ['heading', '|','bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable',
                       'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo' ,'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
                       heading: {
                         options: [
@@ -124,8 +127,6 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
                             { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
                             { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
                             { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-
-
                         ]
                     }
                   }}
@@ -137,7 +138,6 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
                     handleEditorChange(data);
                   }}
                 />
-
               </div>
             </div>
           </div>
