@@ -127,7 +127,7 @@ const Orders = () => {
         <CustomUpdateModal
           id={id}
           status={updatedStatus}
-          title={"Update Modal"}
+          title={updatedStatus}
           handleConfirmUpdate={isUpdateModalOpen}
           closeModal={closeModalFunc}
         />

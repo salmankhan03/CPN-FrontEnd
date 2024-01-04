@@ -45,10 +45,12 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal }
         <Modal isOpen={isConfirmOpen} onClose={() => setConfirmOpen(false)}>
           <ModalBody className="text-center custom-modal px-8 pt-6 pb-4">
             <span className="flex justify-center text-3xl mb-6 text-red-500">
-              <FiTrash2 />
+              {/* <FiTrash2 /> */}
             </span>
             <h2 className="text-xl font-medium mb-1">
-              Are You Sure! Want to Update <span className="text-red-500">{title}</span> Record?
+              Are You Sure! Want to Update  Record?
+
+              {/* Are You Sure! Want to Update <span className="text-red-500">{""}</span> Record? */}
             </h2>
             <p>
               Do you really want to update this record? You can't undo this action!
