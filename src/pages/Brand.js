@@ -198,7 +198,7 @@ const Brand = () => {
                     </TableContainer>
                 </>
             ) : (
-                <NotFound title="Sorry, There are no categories right now." />
+                <NotFound title="Sorry, There are no Brands right now." />
             )}
 
         </>
