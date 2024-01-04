@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { showDateTimeFormat } from "utils/dateFormate";
 import moment from 'moment';
 
-const OrderTable = ({ orders, currency, globalSetting }) => {
+const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => {
   // console.log('globalSetting',globalSetting)
   const { t } = useTranslation();
   // console.log('orders',orders)
@@ -60,7 +60,7 @@ const OrderTable = ({ orders, currency, globalSetting }) => {
             </TableCell>
 
             <TableCell className="text-center">
-              <SelectStatus id={order.id} order={order} />
+              <SelectStatus handleUpdateStatus={handleUpdateStatus} id={order.id} order={order} />
             </TableCell>
 
             <TableCell className="text-right flex justify-end">

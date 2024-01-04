@@ -18,11 +18,24 @@ const OrderServices = {
     const startD = startDate !== null ? startDate : "";
     const endD = endDate !== null ? endDate : "";
 
-    return requests.get(
-      `/orders?customerName=${searchName}&status=${searchStatus}&day=${searchDay}&page=${page}&limit=${limit}&startDate=${startD}&endDate=${endD}`,
-      body,
-      headers
-    );
+    body ={
+      customerName:searchName,
+      status:searchStatus,
+      day:searchDay,
+      startDate:startD,
+      endDate:endD,
+      method:""
+
+    }
+    console.log(body)
+    return requests.post(
+      `/order/list?page=${page}&pageSize=${limit}`,body);
+
+    // return requests.get(
+    //   `/orders?customerName=${searchName}&status=${searchStatus}&day=${searchDay}&page=${page}&limit=${limit}&startDate=${startD}&endDate=${endD}`,
+    //   body,
+    //   headers
+    // );
   },
 
   getAllOrderList: async ({ page, limit }) => {

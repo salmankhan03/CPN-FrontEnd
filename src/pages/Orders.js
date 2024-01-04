@@ -28,6 +28,7 @@ import OrderTable from "components/order/OrderTable";
 import TableLoading from "components/preloader/TableLoading";
 import { notifyError } from "utils/toast";
 import spinnerLoadingImage from "assets/img/spinner.gif";
+import CustomUpdateModal from "components/modal/UpdateModal";
 
 const Orders = () => {
   const {
@@ -47,29 +48,23 @@ const Orders = () => {
     setEndDate,
     lang,
   } = useContext(SidebarContext);
-
+  const [id,SetId]=useState()
+  const [updatedStatus,SetUpdatedStatus]=useState()
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { t } = useTranslation();
   const [loadingExport, setLoadingExport] = useState(false);
 
-  // const { data, loading } = useAsync(() =>
-  //   OrderServices.getAllOrders({
-  //     customerName: searchText,
-  //     status,
-  //     page: currentPage,
-  //     limit: resultsPerPage,
-  //     day: time,
-  //     startDate,
-  //     endDate,
-  //   })
-  // );
   const { data, loading } = useAsync(() =>
-    OrderServices.getAllOrderList({
+    OrderServices.getAllOrders({
+      customerName: searchText,
+      status,
       page: currentPage,
       limit: resultsPerPage,
+      day: time,
+      startDate,
+      endDate,
     })
   );
-
-  console.log(" ORDER LIST DATA ==>", data)
 
   const { dataTable, serviceData, globalSetting } = useFilter(data?.list?.data);
 
@@ -116,10 +111,27 @@ const Orders = () => {
     }
   };
   // console.log("data in orders page", data);
+  const updateStatus = (id,status) => {
+    SetId(id)
+    SetUpdatedStatus(status)
+    setIsUpdateModalOpen(true);
+  };
+  const closeModalFunc = ()=>{
+    setIsUpdateModalOpen(false)
+  }
 
   return (
     <>
-      <PageTitle>{t("Orders")}</PageTitle>
+      <PageTitle>{t("Orders")}</PageTitle>    
+      {isUpdateModalOpen && (
+        <CustomUpdateModal
+          id={id}
+          status={updatedStatus}
+          title={"Update Modal"}
+          handleConfirmUpdate={isUpdateModalOpen}
+          closeModal={closeModalFunc}
+        />
+      )}                                
 
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody>
@@ -246,6 +258,7 @@ const Orders = () => {
               orders={dataTable}
               globalSetting={globalSetting}
               currency={globalSetting?.default_currency || "$"}
+              handleUpdateStatus={updateStatus}
             />
           </Table>
 
