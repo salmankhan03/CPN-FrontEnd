@@ -21,6 +21,7 @@ import CurrencyServices from "services/CurrencyServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import BrandServices from "services/BrandServices";
 import StaticPageServices from "services/StaticPageServices";
+import EmailTemplateServices from "services/EmailTemplateServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -116,6 +117,28 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           setIsSubmitting(false);
         } else {
           const res = await StaticPageServices.deleteTemplates(id);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        }
+      }
+      if (location.pathname === "/emailTemplate") {
+        if (ids) {
+
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await EmailTemplateServices.deleteManyTemplates(apiRequestBody);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setIsCheck([]);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        } else {
+          const res = await EmailTemplateServices.deleteTemplates(id);
           setIsUpdate(true);
           notifySuccess(res.message);
           setServiceId();

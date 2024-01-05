@@ -23,6 +23,8 @@ const Languages = lazy(() => import("../pages/Languages"));
 const Currencies = lazy(() => import("../pages/Currencies"));
 const Setting = lazy(() => import("../pages/Setting"));
 const StaticPage = lazy(() => import("../pages/StaticPage"));
+const EmailTemplate = lazy(() => import("../pages/EmailTemplate"));
+
 
 /*
 //  * ⚠ These are internal routes!
@@ -102,7 +104,9 @@ const routes = [
     component: Coupons,
   },
   { path: "/settings", component: Setting },
+  { path: "/emailTemplate", component: EmailTemplate },
   { path: "/staticPage", component: StaticPage },
+
   {
     path: "/404",
     component: Page404,

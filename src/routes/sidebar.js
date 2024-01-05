@@ -93,6 +93,11 @@ const sidebar = [
     outside: "store",
   },
   {
+    path: "/emailTemplate", // the url
+    icon: FiGrid, // icon
+    name: "Email Template", // name that appear in Sidebar
+  },
+  {
     path: "/staticPage", // the url
     icon: FiGrid, // icon
     name: "Static Page", // name that appear in Sidebar
