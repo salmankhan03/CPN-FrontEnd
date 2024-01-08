@@ -17,19 +17,24 @@ const SelectStatus = ({ id, order, handleUpdateStatus}) => {
         <option value="status" defaultValue hidden>
           {order?.status}
         </option>
-        <option defaultValue={order?.status === "Delivered"} value="Delivered">
-          Delivered
-        </option>
         <option defaultValue={order?.status === "Pending"} value="Pending">
           Pending
         </option>
-        <option
-          defaultValue={order?.status === "Processing"}
-          value="Processing"
-        >
-          Processing
+        <option defaultValue={order?.status === "Confirmed"} value="Confirmed">
+        Confirmed
         </option>
-        <option defaultValue={order?.status === "Cancel"} value="Cancel">
+        <option defaultValue={order?.status === "Delivered"} value="Delivered">
+          Delivered
+        </option>
+        <option
+          defaultValue={order?.status === "Returned"} value="Returned">
+          Returned
+        </option>
+        <option
+          defaultValue={order?.status === "Refunded"} value="Refunded">
+          Refund
+        </option>
+        <option defaultValue={order?.status === "Cancelled"} value="Cancelled">
           Cancel
         </option>
       </Select>

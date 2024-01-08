@@ -12,7 +12,7 @@ import {
   TableFooter,
   TableHeader,
 } from "@windmill/react-ui";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IoCloudDownloadOutline } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import exportFromJSON from "export-from-json";
@@ -29,6 +29,7 @@ import TableLoading from "components/preloader/TableLoading";
 import { notifyError } from "utils/toast";
 import spinnerLoadingImage from "assets/img/spinner.gif";
 import CustomUpdateModal from "components/modal/UpdateModal";
+import EmailTemplateServices from "services/EmailTemplateServices";
 
 const Orders = () => {
   const {
@@ -47,12 +48,18 @@ const Orders = () => {
     endDate,
     setEndDate,
     lang,
+    limitData
   } = useContext(SidebarContext);
   const [id,SetId]=useState()
   const [updatedStatus,SetUpdatedStatus]=useState()
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { t } = useTranslation();
   const [loadingExport, setLoadingExport] = useState(false);
+  const [emailTemplateList,SetEmailTemplateList]=useState()
+
+useEffect(()=>{
+  getAllTemplatesList()
+},[])
 
   const { data, loading } = useAsync(() =>
     OrderServices.getAllOrders({
@@ -66,8 +73,20 @@ const Orders = () => {
     })
   );
 
+
   const { dataTable, serviceData, globalSetting } = useFilter(data?.list?.data);
 
+  const getAllTemplatesList = async () => {
+    let EmailTemplateListData = await EmailTemplateServices.getAllTemplates({
+      page: currentPage,
+      limit: limitData,
+  })
+  console.log(EmailTemplateListData)
+
+  if(EmailTemplateListData?.status_code === 200)
+  SetEmailTemplateList(EmailTemplateListData.list.data)
+    
+  }
   const handleDownloadOrders = async () => {
     try {
       setLoadingExport(true);
@@ -130,6 +149,7 @@ const Orders = () => {
           title={updatedStatus}
           handleConfirmUpdate={isUpdateModalOpen}
           closeModal={closeModalFunc}
+          templatesList={emailTemplateList}
         />
       )}                                
 

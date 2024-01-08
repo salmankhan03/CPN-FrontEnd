@@ -1,4 +1,6 @@
 import DrawerButton from "components/form/DrawerButton";
+import { Select } from "@windmill/react-ui";
+
 import Error from "components/form/Error";
 import InputArea from "components/form/InputArea";
 import LabelArea from "components/form/LabelArea";
@@ -23,7 +25,7 @@ const EmailTemplateDrawer = ({ id, data, brandList, lang }) => {
   const {
     checked,
     register,
-    defaultContent, 
+    defaultContent,
     setDefaultContent,
     templatesContent,
     setTemplatesContent,
@@ -38,7 +40,7 @@ const EmailTemplateDrawer = ({ id, data, brandList, lang }) => {
     isSubmitting,
   } = useEmailTemplatePageSubmit(id, data);
 
-  
+
 
   const STYLE = `
   .rc-tree-child-tree {
@@ -93,13 +95,45 @@ const EmailTemplateDrawer = ({ id, data, brandList, lang }) => {
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={t("Name")} />
               <div className="col-span-8 sm:col-span-4">
-                <InputArea
+                {/* <InputArea
                   register={register}
                   label="Templates title"
                   name="name"
                   type="text"
                   placeholder={"templates Name"}
-                />
+                /> */}
+                <Select
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="name"
+                  {...register(`name`, {
+                    required: `Option is required!`,
+                  })}
+                >
+                  <option value="" defaultValue hidden>
+                    {"select Templates Name"}
+                  </option>
+                  <option defaultValue={"Pending"} value="Pending">
+                    Pending Order
+                  </option>
+                  <option defaultValue={"Confirmed"} value="Confirmed">
+                    Confirmed Order
+                  </option>
+                  <option defaultValue={"Delivered"} value="Delivered">
+                    Delivered Order
+                  </option>
+                  <option
+                    defaultValue={"Returned"} value="Returned">
+                    Returned Order
+                  </option>
+                  <option
+                    defaultValue={"Refunded"} value="Refunded">
+                    Refund Order
+                  </option>
+                  <option defaultValue={"Cancelled"} value="Cancelled">
+                    Cancel Order
+                  </option>
+                  {/* <option value="Checkbox">Checkbox</option> */}
+                </Select>
                 <Error errorName={errors.name} />
               </div>
             </div>
@@ -117,21 +151,21 @@ const EmailTemplateDrawer = ({ id, data, brandList, lang }) => {
                     //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
                     //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
                     // },              
-                    toolbar: ['heading', '|','bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload',  'imageStyle:full',
-                    'imageStyle:alignLeft',
-                    'imageStyle:alignCenter',
-                    'imageStyle:alignRight','insertTable',
-                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo' ,'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
-                      heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                        ]
+                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
+                      'imageStyle:alignLeft',
+                      'imageStyle:alignCenter',
+                      'imageStyle:alignRight', 'insertTable',
+                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                    heading: {
+                      options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                      ]
                     },
                   }}
 

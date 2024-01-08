@@ -5,20 +5,27 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import OrderServices from "services/OrderServices";
 import { notifyError, notifySuccess } from "utils/toast";
 
-const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal }) => {
+const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,templatesList}) => {
   const location = useLocation();
 
   const [isConfirmOpen, setConfirmOpen] = useState(handleConfirmUpdate);
+  function getStatusId(statusName) {
+    const status = templatesList.find(item => item.name === statusName);
+    return status ? status.id : null;
+}
 
   const handleConfirm = async () => {
-
     try {
       setConfirmOpen(false);
+      // console.log("templatesList ORDER CONFIRm",templatesList)
+
       if (location.pathname === "/orders") {
         if (id) {
+          const StatusId = getStatusId(status);
           let body = {
             id: id,
-            status: status
+            status: status,
+            template_id: StatusId
           }
           OrderServices.updateOrder(body)
             .then((res) => {

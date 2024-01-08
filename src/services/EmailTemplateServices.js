@@ -1,6 +1,7 @@
 import requests from "./httpService";
 const EmailTemplateServices = {
   getAllTemplates: async (data)=> {
+    console.log("GET ALL TEMPLATES CALL")
     return requests.get(`/email-template/list?page=${data.page}&pageSize=${data.limit}`);
   },
   getTemplatesById: async (id) => {
