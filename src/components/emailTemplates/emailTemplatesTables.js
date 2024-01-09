@@ -58,7 +58,7 @@ import EmailTemplateDrawer from "components/drawer/EmailTemplateDrawer";
                 </h2>
               </TableCell>
               <TableCell>
-              {product.id !== 11 ? (
+              {/* {product.id !== 11 ? ( */}
                 <EditDeleteButton
                   id={product.id}
                   product={product}
@@ -67,7 +67,7 @@ import EmailTemplateDrawer from "components/drawer/EmailTemplateDrawer";
                   handleModalOpen={handleModalOpen}
                   title={showingTranslateValue(product?.title, lang)}
                 />
-              ):null}
+              {/* ):null} */}
               </TableCell>
             </TableRow>
           ))}

@@ -12,12 +12,16 @@ import moment from 'moment';
 const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => {
   // console.log('globalSetting',globalSetting)
   const { t } = useTranslation();
-  // console.log('orders',orders)
+  console.log('orders',orders)
 
   return (
     <>
       <TableBody className="dark:bg-gray-900">
-        {orders?.map((order, i) => (
+        {orders?.map((order, i) =>{
+          console.log("shipp",order?.shipping_address?.first_name)
+          console.log("bill",order?.billing_address?.first_name)
+
+          return (
           <TableRow key={i + 1}>
             <TableCell>
               <span className="font-semibold uppercase text-xs">
@@ -39,7 +43,7 @@ const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => 
             </TableCell>
 
             <TableCell className="text-xs">
-              <span className="text-sm">{order?.billign_address?.first_name}</span>{" "}
+              <span className="text-sm">{order?.billing_address?.first_name}</span>{" "}
             </TableCell>
 
             <TableCell>
@@ -80,7 +84,7 @@ const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => 
               </div>
             </TableCell>
           </TableRow>
-        ))}
+        )})}
       </TableBody>
     </>
   );
