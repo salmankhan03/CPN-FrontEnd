@@ -5,7 +5,10 @@ import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import OrderServices from "services/OrderServices";
 import { notifyError, notifySuccess } from "utils/toast";
 import CheckBox from "components/form/CheckBox";
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import UploadAdapter from "services/UploadAdapter";
+import { update } from "cloudinary/lib/api";
 const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,templatesList,customerName}) => {
   const location = useLocation();
   const [isCheck, setIsCheck] = useState(true);
@@ -26,6 +29,7 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
       handleConfirm()
     }
   }
+  // Status ID get
   function getStatusId(statusName) {
     const findStatus = templatesList.find(item => item.name === statusName);
     let decodeString = atob(findStatus.body)
@@ -48,13 +52,16 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
 
       if (location.pathname === "/orders") {
         if (id) {
-          const StatusId = getStatusId(status);
+          console.log("updated data", selectedTemplates)
+          // const StatusId = getStatusId(status);
+          var encodedString = btoa(selectedTemplates);
+
           let body = {
             id: id,
             status: status,
-            template_id: StatusId
+            template: encodedString
           }
-
+          // console.log(body)
           OrderServices.updateOrder(body)
             .then((res) => {
               notifySuccess(res.message);
@@ -74,6 +81,20 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
       setConfirmOpen(false);
       closeModal();
     };
+
+    function CustomUploadAdapterPlugin(editor) {
+      editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        return new UploadAdapter(loader);
+      };
+    }
+
+    const handleEditorChange = (data) => {
+      console.log(data)
+      setSelectedTemplates(data)
+      // var encodedString = btoa(data);
+      // setTemplatesContent(encodedString);
+  };
+  
 
     return (
       <>
@@ -122,8 +143,39 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
         <Modal isOpen={isConfirmOpen} onClose={() => setConfirmOpen(false)}>
           <ModalBody className="text-center custom-modal px-8 pt-6 pb-4">
             <span className="flex justify-center text-3xl mb-6 text-red-500">
+              Customize Message
             </span>
-            <div dangerouslySetInnerHTML={{ __html:selectedTemplates }} />
+
+            <CKEditor
+                  type=""
+                  editor={ClassicEditor}
+                  config={{
+                    extraPlugins: [CustomUploadAdapterPlugin],     
+                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
+                      'imageStyle:alignLeft',
+                      'imageStyle:alignCenter',
+                      'imageStyle:alignRight', 'insertTable',
+                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                    heading: {
+                      options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                      ]
+                    },
+                  }}
+
+                  data={selectedTemplates}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    handleEditorChange(data);
+                  }}
+                />
+            {/* <div dangerouslySetInnerHTML={{ __html:selectedTemplates }} /> */}
 
           </ModalBody>
           <ModalFooter className="justify-center">
