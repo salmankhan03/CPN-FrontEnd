@@ -86,6 +86,8 @@ const ProductDrawer = ({ id, }) => {
     handleProductSlug,
     published,
     setPublished,
+    addTax,
+    setAddTax,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,
@@ -406,6 +408,15 @@ const ProductDrawer = ({ id, }) => {
                   <SwitchToggle
                     handleProcess={setPublished}
                     processOption={published}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("Apply Tax")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <SwitchToggle
+                      handleProcess={setAddTax}
+                      processOption={addTax}
                   />
                 </div>
               </div>

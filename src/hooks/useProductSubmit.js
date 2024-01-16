@@ -61,6 +61,7 @@ const useProductSubmit = (id) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [slug, setSlug] = useState("");
   const [published, setPublished] = useState(true);
+  const [addTax, setAddTax] = useState(true);
   const [searchTerm, setSearchTerm] = useState({
     brandName: '',
     brand_Id: null,
@@ -205,6 +206,7 @@ const handleBrandsSelected = (data)=>{
         // category: defaultCategory[0].id,
         isCombination: updatedVariants?.length > 0 ? isCombination : false,
         variants: isCombination ? updatedVariants : [],
+        is_tax_apply: addTax === true ? 1 : 0
       };
 
       // console.log("productData ===========>", productData, "data", data);
@@ -253,6 +255,7 @@ const handleBrandsSelected = (data)=>{
           setBarcode(res.bar_code);
           setSku(res.sku);
           setPublished(res?.status)
+          setAddTax(res?.is_tax_apply)
           const result = res.variants.map(
             ({
               originalPrice,
@@ -312,6 +315,7 @@ const handleBrandsSelected = (data)=>{
       setValue("barcode");
       setValue("productId");
       setPublished(true);
+      setAddTax(true);
 
       setProductId("");
       // setValue('show');
@@ -724,6 +728,8 @@ const handleBrandsSelected = (data)=>{
     handleProductSlug,
     published,
     setPublished,
+    addTax,
+    setAddTax,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,
