@@ -190,7 +190,7 @@ const handleBrandsSelected = (data)=>{
       const productData = {
         id: productId ? productId :"",
         name: data?.title,
-        price: Number(data.price) || 0,
+        price: Number(data.originalPrice) || 0,
         bar_code: data.barcode || "",
         brand: searchTerm?.brandName,
         brand_id : searchTerm.brand_Id ?  searchTerm.brand_Id  : null,

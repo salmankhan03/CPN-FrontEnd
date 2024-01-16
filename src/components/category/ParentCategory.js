@@ -52,7 +52,7 @@ const ParentCategory = ({
   };
 
   const findObject = (obj, target) => {
-    return obj.id === target
+    return obj?.id === target
       ? obj
       : obj?.children?.reduce(
           (acc, obj) => acc ?? findObject(obj, target),
