@@ -9,7 +9,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapter from "services/UploadAdapter";
 import { update } from "cloudinary/lib/api";
-const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,templatesList,customerName}) => {
+const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,templatesList,customerName,customerEmail}) => {
   const location = useLocation();
   const [isCheck, setIsCheck] = useState(true);
   const [readEmailTemplates, setReadEmailTemplates] = useState(false);
@@ -33,15 +33,15 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
   function getStatusId(statusName) {
     const findStatus = templatesList.find(item => item.name === statusName);
     let decodeString = atob(findStatus.body)
-    let againdecodeString = atob(decodeString)
+    let againdecodeString = atob(decodeString)    
     const values = {
       customer_Name: customerName,
       order_Number: id,
       company_Name: 'http://kingsmankids.com/'
     };
     againdecodeString = againdecodeString.replace(/\[(customer_Name|order_Number|company_Name)\]/g,  (match, p1) => values[p1]);
-
-    setSelectedTemplates(againdecodeString)
+    let newString = `<div>to : test@gmail.com</div><div>from : ${customerEmail}</div>`+againdecodeString
+    setSelectedTemplates(newString)
     return findStatus ? findStatus.id : null;
   }
  

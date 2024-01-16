@@ -57,6 +57,8 @@ const Orders = () => {
   const [loadingExport, setLoadingExport] = useState(false);
   const [emailTemplateList,SetEmailTemplateList]=useState()
   const [customer, setCustomer] = useState()
+  const [customerEmail, setCustomerEmail] = useState()
+
 
 useEffect(()=>{
   getAllTemplatesList()
@@ -136,6 +138,7 @@ useEffect(()=>{
     console.log(id,data)
     const selectedOrder = dataTable.find(order => order?.id === id);
     setCustomer(selectedOrder?.billing_address?.first_name)
+    setCustomerEmail(selectedOrder?.billing_address?.email)
     SetUpdatedStatus(status)
     setIsUpdateModalOpen(true);
   };
@@ -155,6 +158,7 @@ useEffect(()=>{
           closeModal={closeModalFunc}
           templatesList={emailTemplateList}
           customerName={customer}
+          customerEmail={customerEmail}
         />
       )}                                
 
