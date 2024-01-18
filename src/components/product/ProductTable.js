@@ -122,7 +122,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
               </Link>
             </TableCell>
             <TableCell className="text-center">
-              <ShowHideButton id={product._id} status={product.status} />
+              <ShowHideButton id={product.id} status={product.status} data={product}/>
               {/* {product.status} */}
             </TableCell>
             <TableCell>

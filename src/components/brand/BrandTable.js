@@ -58,7 +58,7 @@ const BrandTable = ({ brands, isCheck, setIsCheck, lang }) => {
             </TableCell>
             <TableCell className="font-semibold uppercase text-xs">
               <h2 className="text-sm font-medium">
-                {product?.name.substring(0, 28)}
+                {product?.name?.substring(0, 28)}
               </h2>
             </TableCell>
 

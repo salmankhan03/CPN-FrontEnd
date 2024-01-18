@@ -5,8 +5,8 @@ const CategoryServices = {
     return requests.get("/category/list");
   },
 
-  getAllCategories: async () => {
-    return requests.post("/category/tree");
+  getAllCategories: async ({page, limit}) => {
+    return requests.post(`/category/tree?page=${page ? page : 1}&pageSize=${limit ? limit :20}`,);
   },
 
   getCategoryById: async (id) => {

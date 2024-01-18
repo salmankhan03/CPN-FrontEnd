@@ -35,21 +35,24 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
         data.status = newStatus
         const res = await CategoryServices.updateStatus(id, data);
         setIsUpdate(true);
-        notifySuccess(res.message);
+        // notifySuccess(res.message);
+        notifySuccess('Category Status update Successfull');
       }
       if (location.pathname === "/brands" ) {
         data.is_active = newStatus
         const res = await BrandServices.addUpdateBrand(data);
         setIsUpdate(true);
-        notifySuccess(res.message);
+        // notifySuccess(res.message);
+        notifySuccess('Brand Status update Successfull');
+
       }
 
       if (location.pathname === "/products") {
-        const res = await ProductServices.updateStatus(id, {
-          status: newStatus,
-        });
+        data.status = newStatus
+
+        const res = await ProductServices.updateProduct(id, data);
         setIsUpdate(true);
-        notifySuccess(res.message);
+        notifySuccess('Products Status update Successfull');
       }
 
       if (location.pathname === "/languages") {

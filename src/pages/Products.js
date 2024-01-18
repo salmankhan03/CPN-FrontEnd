@@ -268,7 +268,7 @@ const Products = () => {
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={getAllProduct?.list?.last_page}
+              totalResults={getAllProduct?.list?.total}
               resultsPerPage={limitData}
               onChange={handleChangePage}
               label="Product Page Navigation"

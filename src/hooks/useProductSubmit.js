@@ -199,7 +199,7 @@ const handleBrandsSelected = (data)=>{
         // filteredUrls ? filteredUrls :
         images: imageUrl,
         quantity:variants?.length < 1 ? data.stock : Number(totalStock),
-        tags:JSON.stringify(tag),
+        tags: tag?.map(tag => `${tag}`).join(','),
         sku: data.sku || "",
         category_id:selectedCategory[0].id,
         status: published ? "show" : "hide",
@@ -363,6 +363,7 @@ const handleBrandsSelected = (data)=>{
           // console.log("res", res.data);
 
           if (res) {
+            // console.log("PRODUCTE DETAILS RESPONSE",res)
             setResData(res.data);
             setSlug(res.data.slug);
             setUpdatedId(res.data.id);
@@ -377,8 +378,15 @@ const handleBrandsSelected = (data)=>{
             setValue("price", res?.data?.price);
             setValue("originalPrice", res?.data?.price);
             setValue("stock", res.data.quantity);
+            const tagsArray = res?.data?.tags?.split(',');
+            setTag(tagsArray ? tagsArray :[]);   
             setProductId(res.data.id);
             // setValue("")
+            setSearchTerm((prevData) => ({
+              ...prevData,
+              brandName: res.data.brand,
+              brand_Id: res.data.brand_id,
+          }));
             setBarcode(res.data.barcode);
             setSku(res.data.sku);
             const imagesData = res.data?.images;
@@ -400,7 +408,7 @@ const handleBrandsSelected = (data)=>{
 
             setSelectedCategory(res.categories);
             setDefaultCategory([res?.category]);
-            setTag(JSON.parse(res.tag));         
+              
             setVariants(res.variants);
             setIsCombination(res.isCombination);
             setQuantity(res?.stock);

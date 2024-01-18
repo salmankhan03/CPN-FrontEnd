@@ -36,6 +36,7 @@ const ProductDetails = () => {
   const { data, loading } = useAsync(() => ProductServices.getProductById(id));
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const currency = globalSetting?.default_currency || "$";
+  const [tags,setTags]= useState([])
 
   const { handleChangePage, totalResults, resultsPerPage, dataTable } =
     useFilter(data?.data?.variants);
@@ -56,6 +57,13 @@ const ProductDetails = () => {
       // setVariantTitle(varTitle);
     }
   }, [attribue, data?.data?.variants, loading, lang]);
+  useEffect(()=>{
+
+    if(data?.data?.tags){
+      const tagsArray = data.data.tags.split(',');
+      setTags(tagsArray)
+    }
+  },[data])
 
   console.log("data.variants", globalSetting);
 
@@ -141,12 +149,12 @@ const ProductDetails = () => {
               <div className="flex flex-col mt-4">
                 <p className="font-serif font-semibold py-1 text-gray-500 text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
-                    {t("Category")}:{" "}
+                    {"Category"}:{" "}
                   </span>{" "}
                   {data?.data?.category?.name}
                 </p>
                 <div className="flex flex-row">
-                  {JSON.parse(data?.data?.tags).map((t, i) => (
+                  {tags?.map((t, i) => (
                     <span
                       key={i + 1}
                       className="bg-gray-200 mr-2 border-0 text-gray-500 rounded-full inline-flex items-center justify-center px-2 py-1 text-xs font-semibold font-serif mt-2 dark:bg-gray-700 dark:text-gray-300"

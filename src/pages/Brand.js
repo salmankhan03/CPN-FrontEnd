@@ -33,7 +33,7 @@ const Brand = () => {
     // const [currentPage, setCurrentPage] = useState(1)
     // const [limit, setLimit] = useState(20)
 
-    const { toggleDrawer, lang, currentPage, limitData } = useContext(SidebarContext);
+    const { toggleDrawer, lang, currentPage, limitData,handleChangePage } = useContext(SidebarContext);
 
     const { data, loading } = useAsync(() =>
         BrandServices.getAllBrands({
@@ -51,7 +51,6 @@ const Brand = () => {
         resultsPerPage,
         dataTable,
         serviceData,
-        handleChangePage,
         filename,
         isDisabled,
         handleSelectFile,
@@ -189,8 +188,8 @@ const Brand = () => {
 
                         <TableFooter>
                             <Pagination
-                                totalResults={data?.list?.last_page}
-                                resultsPerPage={resultsPerPage}
+                                totalResults={data?.list?.total}
+                                resultsPerPage={limitData}
                                 onChange={handleChangePage}
                                 label="Table navigation"
                             />

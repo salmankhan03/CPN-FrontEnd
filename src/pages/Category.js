@@ -34,10 +34,18 @@ import CategoryTable from "components/category/CategoryTable";
 import NotFound from "components/table/NotFound";
 
 const Category = () => {
-  const { toggleDrawer, lang } = useContext(SidebarContext);
+  const { toggleDrawer, lang, currentPage,limitData,handleChangePage,  } = useContext(SidebarContext);
 
   const { data, loading } = useAsync(CategoryServices.getAllCategory);
-  const { data: getAllCategories } = useAsync(CategoryServices.getAllCategories);
+  // const { data: getAllCategories } = useAsync(CategoryServices.getAllCategories);
+
+  const { data: getAllCategories } = useAsync(() =>
+  CategoryServices.getAllCategories({
+    page: currentPage,
+    limit: limitData,
+  })
+);
+
 
   const { handleDeleteMany, allId, handleUpdateMany, serviceId } = useToggleDrawer();
 
@@ -50,7 +58,7 @@ const Category = () => {
     resultsPerPage,
     dataTable,
     serviceData,
-    handleChangePage,
+    // handleChangePage,
     filename,
     isDisabled,
     handleSelectFile,
@@ -230,7 +238,7 @@ const handleNameSorting = () => {
 
           <TableFooter>
             <Pagination
-              totalResults={getAllCategorie?.tree?.last_page}
+              totalResults={getAllCategorie?.tree?.total}
               resultsPerPage={resultsPerPage}
               onChange={handleChangePage}
               label="Table navigation"

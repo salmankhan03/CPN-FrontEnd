@@ -35,6 +35,21 @@ instance.interceptors.request.use(function (config) {
     },
   };
 });
+// Add a response interceptor
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle unauthorized (401) status code
+    if (error.response && error.response.status === 401) {
+      // Redirect to the login screen or perform any other action
+      // You may use a router or other method to redirect
+      console.log('Unauthorized access. Redirecting to login screen.');
+      // Replace the following line with your actual redirect code
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 const responseBody = (response) => response.data;
 
