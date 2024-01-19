@@ -125,7 +125,7 @@ const handleBrandsSelected = (data)=>{
         return notifyError("Default Category is required!");
       }
 
-      const updatedVariants = variants.map((v, i) => {
+      const updatedVariants = variants?.map((v, i) => {
         const newObj = {
           ...v,
           price: Number(v?.price || 0),
@@ -389,6 +389,14 @@ const handleBrandsSelected = (data)=>{
               brandName: res.data.brand,
               brand_Id: res.data.brand_id,
           }));
+        
+        let categorySelected={
+          id:res?.data?.category?.id,
+          name:res?.data?.category?.name
+        }
+          setSelectedCategory([categorySelected]);
+          setDefaultCategory([categorySelected]);
+
             setBarcode(res.data.barcode);
             setSku(res.data.sku);
             const imagesData = res.data?.images;
@@ -397,19 +405,21 @@ const handleBrandsSelected = (data)=>{
               setImageUrl(imageNames);
             }
           
-            res.categories.map((category) => {
-              category.name = showingTranslateValue(category?.name, lang);
+            console.log(res?.data)
 
-              return category;
-            });
+            // res.categories.map((category) => {
+            //   category.name = showingTranslateValue(category?.name, lang);
 
-            res.category.name = showingTranslateValue(
-              res?.category?.name,
-              lang
-            );
+            //   return category;
+            // });
 
-            setSelectedCategory(res.categories);
-            setDefaultCategory([res?.category]);
+            // res.category.name = showingTranslateValue(
+            //   res?.category?.name,
+            //   lang
+            // );
+
+            
+    
               
             setVariants(res.variants);
             setIsCombination(res.isCombination);
@@ -446,8 +456,12 @@ const handleBrandsSelected = (data)=>{
       });
 
     setAttTitle([...result]);
-
-    const res = Object?.keys(Object.assign({}, ...variants));
+    let res ;
+    // const res = Object?.keys(Object.assign({}, ...variants));
+    if (variants && typeof variants === 'object') {
+       res = Object.keys(Object.assign({}, ...Object.values(variants)));
+      console.log(res);
+    } 
     const varTitle = attribue?.filter((att) => res.includes(att._id));
 
     if (variants?.length > 0) {
