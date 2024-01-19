@@ -187,6 +187,7 @@ const handleBrandsSelected = (data)=>{
     // 
 
       console.log("Image URL",imageUrl)
+      
       const productData = {
         id: productId ? productId :"",
         name: data?.title,
@@ -197,7 +198,7 @@ const handleBrandsSelected = (data)=>{
         description: data.description,
         slug: data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"),
         // filteredUrls ? filteredUrls :
-        images: imageUrl,
+        file1: imageUrl[0],
         quantity:variants?.length < 1 ? data.stock : Number(totalStock),
         tags: tag?.map(tag => `${tag}`).join(','),
         sku: data.sku || "",
@@ -209,7 +210,7 @@ const handleBrandsSelected = (data)=>{
         is_tax_apply: addTax === true ? 1 : 0
       };
 
-      // console.log("productData ===========>", productData, "data", data);
+      console.log("productData ===========>", productData, "data", data);
       // return setIsSubmitting(false);
 
       if (updatedId) {
@@ -381,6 +382,8 @@ const handleBrandsSelected = (data)=>{
             const tagsArray = res?.data?.tags?.split(',');
             setTag(tagsArray ? tagsArray :[]);   
             setProductId(res.data.id);
+            setPublished(res.data.status === "show" ? true : false);
+            setAddTax(res.data?.is_tax_apply === 1 ? true : false)
             // setValue("")
             setSearchTerm((prevData) => ({
               ...prevData,
