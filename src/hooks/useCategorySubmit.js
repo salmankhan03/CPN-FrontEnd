@@ -119,11 +119,11 @@ const useCategorySubmit = (id, data) => {
             );
             setValue("language", language);
             setValue("parentId", res.category.parent_id);
+            setPublished(res.category.status === "show" ? true : false);
             setValue("parentName", res.parentName);
             setSelectCategoryName(res.parentName);
             setChecked(res.parentId);
             setImageUrl(res.icon);
-            setPublished(res.status === "show" ? true : false);
           }
         } catch (err) {
           notifyError(err ? err.response.data.message : err.message);
