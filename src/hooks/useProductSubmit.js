@@ -185,10 +185,12 @@ const handleBrandsSelected = (data)=>{
 
 
     // 
-
-      console.log("Image URL",imageUrl)
       
+      const imageCount = imageUrl.length;
       const productData = {
+        ...Array.from({ length: imageCount }, (_, index) => ({
+          [`file${index + 1}`]: imageUrl[index]
+        })).reduce((acc, val) => ({ ...acc, ...val }), {}),
         id: productId ? productId :"",
         name: data?.title,
         price: Number(data.originalPrice) || 0,
@@ -197,8 +199,6 @@ const handleBrandsSelected = (data)=>{
         brand_id : searchTerm.brand_Id ?  searchTerm.brand_Id  : null,
         description: data.description,
         slug: data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"),
-        // filteredUrls ? filteredUrls :
-        file1: imageUrl[0],
         quantity:variants?.length < 1 ? data.stock : Number(totalStock),
         tags: tag?.map(tag => `${tag}`).join(','),
         sku: data.sku || "",
@@ -209,8 +209,7 @@ const handleBrandsSelected = (data)=>{
         variants: isCombination ? updatedVariants : [],
         is_tax_apply: addTax === true ? 1 : 0
       };
-
-      console.log("productData ===========>", productData, "data", data);
+      
       // return setIsSubmitting(false);
 
       if (updatedId) {
