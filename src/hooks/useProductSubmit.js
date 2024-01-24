@@ -184,7 +184,38 @@ const handleBrandsSelected = (data)=>{
 
 
 
-    // 
+    //
+
+      let formData = new FormData();
+
+      formData.append("id", productId ? productId :"");
+      formData.append("name", data?.title);
+      formData.append("price", Number(data.originalPrice) || 0);
+      formData.append("bar_code", data.barcode || "");
+      formData.append("brand", searchTerm?.brandName);
+      formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : null);
+      formData.append("description", data.description);
+      formData.append("slug", data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"));
+      formData.append("quantity",  data.stock);
+      formData.append("tags", tag?.map(tag => `${tag}`).join(','));
+      formData.append("sku", data.sku || "");
+      formData.append("category_id", selectedCategory[0].id);
+      formData.append("status", published ? "show" : "hide");
+      formData.append("isCombination", updatedVariants?.length > 0 ? isCombination : false);
+      formData.append("variants", isCombination ? updatedVariants : []);
+      formData.append("is_tax_apply", addTax === true ? 1 : 0);
+
+      await Promise.all(imageUrl.map(async (image, index) => {
+        if(image.preview){
+          const response = await fetch(image.preview);
+          const blob = await response.blob();
+
+          const file = new File([blob], image.name, { type: blob.type });
+
+          formData.append(`files${index + 1}`, file, file.name);
+        }
+      }));
+
       
       const imageCount = imageUrl.length;
       const productData = {
@@ -213,7 +244,7 @@ const handleBrandsSelected = (data)=>{
       // return setIsSubmitting(false);
 
       if (updatedId) {
-        const res = await ProductServices.updateProduct(updatedId, productData);
+        const res = await ProductServices.updateProduct(updatedId, formData);
         if (res) {
           if (isCombination) {
             setIsUpdate(true);
@@ -235,7 +266,7 @@ const handleBrandsSelected = (data)=>{
           closeDrawer();
         }
       } else {
-        const res = await ProductServices.addProduct(productData);
+        const res = await ProductServices.addProduct(formData);
         // console.log("res is ", res);
         if (isCombination) {
           setUpdatedId(res._id);
