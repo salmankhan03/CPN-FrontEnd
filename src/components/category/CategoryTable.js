@@ -60,10 +60,10 @@ const CategoryTable = ({
               {/* {category?.id?.substring(20, 24)} */}
             </TableCell>
             <TableCell>
-              {category?.icon ? (
+              {category?.category_image.length > 0? (
                 <Avatar
                   className="hidden mr-3 md:block bg-gray-50 p-1"
-                  src={category?.icon}
+                  src={category?.category_image[0]?.name}
                   alt={category?.parent}
                 />
               ) : (

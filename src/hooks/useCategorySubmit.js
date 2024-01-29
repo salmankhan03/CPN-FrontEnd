@@ -10,7 +10,7 @@ const useCategorySubmit = (id, data) => {
   const [resData, setResData] = useState({});
   const [categories, setCategories] = useState({});
   const [checked, setChecked] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState([]);
   const [children, setChildren] = useState([]);
   const [language, setLanguage] = useState(lang);
   const [published, setPublished] = useState(true);
@@ -36,26 +36,44 @@ const useCategorySubmit = (id, data) => {
       console.log("checked", checked)
 
       setIsSubmitting(true);
+      let formData = new FormData();
+      formData.append("id", id ? id: "");
+      formData.append("name", name);
+      formData.append("description", description ? description :"");
+      formData.append("parent_id", checked ? checked : "");
+      formData.append("parentName", selectCategoryName ? selectCategoryName : "");
+      formData.append("status", published ? "show" : "hide");
       const categoryData = {
         id: id ? id: "",
         name:name,
         description:description ? description :"",
-        parent_id: checked ? checked : null,
+        parent_id: checked ? checked : "",
         parentName: selectCategoryName ? selectCategoryName : "",
         status: published ? "show" : "hide"
       };
 
+      await Promise.all(imageUrl.map(async (image, index) => {
+        if(image.preview){
+          const response = await fetch(image.preview);
+          const blob = await response.blob();
+
+          const file = new File([blob], image.name, { type: blob.type });
+
+          formData.append(`image${index + 1}`, file, file.name);
+        }
+      }));
+
       console.log('category submit', categoryData);
 
       if (id) {
-        const res = await CategoryServices.updateCategory(id, categoryData);
+        const res = await CategoryServices.updateCategory(id, formData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
         closeDrawer();
         reset();
       } else {
-        const res = await CategoryServices.addCategory(categoryData);
+        const res = await CategoryServices.addCategory(formData);
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
@@ -85,7 +103,7 @@ const useCategorySubmit = (id, data) => {
       setValue("parentName");
       setValue("description");
       setValue("icon");
-      setImageUrl("");
+      setImageUrl([]);
       setPublished(true);
       clearErrors("name");
       clearErrors("parentId");
@@ -122,8 +140,8 @@ const useCategorySubmit = (id, data) => {
             setPublished(res.category.status === "show" ? true : false);
             setValue("parentName", res.parentName);
             setSelectCategoryName(res.parentName);
-            setChecked(res.parentId);
-            setImageUrl(res.icon);
+            setChecked(res.category.parent_id);
+            {res.category.category_image.length > 0 && setImageUrl(res.category?.category_image && [res.category?.category_image[0]?.name]);}
           }
         } catch (err) {
           notifyError(err ? err.response.data.message : err.message);

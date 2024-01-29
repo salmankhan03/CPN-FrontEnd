@@ -20,7 +20,7 @@ cloudinary.config({
   api_secret: process.env.REACT_APP_CLOUDINARY_API_SECRET,
 });
 
-const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
+const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id, category }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [err, setError] = useState("");
@@ -28,7 +28,6 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
   const [productsDetails, setProductsDetails] = useState()
 
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
-
   // console.log("data", data);
   useEffect(() => {
     const fetchData = async () => {
@@ -46,116 +45,33 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
   }, [id]);
   const { getRootProps, getInputProps, fileRejections } = useDropzone({
     accept: "image/*",
-    multiple: product ? true : false,
+    multiple: product === true ? true : false,
     maxSize: 500000,
-    maxFiles: globalSetting?.number_of_image_per_product || 3,
+    maxFiles: product === true ? (globalSetting?.number_of_image_per_product || 3) : 1,
     onDrop: (acceptedFiles) => {
       setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
+          acceptedFiles.map((file) =>
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+          )
       );
     },
   });
 
-  // useEffect(() => {
-  //   if (fileRejections) {
-  //     fileRejections.map(({ file, errors }) => (
-  //       <li key={file.path}>
-  //         {file.path} - {file.size} bytes
-  //         <ul>
-  //           {errors.map((e) => (
-  //             <li key={e.code}>
-  //               {e.code === "too-many-files"
-  //                 ? notifyError(
-  //                     `Maximum ${globalSetting?.number_of_image_per_product} Image Can be Upload!`
-  //                   )
-  //                 : notifyError(e.message)}
-  //             </li>
-  //           ))}
-  //         </ul>
-  //       </li>
-  //     ));
-  //   }
-
-  //   if (files) {
-  //     console.log("files",files)
-  //     files?.forEach((file) => {
-  //       if (
-  //         product &&
-  //         imageUrl?.length + files?.length >
-  //           globalSetting?.number_of_image_per_product
-  //       ) {
-  //         return notifyError(
-  //           `Maximum ${globalSetting?.number_of_image_per_product} Image Can be Upload!`
-  //         );
-  //       }
-
-  //       setLoading(true);
-  //       setError("Uploading....");
-
-  //       if (product) {
-  //         const result = imageUrl?.find(
-  //           (img) => img === `${process.env.REACT_APP_CLOUDINARY_URL}`
-  //         );
-
-  //         if (result) return setLoading(false);
-  //       }
-
-  //       const name = file.name.replaceAll(/\s/g, "");
-  //       const public_id = name?.substring(0, name.lastIndexOf("."));
-
-  //       const formData = new FormData();
-  //       console.log("file",file)
-  //       console.log("process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET",process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET)
-  //       console.log("process.env.REACT_APP_CLOUD_NAME",process.env.REACT_APP_CLOUD_NAME)
-  //       console.log("folder",folder)
-  //       console.log("public_id",public_id)
-  //       formData.append("file", file);
-  //       // formData.append(
-  //       //   "upload_preset",
-  //       //   process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
-  //       // );
-  //       // formData.append("cloud_name", process.env.REACT_APP_CLOUD_NAME);
-  //       formData.append("folder", folder);
-  //       formData.append("public_id", public_id);
-
-  //       axios({
-  //         url: process.env.REACT_APP_CLOUDINARY_URL,
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/x-www-form-urlencoded",
-  //         },
-  //         data: formData,
-  //       })
-  //         .then((res) => {
-  //           notifySuccess("Image Uploaded successfully!");
-  //           setLoading(false);
-  //           if (product) {
-  //             setImageUrl((imgUrl) => [...imgUrl, res.data.secure_url]);
-  //           } else {
-  //             setImageUrl(res.data.secure_url);
-  //           }
-  //         })
-  //         .catch((err) => {
-  //           console.error("err", err);
-  //           notifyError(err.Message);
-  //           setLoading(false);
-  //         });
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [files]);
-
-  useEffect(()=>{    
-    console.log(imageUrl)
-    console.log(files)
-    files.map((element, index) => (
-      setImageUrl((imgUrl) => [...imgUrl, element])
+  useEffect(()=>{
+    if(product === true) {
+      files.map((element, index) => (
+          setImageUrl((imgUrl) => [...imgUrl, element])
       ));
+    } else {
+      if (files.length > 0) {
+        setImageUrl(files);
+      }
+    }
   },[files])
+
+
   const thumbs = files.map((file) => (
     <div key={file.name}>
       <div>
@@ -203,30 +119,6 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
         setImageUrl(updatedImageUrl)
       }
     }
-
-    // try {
-    //   // const url = img.substring(img.length - 25);
-    //   const url = img.split("/").pop().split(".")[0];
-    //   console.log(url)
-    //   const public_id = `${folder}/${url}`;
-
-    //   const res = await cloudinary.v2.uploader.destroy(public_id);
-
-    //   setLoading(false);
-    //   notifyError(
-    //     res.result === "ok" ? "Image delete successfully!" : res.result
-    //   );
-    //   if (product) {
-    //     const result = imageUrl?.filter((i) => i !== img);
-    //     setImageUrl(result);
-    //   } else {
-    //     setImageUrl("");
-    //   }
-    // } catch (err) {
-    //   console.error("err", err);
-    //   notifyError(err.Message);
-    //   setLoading(false);
-    // }
   };
 
   return (
@@ -246,7 +138,7 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
       <div className="text-green-500">{loading && err}</div>
      
       <aside className="flex flex-row flex-wrap mt-4">
-        {product ? (
+        {product || category ? (
           <DndProvider backend={HTML5Backend}>
             <Container
               setImageUrl={setImageUrl}
@@ -254,7 +146,7 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id }) => {
               handleRemoveImage={handleRemoveImage}
             />
           </DndProvider>
-        ) : !product && imageUrl ? (
+        ) : !product || !category && imageUrl ? (
           <div className="relative">
             {" "}
             <img

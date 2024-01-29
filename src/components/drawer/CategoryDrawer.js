@@ -216,6 +216,8 @@ const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
                   imageUrl={imageUrl}
                   setImageUrl={setImageUrl}
                   folder="category"
+                  category
+                  id={id ? id : ""}
                 />
               </div>
             </div>

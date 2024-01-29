@@ -23,8 +23,8 @@ const Container = ({ setImageUrl, imageUrl, handleRemoveImage }) => {
         <Card
           key={i + 1}
           index={i}
-          id={card.id}
-          text={card.text}
+          id={card?.id}
+          text={card?.text}
           moveCard={moveCard}
           image={card}
           handleRemoveImage={handleRemoveImage}
@@ -33,7 +33,7 @@ const Container = ({ setImageUrl, imageUrl, handleRemoveImage }) => {
     },
     [moveCard, handleRemoveImage]
   );
-  return <>{imageUrl.map((card, i) => renderCard(card, i))}</>;
+  return <>{imageUrl && imageUrl?.map((card, i) => renderCard(card, i))}</>;
 };
 
 export default Container;
