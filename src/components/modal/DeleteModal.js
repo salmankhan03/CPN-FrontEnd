@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import spinnerLoadingImage from "assets/img/spinner.gif";
 import { SidebarContext } from "context/SidebarContext";
 import AdminServices from "services/AdminServices";
+import RoleServices from "services/RoleServices";
 import CategoryServices from "services/CategoryServices";
 import CouponServices from "services/CouponServices";
 import CustomerServices from "services/CustomerServices";
@@ -254,6 +255,15 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
 
       if (location.pathname === "/our-staff") {
         const res = await AdminServices.deleteStaff(id);
+        setIsUpdate(true);
+        notifySuccess(res.message);
+        setServiceId();
+        closeModal();
+        setIsSubmitting(false);
+      }
+
+      if (location.pathname === "/our-role") {
+        const res = await RoleServices.deleteRole(id);
         setIsUpdate(true);
         notifySuccess(res.message);
         setServiceId();

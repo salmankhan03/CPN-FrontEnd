@@ -62,10 +62,23 @@ const sidebar = [
   },
 
   {
-    path: "/our-staff",
     icon: FiUser,
     name: "OurStaff",
+    routes: [
+      {
+        path: "/our-staff",
+        icon: FiUser,
+        name: "OurStaff",
+      },
+      {
+        path: "/our-role",
+        icon: FiUser,
+        name: "Our Role",
+      },
+    ],
   },
+
+
 
   {
     path: "/settings",
