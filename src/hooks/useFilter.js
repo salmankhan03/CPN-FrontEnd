@@ -99,6 +99,7 @@ const useFilter = (data) => {
   const [delivered, setDelivered] = useState([]);
   const [status, setStatus] = useState("");
   const [role, setRole] = useState("");
+  const [permission, setPermission] = useState("");
   const [time, setTime] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [dataTable, setDataTable] = useState([]); //tableTable for showing on table according to filtering
@@ -133,6 +134,7 @@ const useFilter = (data) => {
   const serviceData = useMemo(() => {
     const date = new Date();
     date.setDate(date.getDate() - time);
+    console.log("data",data)
     let services = data?.map((el) => {
       const newDate = new Date(el?.updatedAt).toLocaleString("en-US", {
         timeZone: globalSetting?.default_time_zone,
@@ -799,6 +801,7 @@ const useFilter = (data) => {
     setSortedField,
     setStatus,
     setRole,
+    setPermission,
     time,
     setTime,
     handleChangePage,

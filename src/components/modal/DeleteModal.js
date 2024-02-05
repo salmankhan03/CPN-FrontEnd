@@ -23,6 +23,7 @@ import { notifyError, notifySuccess } from "utils/toast";
 import BrandServices from "services/BrandServices";
 import StaticPageServices from "services/StaticPageServices";
 import EmailTemplateServices from "services/EmailTemplateServices";
+import PermissionServices from "services/PermissionServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -264,6 +265,14 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
 
       if (location.pathname === "/our-role") {
         const res = await RoleServices.deleteRole(id);
+        setIsUpdate(true);
+        notifySuccess(res.message);
+        setServiceId();
+        closeModal();
+        setIsSubmitting(false);
+      }
+      if (location.pathname === "/permission") {
+        const res = await PermissionServices.deletePermission(id);
         setIsUpdate(true);
         notifySuccess(res.message);
         setServiceId();

@@ -11,6 +11,7 @@ const Brand = lazy(() => import("../pages/Brand"));
 const ChildCategory = lazy(() => import("../pages/ChildCategory"));
 const Staff = lazy(() => import("../pages/Staff"));
 const Role = lazy(() => import("../pages/Role"));
+const Permission = lazy(() => import("../pages/Permission"));
 const Customers = lazy(() => import("../pages/Customers"));
 const CustomerOrder = lazy(() => import("../pages/CustomerOrder"));
 const Orders = lazy(() => import("../pages/Orders"));
@@ -95,6 +96,10 @@ const routes = [
   {
     path: "/our-role",
     component: Role,
+  },
+  {
+    path: "/permission",
+    component: Permission,
   },
   {
     path: "/orders",

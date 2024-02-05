@@ -75,6 +75,11 @@ const sidebar = [
         icon: FiUser,
         name: "Our Role",
       },
+      {
+        path: "/permission",
+        icon: FiUser,
+        name: "Permission",
+      },
     ],
   },
 
