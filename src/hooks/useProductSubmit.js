@@ -62,6 +62,9 @@ const useProductSubmit = (id) => {
   const [slug, setSlug] = useState("");
   const [published, setPublished] = useState(true);
   const [addTax, setAddTax] = useState(true);
+  const [description, setDescription] = useState()
+  const [defaultContent, setDefaultContent] = useState()
+
   const [searchTerm, setSearchTerm] = useState({
     brandName: '',
     brand_Id: null,
@@ -87,7 +90,14 @@ const handleBrandsSelected = (data)=>{
     brandName: data?.name,
     brand_Id: data?.id,
   });
-}
+};
+const handleEditorChange = (data) => {
+  // console.log(data)
+  var encodedString = btoa(data);
+  setDescription(encodedString);
+};
+
+
 
   // console.log("lang", lang);
 
@@ -194,7 +204,7 @@ const handleBrandsSelected = (data)=>{
       formData.append("bar_code", data.barcode || "");
       formData.append("brand", searchTerm?.brandName);
       formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : null);
-      formData.append("description", data.description);
+      formData.append("description", description);
       formData.append("slug", data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"));
       formData.append("quantity",  data.stock);
       formData.append("tags", tag?.map(tag => `${tag}`).join(','));
@@ -248,7 +258,7 @@ const handleBrandsSelected = (data)=>{
         if (res) {
           if (isCombination) {
             setIsUpdate(true);
-            notifySuccess(res.message);
+            notifySuccess(res?.message);
             setIsBasicComplete(true);
             setIsSubmitting(false);
             handleProductTap("Combination", true);
@@ -395,6 +405,8 @@ const handleBrandsSelected = (data)=>{
 
           if (res) {
             // console.log("PRODUCTE DETAILS RESPONSE",res)
+            var decodeString = atob(res?.data?.description)
+            // console.log("decodeString",decodeString);
             setResData(res.data);
             setSlug(res.data.slug);
             setUpdatedId(res.data.id);
@@ -414,6 +426,7 @@ const handleBrandsSelected = (data)=>{
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
+            setDefaultContent(decodeString)
             // setValue("")
             setSearchTerm((prevData) => ({
               ...prevData,
@@ -783,8 +796,13 @@ const handleBrandsSelected = (data)=>{
     handleProductSlug,
     published,
     setPublished,
+    description,
+    setDescription,
     addTax,
     setAddTax,
+    defaultContent, 
+    setDefaultContent,
+    handleEditorChange,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,

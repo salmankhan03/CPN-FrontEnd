@@ -34,7 +34,9 @@ import DrawerButton from "components/form/DrawerButton";
 import AttributeListTable from "components/attribute/AttributeListTable";
 import { showingTranslateValue } from "utils/translate";
 import SwitchToggle from "components/form/SwitchToggle";
-
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import UploadAdapter from "services/UploadAdapter";
 
 //internal import
 
@@ -42,6 +44,8 @@ const ProductDrawer = ({ id, }) => {
 
   const { t } = useTranslation();
   const {
+    defaultContent,
+    setDefaultContent,
     brands,
     filteredBrandOptions,
     setFilteredBrandOptions,
@@ -86,8 +90,11 @@ const ProductDrawer = ({ id, }) => {
     handleProductSlug,
     published,
     setPublished,
+    description,
+    setDescription,
     addTax,
     setAddTax,
+    handleEditorChange,
     handleSelectLanguage,
     handleIsCombination,
     handleEditVariant,
@@ -114,7 +121,11 @@ const ProductDrawer = ({ id, }) => {
   //   );
   //   setFilteredBrandOptions(filtered);
   // };
-
+  function CustomUploadAdapterPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      return new UploadAdapter(loader);
+    };
+  }
   return (
     <>
       <Modal
@@ -209,7 +220,7 @@ const ProductDrawer = ({ id, }) => {
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductDescription")} />
                 <div className="col-span-8 sm:col-span-4">
-                  <Textarea
+                  {/* <Textarea
                     className="border text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                     {...register("description", {
                       required: false,
@@ -218,7 +229,41 @@ const ProductDrawer = ({ id, }) => {
                     placeholder={t("ProductDescription")}
                     rows="4"
                     spellCheck="false"
-                  />
+                  /> */}
+                   <CKEditor
+                  type=""
+                  editor={ClassicEditor}
+                  config={{
+                    extraPlugins: [CustomUploadAdapterPlugin],
+                    // plugins:[Image],
+                    // image: {
+                    //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
+                    //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
+                    // },              
+                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
+                      'imageStyle:alignLeft',
+                      'imageStyle:alignCenter',
+                      'imageStyle:alignRight', 'insertTable',
+                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                    heading: {
+                      options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                      ]
+                    },
+                  }}
+
+                  data={defaultContent ? defaultContent : ""}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    handleEditorChange(data);
+                  }}
+                />
                   <Error errorName={errors.description} />
                 </div>
               </div>
