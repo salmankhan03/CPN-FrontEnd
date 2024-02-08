@@ -94,7 +94,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             <TableCell>
               <span className="text-sm font-semibold">
                 {currency}
-                {Number(product?.price).toFixed(2)}
+                {Number(product?.sell_price).toFixed(2)}
               </span>
             </TableCell>
 
