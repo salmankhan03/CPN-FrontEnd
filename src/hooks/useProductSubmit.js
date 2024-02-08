@@ -201,6 +201,7 @@ const handleEditorChange = (data) => {
       formData.append("id", productId ? productId :"");
       formData.append("name", data?.title);
       formData.append("price", Number(data.originalPrice) || 0);
+      formData.append("sell_price", Number(data.price) || 0);
       formData.append("bar_code", data.barcode || "");
       formData.append("brand", searchTerm?.brandName);
       formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : null);
