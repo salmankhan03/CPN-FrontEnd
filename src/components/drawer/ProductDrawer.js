@@ -16,7 +16,7 @@ import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiX } from "react-icons/fi";
+import { FiX,FiPlus } from "react-icons/fi";
 import useProductSubmit from "hooks/useProductSubmit";
 import UploaderThree from "components/image-uploader/UploaderThree";
 import Title from "components/form/Title";
@@ -37,12 +37,15 @@ import SwitchToggle from "components/form/SwitchToggle";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapter from "services/UploadAdapter";
+import CategoryModal from "components/modal/CategoryModal";
 
 //internal import
 
-const ProductDrawer = ({ id, }) => {
-
+const ProductDrawer = ({ id,handleUpdateStatus }) => {
+  console.log("handleUpdateStatus handleUpdateStatus", handleUpdateStatus)
   const { t } = useTranslation();
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
   const {
     defaultContent,
     setDefaultContent,
@@ -126,6 +129,14 @@ const ProductDrawer = ({ id, }) => {
       return new UploadAdapter(loader);
     };
   }
+  function test() {
+ console.log("OnClick")  
+ setIsUpdateModalOpen(true);
+ 
+  }
+  const closeModalFunc = ()=>{
+    setIsUpdateModalOpen(false)
+  }
   return (
     <>
       <Modal
@@ -146,8 +157,14 @@ const ProductDrawer = ({ id, }) => {
           />
         </div>
       </Modal>
-
+      {isUpdateModalOpen && (      
+      <CategoryModal
+          handleConfirmUpdate={isUpdateModalOpen}
+          closeModal={closeModalFunc}
+        />
+      )}
       <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+        
         {id ? (
           <Title
             register={register}
@@ -230,40 +247,40 @@ const ProductDrawer = ({ id, }) => {
                     rows="4"
                     spellCheck="false"
                   /> */}
-                   <CKEditor
-                  type=""
-                  editor={ClassicEditor}
-                  config={{
-                    extraPlugins: [CustomUploadAdapterPlugin],
-                    // plugins:[Image],
-                    // image: {
-                    //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
-                    //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
-                    // },              
-                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
-                      'imageStyle:alignLeft',
-                      'imageStyle:alignCenter',
-                      'imageStyle:alignRight', 'insertTable',
-                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
-                    heading: {
-                      options: [
-                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                      ]
-                    },
-                  }}
+                  <CKEditor
+                    type=""
+                    editor={ClassicEditor}
+                    config={{
+                      extraPlugins: [CustomUploadAdapterPlugin],
+                      // plugins:[Image],
+                      // image: {
+                      //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
+                      //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
+                      // },              
+                      toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
+                        'imageStyle:alignLeft',
+                        'imageStyle:alignCenter',
+                        'imageStyle:alignRight', 'insertTable',
+                        'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                      heading: {
+                        options: [
+                          { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                          { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                          { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                          { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                          { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                          { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                          { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                        ]
+                      },
+                    }}
 
-                  data={defaultContent ? defaultContent : ""}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    handleEditorChange(data);
-                  }}
-                />
+                    data={defaultContent ? defaultContent : ""}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      handleEditorChange(data);
+                    }}
+                  />
                   <Error errorName={errors.description} />
                 </div>
               </div>
@@ -319,11 +336,11 @@ const ProductDrawer = ({ id, }) => {
                     value={searchTerm.brandName}
                     onChange={handleBrandSearch}
                     className="border react-tag-input__input  h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white  "
-                    style={{border:"1px solid #ccc"}}
+                    style={{ border: "1px solid #ccc" }}
                   />
                   <ul>
                     {filteredBrandOptions?.map((item, index) => (
-                      <li key={index} onClick={() => handleBrandsSelected(item)} style={{padding:5}}>
+                      <li key={index} onClick={() => handleBrandsSelected(item)} style={{ padding: 5 }}>
                         {item.name}
                       </li>
                     ))}
@@ -332,7 +349,7 @@ const ProductDrawer = ({ id, }) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("Category")} />
                 <div className="col-span-8 sm:col-span-4">
                   <ParentCategory
@@ -342,7 +359,30 @@ const ProductDrawer = ({ id, }) => {
                     setDefaultCategory={setDefaultCategory}
                   />
                 </div>
+              </div> */}
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("Category")} />
+                <div className="col-span-8 sm:col-span-4 grid grid-cols-2 gap-3">
+                  <div>
+                    <ParentCategory
+                      lang={language}
+                      selectedCategory={selectedCategory}
+                      setSelectedCategory={setSelectedCategory}
+                      setDefaultCategory={setDefaultCategory}
+                    />
+                  </div>
+                  <div>
+                    <Button onClick={test}  className="rounded-md h-12 w-full">
+                      <span className="mr-2">
+                        <FiPlus />
+                      </span>
+
+                      {t("AddCategory")}
+                    </Button>
+                  </div>
+                </div>
               </div>
+
 
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("DefaultCategory")} />
@@ -460,8 +500,8 @@ const ProductDrawer = ({ id, }) => {
                 <LabelArea label={t("Apply Tax")} />
                 <div className="col-span-8 sm:col-span-4">
                   <SwitchToggle
-                      handleProcess={setAddTax}
-                      processOption={addTax}
+                    handleProcess={setAddTax}
+                    processOption={addTax}
                   />
                 </div>
               </div>

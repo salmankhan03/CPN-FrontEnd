@@ -17,7 +17,7 @@ import CategoryServices from "services/CategoryServices";
 import { notifyError } from "utils/toast";
 import { showingTranslateValue } from "utils/translate";
 
-const CategoryDrawer = ({ id, data, categoriesList,lang}) => {
+const CategoryDrawer = ({ id, data, categoriesList,lang}) => {  
   const { t } = useTranslation();
 
   const {
