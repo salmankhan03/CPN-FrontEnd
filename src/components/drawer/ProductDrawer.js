@@ -16,7 +16,7 @@ import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FiX,FiPlus } from "react-icons/fi";
+import { FiX, FiPlus } from "react-icons/fi";
 import useProductSubmit from "hooks/useProductSubmit";
 import UploaderThree from "components/image-uploader/UploaderThree";
 import Title from "components/form/Title";
@@ -38,11 +38,9 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapter from "services/UploadAdapter";
 import CategoryModal from "components/modal/CategoryModal";
-
 //internal import
 
-const ProductDrawer = ({ id,handleUpdateStatus }) => {
-  console.log("handleUpdateStatus handleUpdateStatus", handleUpdateStatus)
+const ProductDrawer = ({ id, handleUpdateStatus }) => {
   const { t } = useTranslation();
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
@@ -129,14 +127,13 @@ const ProductDrawer = ({ id,handleUpdateStatus }) => {
       return new UploadAdapter(loader);
     };
   }
-  function test() {
- console.log("OnClick")  
- setIsUpdateModalOpen(true);
- 
+  function showCategoryModal() {
+      setIsUpdateModalOpen(true);
   }
-  const closeModalFunc = ()=>{
+  const closeModalFunc = () => {
     setIsUpdateModalOpen(false)
   }
+
   return (
     <>
       <Modal
@@ -157,14 +154,14 @@ const ProductDrawer = ({ id,handleUpdateStatus }) => {
           />
         </div>
       </Modal>
-      {isUpdateModalOpen && (      
-      <CategoryModal
-          handleConfirmUpdate={isUpdateModalOpen}
-          closeModal={closeModalFunc}
-        />
-      )}
+      {isUpdateModalOpen ? (
+          <CategoryModal
+            handleConfirmUpdate={isUpdateModalOpen}
+            closeModal={closeModalFunc}
+          />
+      ):null}
       <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-        
+
         {id ? (
           <Title
             register={register}
@@ -372,7 +369,7 @@ const ProductDrawer = ({ id,handleUpdateStatus }) => {
                     />
                   </div>
                   <div>
-                    <Button onClick={test}  className="rounded-md h-12 w-full">
+                    <Button onClick={showCategoryModal} className="rounded-md h-12 w-full">
                       <span className="mr-2">
                         <FiPlus />
                       </span>
@@ -384,7 +381,7 @@ const ProductDrawer = ({ id,handleUpdateStatus }) => {
               </div>
 
 
-              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6" style={{display:'none'}}>
                 <LabelArea label={t("DefaultCategory")} />
                 <div className="col-span-8 sm:col-span-4">
                   <Multiselect

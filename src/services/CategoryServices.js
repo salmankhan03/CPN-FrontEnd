@@ -2,11 +2,11 @@ import requests from "./httpService";
 
 const CategoryServices = {
   getAllCategory: async () => {
-    return requests.get("/category/list");
+    return requests.get("/category/list?page=1&pageSize=200");
   },
 
   getAllCategories: async () => {
-    return requests.post("/category/tree");
+    return requests.post("/category/tree?page=1&pageSize=200");
   },
 
   getCategoryById: async (id) => {
@@ -39,7 +39,7 @@ const CategoryServices = {
   },
 
   deleteManyCategory: async (body) => {
-    return requests.post("/category/multiple_delete", body);
+    return requests.post("/product/multiple-delete", body);
   },
 };
 
