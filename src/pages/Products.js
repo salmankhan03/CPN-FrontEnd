@@ -40,6 +40,8 @@ const Products = () => {
     useToggleDrawer();
   const [getAllProduct, setGetAllProduct] = useState();
   const [sortOrder, setSortOrder] = useState('default');
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
 
   const { t } = useTranslation();
   const {
@@ -110,14 +112,28 @@ const Products = () => {
     }
     setGetAllProduct((prev) => ({ ...prev, list: { ...prev.list, data: sortedData } }));
   };
+  const closeModalFunc = ()=>{
+    setIsUpdateModalOpen(false)
+  }
+
+  const updateStatus = () => {
+   console.log("updateStatus call")
+    setIsUpdateModalOpen(true);
+  };
 
   return (
     <>
       <PageTitle>{t("ProductsPage")}</PageTitle>
+      {/* {isUpdateModalOpen && ( */}
+        {/* <CategoryModal
+          handleConfirmUpdate={isUpdateModalOpen}
+          closeModal={closeModalFunc}
+        /> */}
+      {/* )}   */}
       <DeleteModal ids={allId} setIsCheck={setIsCheck} title={title} />
       <BulkActionDrawer ids={allId} title="Products" />
       <MainDrawer>
-        <ProductDrawer id={serviceId} />
+        <ProductDrawer id={serviceId} handleUpdateStatus={updateStatus} />
       </MainDrawer>
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody className="">

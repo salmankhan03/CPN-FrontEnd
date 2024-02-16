@@ -77,7 +77,7 @@ const useCategorySubmit = (id, data) => {
         setIsUpdate(true);
         setIsSubmitting(false);
         notifySuccess(res.message);
-        closeDrawer();
+        // closeDrawer();
       }
     } catch (err) {
       setIsSubmitting(false);
