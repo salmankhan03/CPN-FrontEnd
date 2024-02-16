@@ -18,16 +18,20 @@ import { notifyError } from "utils/toast";
 import "./categoryModal.css"
 import spinnerLoadingImage from "assets/img/spinner.gif";
 import useAsync from "hooks/useAsync";
+import { useDispatch } from "react-redux";
+import {addCatergory} from "../../redux/Actions/CategoryActions"
 
 const CategoryModal = ({ handleConfirmUpdate, closeModal }) => {
+    const dispatch = useDispatch();
     const { data, loading } = useAsync(CategoryServices.getAllCategory);
     const { data: getAllCategorie } = useAsync(CategoryServices.getAllCategories);
 
     const [isConfirmOpen, setConfirmOpen] = useState(handleConfirmUpdate);
-    console.log("isConfirmOpen", isConfirmOpen)
+    dispatch(addCatergory(getAllCategorie?.tree?.data));
     let id = undefined
     const { t } = useTranslation();
     const {
+        addedCategoryName,
         checked,
         register,
         onSubmit,
@@ -142,7 +146,7 @@ const CategoryModal = ({ handleConfirmUpdate, closeModal }) => {
         if(isSubmitting === true){
             setTimeout(() => {
                 setConfirmOpen(false);
-                closeModal();
+                closeModal(1);
               }, 2500);   
         }
     },[isSubmitting])
@@ -240,7 +244,7 @@ const CategoryModal = ({ handleConfirmUpdate, closeModal }) => {
                                 </div>
                             </div>
                             <div
-                                className="grid gap-4 lg:gap-6 px-8  xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                className="grid gap-4 lg:gap-6 px-8 pb-2 xl:gap-6 md:flex xl:flex bg-gray-50 border-t border-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
                                 style={{ right: -50 }}
                             >
                                 <div className="pt-3 flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">

@@ -38,11 +38,14 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapter from "services/UploadAdapter";
 import CategoryModal from "components/modal/CategoryModal";
+import { useSelector } from "react-redux";
+import CategoryServices from "services/CategoryServices";
 //internal import
 
 const ProductDrawer = ({ id, handleUpdateStatus }) => {
   const { t } = useTranslation();
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const oldCategoryData = useSelector(state => state?.addTocategory?.category);
 
   const {
     defaultContent,
@@ -128,10 +131,45 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
     };
   }
   function showCategoryModal() {
-      setIsUpdateModalOpen(true);
+    setIsUpdateModalOpen(true);
   }
-  const closeModalFunc = () => {
+  const closeModalFunc = async (data) => {
     setIsUpdateModalOpen(false)
+    if (data) {
+      function filterUniqueChildren(categories, oldData) {
+        
+        for (let index = 0; index < categories.length; index++) {
+          if (categories[index].children.length > 0) {
+            filterUniqueChildren(categories[index]?.children, oldData[index].children);
+          } else {
+            if (JSON.stringify(categories[index]) !== JSON.stringify(oldData[index])) {
+              console.log("unique Data found", categories[index]);
+              setSelectedCategory((pre) => [
+                ...pre,
+                {
+                  "id": categories[index]?.id,
+                  "name": categories[index]?.name
+                }
+              ]);
+              setDefaultCategory(() => [
+                {
+                  id: categories[index]?.id,
+                  name: categories[index]?.name,
+                },
+              ]);
+              return categories[index]
+            }
+          }
+
+        }
+      }
+
+      let getAllCategories = await CategoryServices.getAllCategories();
+      let uniqueChildrenCategories = await filterUniqueChildren(getAllCategories?.tree?.data, oldCategoryData);
+
+      console.log(uniqueChildrenCategories);
+
+    }
   }
 
   return (
@@ -155,11 +193,11 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
         </div>
       </Modal>
       {isUpdateModalOpen ? (
-          <CategoryModal
-            handleConfirmUpdate={isUpdateModalOpen}
-            closeModal={closeModalFunc}
-          />
-      ):null}
+        <CategoryModal
+          handleConfirmUpdate={isUpdateModalOpen}
+          closeModal={closeModalFunc}
+        />
+      ) : null}
       <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
 
         {id ? (
@@ -381,7 +419,7 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
               </div>
 
 
-              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6" style={{display:'none'}}>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6" style={{ display: 'none' }}>
                 <LabelArea label={t("DefaultCategory")} />
                 <div className="col-span-8 sm:col-span-4">
                   <Multiselect
