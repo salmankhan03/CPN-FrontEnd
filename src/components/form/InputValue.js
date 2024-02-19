@@ -30,6 +30,15 @@ const InputValue = ({
     },
   };
 
+  const handleBlur = (e) => {
+    const inputValue = e.target.value;
+    const nonNegativeValue = inputValue < 0 ? 0 : inputValue;
+
+    e.target.value = nonNegativeValue;
+
+    value.onBlur && value.onBlur(e);
+  };
+
   return (
     <>
       <div className={`flex flex-row`}>
@@ -45,6 +54,7 @@ const InputValue = ({
           placeholder={placeholder}
           name={name}
           step={0.01}
+          onBlur={handleBlur}
           className={`bg-gray-50 mr-2 rounded w-full h-12 p-2 text-sm border border-gray-300 focus:bg-white focus:border-gray-300 focus:outline-none ${
             product && "rounded-l-none"
           }`}

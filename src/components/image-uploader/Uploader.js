@@ -47,7 +47,7 @@ const Uploader = ({ setImageUrl, imageUrl, product, folder, method,id, category 
     accept: "image/*",
     multiple: product === true ? true : false,
     maxSize: 500000,
-    maxFiles: product === true ? (globalSetting?.number_of_image_per_product || 3) : 1,
+    maxFiles: product === true ? (globalSetting?.number_of_image_per_product || 10) : 1,
     onDrop: (acceptedFiles) => {
       setFiles(
           acceptedFiles.map((file) =>
