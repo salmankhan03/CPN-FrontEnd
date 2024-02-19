@@ -217,14 +217,34 @@ const handleEditorChange = (data) => {
       formData.append("variants", isCombination ? updatedVariants : []);
       formData.append("is_tax_apply", addTax === true ? 1 : 0);
 
+      // await Promise.all(imageUrl.map(async (image, index) => {
+      //   if(image.preview){
+      //     const response = await fetch(image.preview);
+      //     const blob = await response.blob();
+      //
+      //     const file = new File([blob], image.name, { type: blob.type });
+      //
+      //     formData.append(`files${index + 1}`, file, file.name);
+      //   }
+      // }));
+
       await Promise.all(imageUrl.map(async (image, index) => {
-        if(image.preview){
-          const response = await fetch(image.preview);
-          const blob = await response.blob();
+        if (image.preview) {
 
-          const file = new File([blob], image.name, { type: blob.type });
+          try {
+            const response = await fetch(image.preview);
 
-          formData.append(`files${index + 1}`, file, file.name);
+            if (!response.ok) {
+              throw new Error(`Failed to fetch image: ${image.preview}`);
+            }
+
+            const blob = await response.blob();
+
+            const file = new File([blob], image.path, { type: blob.type });
+            formData.append(`files${index + 1}`, file, file.name);
+          } catch (error) {
+            console.error('Error fetching image:', error);
+          }
         }
       }));
 
