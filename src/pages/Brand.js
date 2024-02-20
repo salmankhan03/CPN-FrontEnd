@@ -210,7 +210,7 @@ const Brand = () => {
 
                                     <TableCell onClick={handleIDSorting}>{t("catIdTbl")}</TableCell>
                                     <TableCell onClick={handleNameSorting}>{t("CatTbName")}</TableCell>
-                                    <TableCell>{t("CatTbDescription")}</TableCell>
+                                    {/* <TableCell>{t("CatTbDescription")}</TableCell> */}
                                     <TableCell className="text-center">{t("catPublishedTbl")}</TableCell>
                                     {/* <TableCell className="text-right">{t("DetailsTbl")}</TableCell> */}
                                     <TableCell className="text-right">{t("catActionsTbl")}</TableCell>

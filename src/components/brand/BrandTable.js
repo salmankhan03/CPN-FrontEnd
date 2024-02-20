@@ -62,9 +62,9 @@ const BrandTable = ({ brands, isCheck, setIsCheck, lang }) => {
               </h2>
             </TableCell>
 
-            <TableCell className="text-sm">
+            {/* <TableCell className="text-sm">
             {product?.description}
-            </TableCell>
+            </TableCell> */}
             <TableCell className="text-center">
               <ShowHideButton
                 id={product?.id}
