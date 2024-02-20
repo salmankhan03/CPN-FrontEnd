@@ -79,23 +79,35 @@ const Category = () => {
   const handleIDSorting = () => {
     let sortedData;
     setIsAscendingOrder(!isAscendingOrder);
-    sortedData =  [...getAllCategories?.tree].sort((a, b) => (isAscendingOrder ? a.id - b.id : b.id - a.id));
-    setGetAllCategorie((prev) => ({ ...prev, tree: sortedData }));
+    sortedData =  [...getAllCategorie?.tree?.data].sort((a, b) => (isAscendingOrder ? a.id - b.id : b.id - a.id));
+    setGetAllCategorie((prev) => ({
+      ...prev,
+      tree: {
+        ...prev.tree,
+        data: sortedData
+      }
+    }));
 
 };
 const handleNameSorting = () => {
   let sortedData;
   if (sortOrder === 'default') {
-    sortedData =  [...getAllCategories?.tree].sort((a, b) => a.name.localeCompare(b.name));
+    sortedData =  [...getAllCategorie?.tree?.data].sort((a, b) => a.name.localeCompare(b.name));
     setSortOrder('AtoZ');
   } else if (sortOrder === 'AtoZ') {
-    sortedData =  [...getAllCategories?.tree].sort((a, b) => b.name.localeCompare(a.name));
+    sortedData =  [...getAllCategorie?.tree?.data].sort((a, b) => b.name.localeCompare(a.name));
     setSortOrder('ZtoA');
   } else {
-    sortedData = getAllCategories?.tree;
+    sortedData = getAllCategorie?.tree?.data;
     setSortOrder('default');
   }
-  setGetAllCategorie((prev) => ({ ...prev, tree: sortedData }));
+  setGetAllCategorie((prev) => ({
+    ...prev,
+    tree: {
+      ...prev.tree,
+      data: sortedData
+    }
+  }));
 };
 
   return (
