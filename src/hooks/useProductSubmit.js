@@ -390,6 +390,10 @@ const handleEditorChange = (data) => {
       setTotalStock(0);
       setSelectedCategory([]);
       setDefaultCategory([]);
+      setSearchTerm({
+        brandName: '',
+        brand_Id: null,
+      });
       if (location.pathname === "/products") {
         resetRefTwo?.current?.resetSelectedValues();
       }
