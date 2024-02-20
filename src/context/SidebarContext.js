@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 export const SidebarContext = createContext();
 
 export const SidebarProvider = ({ children }) => {
-  const resultsPerPage = 20;
+  const resultsPerPage = 10;
   const searchRef = useRef("");
   const invoiceRef = useRef("");
 
-  const [limitData, setLimitData] = useState(20);
+  const [limitData, setLimitData] = useState(10);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isBulkDrawerOpen, setIsBulkDrawerOpen] = useState(false);

@@ -230,8 +230,8 @@ const handleNameSorting = () => {
 
           <TableFooter>
             <Pagination
-              totalResults={getAllCategorie?.tree?.last_page}
-              resultsPerPage={resultsPerPage}
+              totalResults={getAllCategorie?.tree?.total}
+              resultsPerPage={getAllCategorie?.tree?.per_page}
               onChange={handleChangePage}
               label="Table navigation"
             />

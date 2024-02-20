@@ -50,19 +50,19 @@ const Orders = () => {
     lang,
     limitData
   } = useContext(SidebarContext);
-  const [id,SetId]=useState()
-  const [updatedStatus,SetUpdatedStatus]=useState()
+  const [id, SetId] = useState()
+  const [updatedStatus, SetUpdatedStatus] = useState()
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { t } = useTranslation();
   const [loadingExport, setLoadingExport] = useState(false);
-  const [emailTemplateList,SetEmailTemplateList]=useState()
+  const [emailTemplateList, SetEmailTemplateList] = useState()
   const [customer, setCustomer] = useState()
   const [customerEmail, setCustomerEmail] = useState()
 
 
-useEffect(()=>{
-  getAllTemplatesList()
-},[])
+  useEffect(() => {
+    getAllTemplatesList()
+  }, [])
 
   const { data, loading } = useAsync(() =>
     OrderServices.getAllOrders({
@@ -83,12 +83,12 @@ useEffect(()=>{
     let EmailTemplateListData = await EmailTemplateServices.getAllTemplates({
       page: currentPage,
       limit: limitData,
-  })
-  console.log(EmailTemplateListData)
+    })
+    console.log(EmailTemplateListData)
 
-  if(EmailTemplateListData?.status_code === 200)
-  SetEmailTemplateList(EmailTemplateListData.list.data)
-    
+    if (EmailTemplateListData?.status_code === 200)
+      SetEmailTemplateList(EmailTemplateListData.list.data)
+
   }
   const handleDownloadOrders = async () => {
     try {
@@ -133,22 +133,22 @@ useEffect(()=>{
     }
   };
   // console.log("data in orders page", data);
-  const updateStatus = (id,status) => {
+  const updateStatus = (id, status) => {
     SetId(id)
-    console.log(id,data)
+    console.log(id, data)
     const selectedOrder = dataTable.find(order => order?.id === id);
     setCustomer(selectedOrder?.billing_address?.first_name)
     setCustomerEmail(selectedOrder?.billing_address?.email)
     SetUpdatedStatus(status)
     setIsUpdateModalOpen(true);
   };
-  const closeModalFunc = ()=>{
+  const closeModalFunc = () => {
     setIsUpdateModalOpen(false)
   }
 
   return (
     <>
-      <PageTitle>{t("Orders")}</PageTitle>    
+      <PageTitle>{t("Orders")}</PageTitle>
       {isUpdateModalOpen && (
         <CustomUpdateModal
           id={id}
@@ -160,7 +160,7 @@ useEffect(()=>{
           customerName={customer}
           customerEmail={customerEmail}
         />
-      )}                                
+      )}
 
       <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
         <CardBody>
@@ -247,10 +247,9 @@ useEffect(()=>{
                     onClick={handleDownloadOrders}
                     disabled={data?.orders?.length <= 0 || loadingExport}
                     type="button"
-                    className={`${
-                      (data?.orders?.length <= 0 || loadingExport) &&
+                    className={`${(data?.orders?.length <= 0 || loadingExport) &&
                       "opacity-50 cursor-not-allowed bg-red-300"
-                    } flex items-center justify-center text-sm leading-5 h-12 w-full text-center transition-colors duration-150 font-medium focus:outline-none px-6 py-2 rounded-md text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300`}
+                      } flex items-center justify-center text-sm leading-5 h-12 w-full text-center transition-colors duration-150 font-medium focus:outline-none px-6 py-2 rounded-md text-white bg-green-500 border border-transparent active:bg-green-600 hover:bg-green-600 focus:ring focus:ring-purple-300`}
                   >
                     Download All Orders
                     <span className="ml-2 text-base">
@@ -293,8 +292,8 @@ useEffect(()=>{
 
           <TableFooter>
             <Pagination
-              totalResults={data?.list?.last_page}
-              resultsPerPage={resultsPerPage}
+              totalResults={data?.list?.total}
+              resultsPerPage={data?.list?.per_page}
               onChange={handleChangePage}
               label="Table navigation"
             />
