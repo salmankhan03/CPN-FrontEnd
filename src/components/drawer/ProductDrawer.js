@@ -272,26 +272,11 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductDescription")} />
                 <div className="col-span-8 sm:col-span-4">
-                  {/* <Textarea
-                    className="border text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
-                    {...register("description", {
-                      required: false,
-                    })}
-                    name="description"
-                    placeholder={t("ProductDescription")}
-                    rows="4"
-                    spellCheck="false"
-                  /> */}
                   <CKEditor
                     type=""
                     editor={ClassicEditor}
                     config={{
-                      extraPlugins: [CustomUploadAdapterPlugin],
-                      // plugins:[Image],
-                      // image: {
-                      //   toolbar: ['imageStyle:full', 'imageStyle:side', '|', 'imageTextAlternative'],
-                      //   upload: { types: ['jpeg', 'png','pdf', 'docx'] },
-                      // },              
+                      extraPlugins: [CustomUploadAdapterPlugin],            
                       toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
                         'imageStyle:alignLeft',
                         'imageStyle:alignCenter',
@@ -315,6 +300,7 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
                       const data = editor.getData();
                       handleEditorChange(data);
                     }}
+                    style={{ height: '500px' }} 
                   />
                   <Error errorName={errors.description} />
                 </div>

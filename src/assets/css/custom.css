@@ -1150,3 +1150,10 @@ input[type="file"] {
 .btn-gray{
   background-color: #e5e7eb !important;
 }
+/* CkEditor */
+.ck{
+  height: 180px;
+}
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+  height: 180px;
+}
