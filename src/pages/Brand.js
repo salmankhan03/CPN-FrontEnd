@@ -34,6 +34,9 @@ const Brand = () => {
     // const [limit, setLimit] = useState(20)
 
     const { toggleDrawer, lang, currentPage, limitData,handleChangePage } = useContext(SidebarContext);
+    const [sortOrder, setSortOrder] = useState('default');  
+    const [isAscendingOrder, setIsAscendingOrder] = useState(false)
+    const [allBrannds, setAllBrannds] = useState();
 
     const { data, loading } = useAsync(() =>
         BrandServices.getAllBrands({
@@ -56,28 +59,64 @@ const Brand = () => {
         handleSelectFile,
         handleUploadMultiple,
         handleRemoveSelectFile,
-    } = useFilter(data?.list?.data);
+    } = useFilter(allBrannds?.list?.data);
 
     // react hooks
     const [isCheckAll, setIsCheckAll] = useState(false);
     const [isCheck, setIsCheck] = useState([]);
 
-
+    useEffect(()=>{
+        setAllBrannds(data)
+      },[data])
 
     const handleSelectAll = () => {
         setIsCheckAll(!isCheckAll);
-        setIsCheck(data?.list?.data?.map((li) => li.id));
+        setIsCheck(allBrannds?.list?.data?.map((li) => li.id));
         if (isCheckAll) {
             setIsCheck([]);
         }
     };
+    const handleIDSorting = () => {
+        let sortedData;
+        setIsAscendingOrder(!isAscendingOrder);
+        sortedData =  [...allBrannds?.list?.data].sort((a, b) => (isAscendingOrder ? a.id - b.id : b.id - a.id));
+        setAllBrannds(prevData => ({
+            ...prevData,
+            list: {
+              ...prevData.list,
+              data: sortedData
+            }
+          }));
+    
+    };
+    const handleNameSorting = () => {
+        let sortedData;
+        if (sortOrder === 'default') {
+          sortedData = [...allBrannds?.list?.data].sort((a, b) => a.name.localeCompare(b.name));
+          setSortOrder('AtoZ');
+        } else if (sortOrder === 'AtoZ') {
+          sortedData = [...allBrannds?.list?.data].sort((a, b) => b.name.localeCompare(a.name));
+          setSortOrder('ZtoA');
+        } else {
+          sortedData = allBrannds?.list?.data;
+          setSortOrder('default');
+        }
+        setAllBrannds(prevData => ({
+            ...prevData,
+            list: {
+              ...prevData.list,
+              data: sortedData
+            }
+          }));
+        console.log(sortedData)
+      };
     return (
         <>
             <PageTitle>Brand</PageTitle>
             <DeleteModal ids={allId} setIsCheck={setIsCheck} />
-            <BulkActionDrawer ids={allId} title="Brand" lang={lang} data={data?.list?.data} isCheck={isCheck} />
+            <BulkActionDrawer ids={allId} title="Brand" lang={lang} data={allBrannds?.list?.data} isCheck={isCheck} />
             <MainDrawer>
-                <BrandDrawer id={serviceId} data={data} brandList={data?.list?.data} lang={lang} />
+                <BrandDrawer id={serviceId} data={data} brandList={allBrannds?.list?.data} lang={lang} />
             </MainDrawer>
             <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
                 <CardBody className="">
@@ -85,7 +124,7 @@ const Brand = () => {
                         <div className="flex justify-start w-1/2 xl:w-1/2 md:w-full">
                             <UploadManyTwo
                                 title="Brands"
-                                exportData={data?.list?.data}
+                                exportData={allBrannds?.list?.data}
                                 filename={filename}
                                 isDisabled={isDisabled}
                                 handleSelectFile={handleSelectFile}
@@ -153,7 +192,7 @@ const Brand = () => {
             </Card>
             {loading ? (
                 <TableLoading row={12} col={6} width={190} height={20} />
-            ) : data?.list?.data?.length !== 0 ? (
+            ) : allBrannds?.list?.data?.length !== 0 ? (
                 <>
                     <TableContainer className="mb-8">
                         <Table>
@@ -169,8 +208,8 @@ const Brand = () => {
                                         />
                                     </TableCell>
 
-                                    <TableCell>{t("catIdTbl")}</TableCell>
-                                    <TableCell>{t("CatTbName")}</TableCell>
+                                    <TableCell onClick={handleIDSorting}>{t("catIdTbl")}</TableCell>
+                                    <TableCell onClick={handleNameSorting}>{t("CatTbName")}</TableCell>
                                     <TableCell>{t("CatTbDescription")}</TableCell>
                                     <TableCell className="text-center">{t("catPublishedTbl")}</TableCell>
                                     {/* <TableCell className="text-right">{t("DetailsTbl")}</TableCell> */}
@@ -181,14 +220,14 @@ const Brand = () => {
                             <BrandTable
                                 lang={lang}
                                 isCheck={isCheck}
-                                brands={data?.list?.data}
+                                brands={allBrannds?.list?.data}
                                 setIsCheck={setIsCheck}
                             />
                         </Table>
 
                         <TableFooter>
                             <Pagination
-                                totalResults={data?.list?.total}
+                                totalResults={allBrannds?.list?.total}
                                 resultsPerPage={limitData}
                                 onChange={handleChangePage}
                                 label="Table navigation"
