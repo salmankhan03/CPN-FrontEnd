@@ -90,10 +90,10 @@ const CategoryTable = ({
                         <div className="pl-2 ">
                           {category?.children?.map((child) => (
                             <div key={child.id}>
-                              <Link
+                              {/* <Link
                                 to={`/categories/${child?.id}`}
                                 className="text-blue-700"
-                              >
+                              > */}
                                 <div className="flex text-xs items-center  text-blue-800">
                                   <span className=" text-xs text-gray-500 pr-1">
                                     <IoRemoveSharp />
@@ -102,7 +102,7 @@ const CategoryTable = ({
                                     {child.name}
                                   </span>
                                 </div>
-                              </Link>
+                              {/* </Link> */}
                             </div>
                           ))}
                         </div>
