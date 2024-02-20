@@ -78,11 +78,11 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
               </div>
             </TableCell>
 
-            <TableCell>
+            {/* <TableCell>
               <span className="text-sm">
                 {product?.category}
               </span>
-            </TableCell>
+            </TableCell> */}
 
             <TableCell>
               <span className="text-sm font-semibold">

@@ -266,7 +266,7 @@ const Products = () => {
                   />
                 </TableCell>
                 <TableCell onClick={handleNameSorting}>{t("ProductNameTbl")}</TableCell>
-                <TableCell>{t("CategoryTbl")}</TableCell>
+                {/* <TableCell>{t("CategoryTbl")}</TableCell> */}
                 <TableCell>{t("PriceTbl")}</TableCell>
                 <TableCell>Sale Price</TableCell>
                 <TableCell>{t("StockTbl")}</TableCell>
