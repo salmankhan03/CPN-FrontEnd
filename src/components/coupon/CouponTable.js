@@ -22,6 +22,7 @@ import ShowHideButton from "components/table/ShowHideButton";
 import EditDeleteButton from "components/table/EditDeleteButton";
 import { showingTranslateValue } from "utils/translate";
 import { showDateFormat } from "utils/dateFormate";
+import moment from 'moment';
 
 const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
   const [updatedCoupons, setUpdatedCoupons] = useState([]);
@@ -128,20 +129,14 @@ const CouponTable = ({ lang, isCheck, coupons, setIsCheck }) => {
             <TableCell>
               <span className="text-sm">
                 {/* {dayjs(coupon.startTime).format("MMM D, YYYY")} */}
-                {showDateFormat(
-                  coupon.created_at,
-                  globalSetting?.default_date_format
-                )}
+                {moment(coupon.created_at)?.format('DD/MM/YYYY')}
               </span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm">
                 {/* {dayjs(coupon.endTime).format("MMM D, YYYY")} */}
-                {showDateFormat(
-                  coupon.expires_at,
-                  globalSetting?.default_date_format
-                )}
+                {moment(coupon.expires_at)?.format('DD/MM/YYYY')}
               </span>
             </TableCell>
 
