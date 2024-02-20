@@ -369,6 +369,8 @@ const handleEditorChange = (data) => {
       setResData({});
       setValue("sku");
       setValue("title");
+      setDefaultContent();
+      setDescription();
       setValue("slug");
       setValue("description");
       setValue("quantity");
