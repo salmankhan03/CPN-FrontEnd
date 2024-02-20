@@ -62,7 +62,12 @@ export const SidebarProvider = ({ children }) => {
     setSearchText(searchRef?.current?.value);
     setCategory(null);
   };
-
+  const handlesearchText= (e) => {
+    e.preventDefault();
+    if (!searchRef?.current?.value) return setSearchText(null);
+    setSearchText(searchRef?.current?.value);
+    setCategory(null);
+  };
   useEffect(() => {
     const language = Cookies.get("i18next");
     // console.log("lang", language);
@@ -125,6 +130,7 @@ export const SidebarProvider = ({ children }) => {
         setCategory,
         searchRef,
         handleSubmitForAll,
+        handlesearchText,
         status,
         setStatus,
         zone,

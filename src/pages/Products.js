@@ -54,6 +54,7 @@ const Products = () => {
     setCategory,
     searchRef,
     handleSubmitForAll,
+    handlesearchText,
     sortedField,
     setSortedField,
     limitData,
@@ -101,10 +102,10 @@ const Products = () => {
   const handleNameSorting = () => {
     let sortedData;
     if (sortOrder === 'default') {
-      sortedData =  [...data?.list?.data].sort((a, b) => a.name.localeCompare(b.name));
+      sortedData = [...data?.list?.data].sort((a, b) => a.name.localeCompare(b.name));
       setSortOrder('AtoZ');
     } else if (sortOrder === 'AtoZ') {
-      sortedData =  [...data?.list?.data].sort((a, b) => b.name.localeCompare(a.name));
+      sortedData = [...data?.list?.data].sort((a, b) => b.name.localeCompare(a.name));
       setSortOrder('ZtoA');
     } else {
       sortedData = data?.list?.data;
@@ -208,11 +209,14 @@ const Products = () => {
                 type="search"
                 name="search"
                 placeholder="Search Product"
+                onChange={handlesearchText}
               />
-              <button
-                type="submit"
-                className="absolute right-0 top-0 mt-5 mr-1"
-              ></button>
+              {/* 
+                <button
+                  type="submit"
+                  className="absolute right-0 top-0 mt-5 mr-1"
+                ></button>
+                */}
             </div>
 
             <div className="flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
