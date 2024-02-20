@@ -39,7 +39,7 @@ const CategoryServices = {
   },
 
   deleteManyCategory: async (body) => {
-    return requests.post("/product/multiple-delete", body);
+    return requests.post("/category/multiple-delete", body);
   },
 };
 
