@@ -143,6 +143,7 @@ const Coupons = () => {
                 type="search"
                 className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 placeholder={t("SearchCoupon")}
+                onChange={handleSubmitCoupon}
               />
             </div>
           </form>
