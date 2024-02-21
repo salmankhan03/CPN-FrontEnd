@@ -50,13 +50,14 @@ const Category = () => {
     resultsPerPage,
     dataTable,
     serviceData,
+    filterCategory,
     handleChangePage,
     filename,
     isDisabled,
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data?.list ? data?.list : data);
+  } = useFilter(getAllCategories?.tree?.data);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -191,6 +192,7 @@ const handleNameSorting = () => {
                 type="search"
                 className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 placeholder={t("SearchCategory")}
+                onChange={handleSubmitCategory}
               />
             </div>
           </form>
@@ -230,13 +232,13 @@ const handleNameSorting = () => {
             </TableHeader>
 
             <CategoryTable
-              data={getAllCategorie?.tree?.data}
+              data={filterCategory ? filterCategory : getAllCategorie?.tree?.data}
               lang={lang}
               isCheck={isCheck}
               categories={dataTable}
               setIsCheck={setIsCheck}
               showChild={showChild}
-              categoriesList={getAllCategorie?.tree?.data}
+              categoriesList={filterCategory ? filterCategory : getAllCategorie?.tree?.data}
             />
           </Table>
 

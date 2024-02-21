@@ -86,6 +86,8 @@ const useFilter = (data) => {
   const [searchText, setSearchText] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [searchCoupon, setSearchCoupon] = useState("");
+  const [searchCategory,setSearchCategory] =useState("")
+  const [filterCategory,setFilterCategory] =useState("")
   const [searchOrder, setSearchOrder] = useState("");
   const [categoryType, setCategoryType] = useState("");
   const [attributeTitle, setAttributeTitle] = useState("");
@@ -252,6 +254,21 @@ const useFilter = (data) => {
             .includes(searchCoupon?.toLowerCase())
       );
     }
+    //searchCategory filtering
+    if (searchCategory) {
+      services = services?.filter(
+          (search) =>
+            search?.name
+              ?.toLowerCase()
+              ?.includes(searchCategory?.toLowerCase()) ||
+            search?.name
+              ?.toLowerCase()
+              .includes(searchCategory?.toLowerCase())
+        );
+        setFilterCategory(services)
+    }else{
+      setFilterCategory(services)
+    }
       //searchBrand filtering
       if (brandTitle) {
         console.log(brandTitle)
@@ -326,6 +343,7 @@ const useFilter = (data) => {
     role,
     searchUser,
     searchCoupon,
+    searchCategory,
     brandTitle,
     status,
     searchOrder,
@@ -372,6 +390,10 @@ const useFilter = (data) => {
   const handleSubmitBrands = (e) => {
     e.preventDefault();
     setBrandTitle(brandRef.current.value);
+  };
+  const handleSubmitCategory = (e) => {
+    e.preventDefault();
+    setSearchCategory(categoryRef.current.value);
   };
   const handleSubmitAttribute = (e) => {
     e.preventDefault();
@@ -825,11 +847,13 @@ const useFilter = (data) => {
     resultsPerPage,
     dataTable,
     serviceData,
+    filterCategory,
     handleSubmitUser,
     handleSubmitForAll,
     handleSubmitCoupon,
     handleSubmitOrder,
     handleSubmitBrands,
+    handleSubmitCategory,
     handleSubmitAttribute,
     handleOnDrop,
     handleUploadProducts,
