@@ -2,14 +2,29 @@ import requests from "./httpService";
 
 const ProductServices = {
   getAllProducts: async ({ page, limit, category, title, price }) => {
-    const searchCategory = category !== null ? category : "";
-    const searchTitle = title !== null ? title : "";
-    const searchPrice = price !== null ? price : "";
-      let body ={
-        category:searchCategory,
-        title:searchTitle,
-        price:searchPrice,
-      }
+let obj = {};
+let quantity;
+
+if (price === "low" || price === "high") {
+  obj.sort = { price: price === "low" ? "asc" : "desc" };
+} else if (price === "date-added-asc" || price === "date-added-desc") {
+  obj.sort = { created_at: price === "date-added-asc" ? "asc" : "desc" };
+} else {
+  obj = {};
+  quantity =price ? price === "status-selling" ? "1" : "-1" :'';
+}
+
+const searchCategory = category !== null ? category : "";
+const searchTitle = title !== null ? title : "";
+const body = {
+  category: searchCategory,
+  title: searchTitle,
+  ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
+  ...(quantity && { quantity })
+};
+
+console.log(body);
+
     return requests.post(
       `/product/list?page=${page}&pageSize=${limit}`,body
     );

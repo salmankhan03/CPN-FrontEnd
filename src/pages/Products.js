@@ -233,16 +233,16 @@ const Products = () => {
                 </option>
                 <option value="low">{t("LowtoHigh")}</option>
                 <option value="high">{t("HightoLow")}</option>
-                <option value="published">{t("Published")}</option>
-                <option value="unPublished">{t("Unpublished")}</option>
                 <option value="status-selling">{t("StatusSelling")}</option>
                 <option value="status-out-of-stock">{t("StatusStock")}</option>
                 <option value="date-added-asc">{t("DateAddedAsc")}</option>
                 <option value="date-added-desc">{t("DateAddedDesc")}</option>
-                <option value="date-updated-asc">{t("DateUpdatedAsc")}</option>
+                {/* <option value="published">{t("Published")}</option>
+                <option value="unPublished">{t("Unpublished")}</option> */}
+                {/* <option value="date-updated-asc">{t("DateUpdatedAsc")}</option>
                 <option value="date-updated-desc">
                   {t("DateUpdatedDesc")}
-                </option>
+                </option> */}
               </Select>
             </div>
           </form>

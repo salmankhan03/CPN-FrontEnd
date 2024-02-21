@@ -18,7 +18,7 @@ const SelectCategory = ({ setCategory, lang }) => {
         onChange={(e) => setCategory(e.target.value)}
         className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
       >
-        <option value="all" defaultValue >
+        <option value="" defaultValue >
           {"All Category"}
         </option>
         {data?.tree?.data?.map((cat) => (
