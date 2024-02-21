@@ -252,6 +252,20 @@ const useFilter = (data) => {
             .includes(searchCoupon?.toLowerCase())
       );
     }
+      //searchBrand filtering
+      if (brandTitle) {
+        console.log(brandTitle)
+        console.log(services)
+        services = services?.filter(
+          (search) =>
+            search?.name
+              ?.toLowerCase()
+              ?.includes(brandTitle?.toLowerCase()) ||
+            search?.name
+              ?.toLowerCase()
+              .includes(brandTitle?.toLowerCase())
+        );
+      }
     // order filtering
     if (status) {
       services = services.filter((order) => order.status === status);
@@ -312,6 +326,7 @@ const useFilter = (data) => {
     role,
     searchUser,
     searchCoupon,
+    brandTitle,
     status,
     searchOrder,
     country,
@@ -788,6 +803,7 @@ const useFilter = (data) => {
     userRef,
     searchRef,
     couponRef,
+    brandRef,
     orderRef,
     categoryRef,
     attributeRef,

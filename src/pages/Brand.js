@@ -185,6 +185,7 @@ const Brand = () => {
                                 type="search"
                                 className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                                 placeholder={t("SearchBrand")}
+                                onChange={handleSubmitBrands}
                             />
                         </div>
                     </form>
@@ -220,7 +221,7 @@ const Brand = () => {
                             <BrandTable
                                 lang={lang}
                                 isCheck={isCheck}
-                                brands={allBrannds?.list?.data}
+                                brands={serviceData ? serviceData: allBrannds?.list?.data}
                                 setIsCheck={setIsCheck}
                             />
                         </Table>
