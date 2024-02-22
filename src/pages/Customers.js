@@ -14,21 +14,24 @@ import CustomerTable from "components/customer/CustomerTable";
 import TableLoading from "components/preloader/TableLoading";
 import NotFound from "components/table/NotFound";
 import PageTitle from "components/Typography/PageTitle";
+import { SidebarContext } from "context/SidebarContext";
 import useAsync from "hooks/useAsync";
 import useFilter from "hooks/useFilter";
-import React from "react";
+import React, { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 import CustomerServices from "services/CustomerServices";
 
 const Customers = () => {
-  const { data, loading } = useAsync(CustomerServices.getAllCustomers);
-
-  // console.log('customer',data)
-
-  const {
+  const { currentPage, limitData, handleChangePage } = useContext(SidebarContext);
+  const { data, loading } = useAsync(() =>
+    CustomerServices.getAllCustomers({
+      page: currentPage,
+      limit: limitData,
+      customer: ""
+    }));
+    const {
     userRef,
-    handleChangePage,
     totalResults,
     resultsPerPage,
     dataTable,
@@ -39,7 +42,7 @@ const Customers = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data);
+  } = useFilter(data?.list?.data);
 
   const { t } = useTranslation();
 
@@ -56,7 +59,7 @@ const Customers = () => {
             <div className="items-center">
               <UploadManyTwo
                 title="Customers"
-                exportData={data}
+                exportData={data?.list?.data}
                 filename={filename}
                 isDisabled={isDisabled}
                 handleSelectFile={handleSelectFile}
@@ -81,6 +84,7 @@ const Customers = () => {
                 type="search"
                 name="search"
                 placeholder={t("CustomersPageSearchPlaceholder")}
+                onChange={handleSubmitUser}
               />
               <button
                 type="submit"
@@ -109,12 +113,12 @@ const Customers = () => {
                 </TableCell>
               </tr>
             </TableHeader>
-            <CustomerTable customers={dataTable} />
+            <CustomerTable customers={serviceData? serviceData : data?.list?.data} />
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={totalResults}
-              resultsPerPage={resultsPerPage}
+              totalResults={data?.list?.total}
+              resultsPerPage={data?.list?.per_page}
               onChange={handleChangePage}
               label="Table navigation"
             />

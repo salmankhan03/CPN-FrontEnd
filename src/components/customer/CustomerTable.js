@@ -10,6 +10,7 @@ import { t } from "i18next";
 import React from "react";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 // internal imports
 
 const CustomerTable = ({ customers }) => {
@@ -25,33 +26,33 @@ const CustomerTable = ({ customers }) => {
 
       <TableBody>
         {customers?.map((user) => (
-          <TableRow key={user._id}>
+          <TableRow key={user.id}>
             <TableCell>
               <span className="font-semibold uppercase text-xs">
                 {" "}
-                {user?._id?.substring(20, 24)}
+                {user?.id}
               </span>
             </TableCell>
             <TableCell>
               <span className="text-sm">
-                {dayjs(user.createdAt).format("MMM D, YYYY")}
+                {moment(user.createdAt).format("DD/MM/YYYY")}
               </span>
             </TableCell>
             <TableCell>
-              <span className="text-sm">{user.name}</span>
+              <span className="text-sm">{user.first_name}</span>
             </TableCell>
             <TableCell>
               <span className="text-sm">{user.email}</span>{" "}
             </TableCell>
             <TableCell>
-              <span className="text-sm font-medium">{user.phone}</span>
+              <span className="text-sm font-medium">{user.contact_no}</span>
             </TableCell>
 
             <TableCell>
               <div className="flex justify-end text-right">
                 <div className="p-2 cursor-pointer text-gray-400 hover:text-green-600">
                   {" "}
-                  <Link to={`/customer-order/${user._id}`}>
+                  <Link to={`/customer-order/${user.id}`}>
                     <Tooltip
                       id="view"
                       Icon={FiZoomIn}
@@ -62,8 +63,8 @@ const CustomerTable = ({ customers }) => {
                 </div>
 
                 <EditDeleteButton
-                  title={user.name}
-                  id={user._id}
+                  title={user.first_name}
+                  id={user.id}
                   handleUpdate={handleUpdate}
                   handleModalOpen={handleModalOpen}
                 />

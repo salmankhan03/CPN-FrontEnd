@@ -235,10 +235,10 @@ const useFilter = (data) => {
     if (searchUser) {
       services = services.filter(
         (search) =>
-          search?.name[lang]
+          search?.first_name
             ?.toLowerCase()
             .includes(searchUser.toLowerCase()) ||
-          search?.phone?.toLowerCase().includes(searchUser.toLowerCase()) ||
+          search?.contact_no?.toLowerCase().includes(searchUser.toLowerCase()) ||
           search?.email?.toLowerCase().includes(searchUser.toLowerCase())
       );
     }
