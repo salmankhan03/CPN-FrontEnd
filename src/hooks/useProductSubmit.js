@@ -92,8 +92,9 @@ const handleBrandsSelected = (data)=>{
   });
 };
 const handleEditorChange = (data) => {
-  // console.log(data)
-  var encodedString = btoa(data);
+  console.log(data)  
+  var encodedString = encodeURIComponent(data);
+  // var encodedString = btoa(data);
   setDescription(encodedString);
 };
 
@@ -205,7 +206,7 @@ const handleEditorChange = (data) => {
       formData.append("sell_price", Number(data.price) || 0);
       formData.append("bar_code", data.barcode || "");
       formData.append("brand", searchTerm?.brandName);
-      formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : null);
+      formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : '');
       formData.append("description", description);
       formData.append("slug", data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"));
       formData.append("quantity",  data.stock);
@@ -433,7 +434,7 @@ const handleEditorChange = (data) => {
 
           if (res) {
             // console.log("PRODUCTE DETAILS RESPONSE",res)
-            var decodeString = atob(res?.data?.description)
+            var decodeString = decodeURIComponent(res?.data?.description)
             // console.log("decodeString",decodeString);
             setResData(res.data);
             setSlug(res.data.slug);
