@@ -22,11 +22,11 @@ const CustomerServices = {
   },
 
   updateCustomer: async (id, body) => {
-    return requests.put(`/customer/${id}`, body);
+    return requests.post(`/user/update`, body);
   },
 
   deleteCustomer: async (id) => {
-    return requests.delete(`/customer/${id}`);
+    return requests.get(`/user/${id}/delete`);
   },
 };
 

@@ -6,9 +6,10 @@ import Title from "components/form/Title";
 import useCustomerSubmit from "hooks/useCustomerSubmit";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars-2";
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 const CustomerDrawer = ({ id }) => {
-  const { register, handleSubmit, onSubmit, errors } = useCustomerSubmit(id);
+  const { register, handleSubmit, onSubmit, errors,selectedProvince, setSelectedProvince,handleProvince } = useCustomerSubmit(id);
 
   // console.log('##CustomerDrawer',)
   return (
@@ -36,11 +37,24 @@ const CustomerDrawer = ({ id }) => {
                 <InputArea
                   register={register}
                   label="Name"
-                  name="name"
+                  name="first_name"
                   type="text"
                   placeholder={"Name"}
                 />
-                <Error errorName={errors.name} />
+                <Error errorName={errors.first_name} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Last Name"} />
+              <div className="col-span-8 sm:col-span-4">
+                <InputArea
+                  register={register}
+                  label="last Name"
+                  name="last_name"
+                  type="text"
+                  placeholder={"last Name"}
+                />
+                <Error errorName={errors.last_name} />
               </div>
             </div>
 
@@ -66,7 +80,7 @@ const CustomerDrawer = ({ id }) => {
                   register={register}
                   label="Phone"
                   name="phone"
-                  type="text"
+                  type="number"
                   placeholder={"Phone"}
                 />
                 <Error errorName={errors.phone} />
@@ -85,6 +99,50 @@ const CustomerDrawer = ({ id }) => {
                   placeholder={"Address"}
                 />
                 <Error errorName={errors.address} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"City"} />
+              <div className="col-span-8 sm:col-span-4">
+                <InputArea
+                  required
+                  register={register}
+                  label="City"
+                  name="city"
+                  type="text"
+                  placeholder={"City"}
+                />
+                <Error errorName={errors.city} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Province"} />
+              <div className="col-span-8 sm:col-span-4">
+                <RegionDropdown
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  defaultOptionLabel={'Select state'}
+                  // className={`country-Dropdown gray-bg ${billingFormErrors.state ? 'validation-error-border' : ''}`}
+                  country={'CA'}
+                  countryValueType={'short'}
+                  value={selectedProvince}
+                  onChange={(e) => handleProvince(e)}
+                  // isdisabled={isChecked}
+                />
+                <Error errorName={errors.province} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Postal Code"} />
+              <div className="col-span-8 sm:col-span-4">
+                <InputArea
+                  required
+                  register={register}
+                  label="Postal Code"
+                  name="zipcode"
+                  type="number"
+                  placeholder={"province"}
+                />
+                <Error errorName={errors.zipcode} />
               </div>
             </div>
           </div>

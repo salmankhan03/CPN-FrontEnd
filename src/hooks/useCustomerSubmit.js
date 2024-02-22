@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from 'utils/toast';
 
 const useCustomerSubmit = (id) => {
   const [imageUrl, setImageUrl] = useState('');
+  const [selectedProvince, setSelectedProvince]= useState()
   const { closeDrawer, setIsUpdate } = useContext(SidebarContext);
 
   const {
@@ -18,16 +19,24 @@ const useCustomerSubmit = (id) => {
   const onSubmit = async (data) => {
     try {
       const customerData = {
-        name: data.name,
+        id: id,
+        name: data.first_name,
+        last_name: data.last_name,
         email: data.email,
         phone: data.phone,
         address: data.address,
+        city:data.city,
+        province: selectedProvince,
+        zipcode:data.zipcode
+        
+
       };
 
       if (id) {
-        const res = await CustomerServices.updateCustomer(id, customerData);
-        setIsUpdate(true);
-        notifySuccess(res.message);
+        notifyError("Admin can't update the user details only customers can update there info ");
+        // const res = await CustomerServices.updateCustomer(id, customerData);
+        // setIsUpdate(true);
+        // notifySuccess(res.message);
         closeDrawer();
       }
     } catch (err) {
@@ -35,6 +44,9 @@ const useCustomerSubmit = (id) => {
       closeDrawer();
     }
   };
+  const handleProvince = (e) =>{
+      setSelectedProvince(e)
+  }
 
   useEffect(() => {
     if (id) {
@@ -42,10 +54,16 @@ const useCustomerSubmit = (id) => {
         try {
           const res = await CustomerServices.getCustomerById(id);
           if (res) {
-            setValue('name', res.name);
+            setValue('name', res.first_name);
+            setValue('last_name', res.last_name);
             setValue('phone', res.phone);
             setValue('email', res.email);
             setValue('address', res.address);
+            setValue('city', res.city);
+            // setValue('province', res.address);
+            setSelectedProvince(res.province)
+            setValue('zipCode', res.address);
+
           }
         } catch (err) {
           notifyError(err ? err?.response?.data?.message : err.message);
@@ -61,6 +79,9 @@ const useCustomerSubmit = (id) => {
     errors,
     setImageUrl,
     imageUrl,
+    selectedProvince, 
+    setSelectedProvince,
+    handleProvince
   };
 };
 
