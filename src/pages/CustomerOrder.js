@@ -26,7 +26,7 @@ const CustomerOrder = () => {
   );
 
   const { handleChangePage, totalResults, resultsPerPage, dataTable } =
-    useFilter(data);
+    useFilter(data?.list);
 
   return (
     <>
@@ -46,7 +46,7 @@ const CustomerOrder = () => {
         </div>
       )}
 
-      {data.length > 0 && !error && !loading ? (
+      {data?.list?.length > 0 && !error && !loading ? (
         <TableContainer className="mb-8">
           <Table>
             <TableHeader>
@@ -55,15 +55,15 @@ const CustomerOrder = () => {
                 <TableCell>{t("CustomerOrderTime")}</TableCell>
                 <TableCell>{t("CustomerShippingAddress")}</TableCell>
                 <TableCell>{t("Phone")} </TableCell>
-                <TableCell>{t("CustomerOrderMethod")} </TableCell>
-                <TableCell>{t("Amount")}</TableCell>
+                <TableCell>{t("CustomerOrderMethod")} </TableCell>         
                 <TableCell className="text-center">
                   {" "}
                   {t("CustomerOrderStatus")}{" "}
                 </TableCell>
-                <TableCell className="text-center">
+                <TableCell>{t("Amount")}</TableCell>
+                {/* <TableCell className="text-center">
                   {t("CustomerOrderAction")}
-                </TableCell>
+                </TableCell> */}
               </tr>
             </TableHeader>
             <CustomerOrderTable orders={dataTable} />

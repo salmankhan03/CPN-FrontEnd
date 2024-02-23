@@ -18,7 +18,7 @@ const CustomerServices = {
   },
 
   getCustomerById: async (id) => {
-    return requests.get(`/customer/${id}`);
+    return requests.get(`/${id}/get-customer`);
   },
 
   updateCustomer: async (id, body) => {
