@@ -33,7 +33,7 @@ const useCustomerSubmit = (id) => {
       };
 
       if (id) {
-        notifyError("Admin can't update the user details only customers can update there info ");
+        // notifyError("Admin can't update the user details only customers can update there info ");
         // const res = await CustomerServices.updateCustomer(id, customerData);
         // setIsUpdate(true);
         // notifySuccess(res.message);
@@ -53,16 +53,16 @@ const useCustomerSubmit = (id) => {
       (async () => {
         try {
           const res = await CustomerServices.getCustomerById(id);
-          if (res) {
-            setValue('name', res.first_name);
-            setValue('last_name', res.last_name);
-            setValue('phone', res.phone);
-            setValue('email', res.email);
-            setValue('address', res.address);
-            setValue('city', res.city);
-            // setValue('province', res.address);
-            setSelectedProvince(res.province)
-            setValue('zipCode', res.address);
+          if (res.status_code === 200) {
+            setValue('name', res.user.first_name);
+            setValue('last_name', res.user.last_name);
+            setValue('phone', res.user.contact_no);
+            setValue('email', res.user.email);
+            setValue('address', res.user.address);
+            setValue('city', res.user.city);
+            // setValue('province', res.user.address);
+            setSelectedProvince(res.user.province)
+            setValue('zipCode', res.user.address);
 
           }
         } catch (err) {

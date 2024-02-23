@@ -67,6 +67,7 @@ const CustomerDrawer = ({ id }) => {
                   name="email"
                   type="email"
                   placeholder={"Email"}
+                  disabled={true}
                 />
                 <Error errorName={errors.email} />
               </div>
