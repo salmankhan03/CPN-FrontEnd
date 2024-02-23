@@ -59,7 +59,7 @@ const OrderServices = {
   },
 
   getOrderCustomer: async (id, body) => {
-    return requests.get(`/orders/customer/${id}`, body);
+    return requests.get(`/user/${id}/orders`, body);
   },
 
   getOrderById: async (id) => {
