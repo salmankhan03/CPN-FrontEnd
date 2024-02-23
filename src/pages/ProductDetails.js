@@ -143,8 +143,8 @@ const ProductDetails = () => {
                   {t("Quantity")}: {data?.data?.quantity}
                 </span>
               </div>
-              <p className="text-sm leading-6 text-gray-500 dark:text-gray-400 md:leading-7">
-                {data?.data?.description}
+              <p className="text-sm leading-6 text-gray-500 dark:text-gray-400 md:leading-7" dangerouslySetInnerHTML={{ __html: decodeURIComponent(data?.data?.description) }}>
+                {/* {data?.data?.description} */}
               </p>
               <div className="flex flex-col mt-4">
                 <p className="font-serif font-semibold py-1 text-gray-500 text-sm">
