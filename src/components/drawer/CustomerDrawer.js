@@ -11,7 +11,7 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 const CustomerDrawer = ({ id }) => {
   const { register, handleSubmit, onSubmit, errors,selectedProvince, setSelectedProvince,handleProvince } = useCustomerSubmit(id);
 
-  // console.log('##CustomerDrawer',)
+  // console.log('##CustomerDrawer',selectedProvince)
   return (
     <>
       <div className="w-full relative p-6 border-b border-gray-100 bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
@@ -88,7 +88,7 @@ const CustomerDrawer = ({ id }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+            {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Address"} />
               <div className="col-span-8 sm:col-span-4">
                 <InputArea
@@ -101,7 +101,7 @@ const CustomerDrawer = ({ id }) => {
                 />
                 <Error errorName={errors.address} />
               </div>
-            </div>
+            </div> */}
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"City"} />
               <div className="col-span-8 sm:col-span-4">
@@ -125,7 +125,7 @@ const CustomerDrawer = ({ id }) => {
                   // className={`country-Dropdown gray-bg ${billingFormErrors.state ? 'validation-error-border' : ''}`}
                   country={'CA'}
                   countryValueType={'short'}
-                  value={selectedProvince}
+                  value={selectedProvince}                  
                   onChange={(e) => handleProvince(e)}
                   // isdisabled={isChecked}
                 />
@@ -141,7 +141,7 @@ const CustomerDrawer = ({ id }) => {
                   label="Postal Code"
                   name="zipcode"
                   type="number"
-                  placeholder={"province"}
+                  placeholder={"Postal Code"}
                 />
                 <Error errorName={errors.zipcode} />
               </div>

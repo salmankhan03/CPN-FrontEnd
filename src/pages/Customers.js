@@ -17,19 +17,25 @@ import PageTitle from "components/Typography/PageTitle";
 import { SidebarContext } from "context/SidebarContext";
 import useAsync from "hooks/useAsync";
 import useFilter from "hooks/useFilter";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import CustomerServices from "services/CustomerServices";
 
 const Customers = () => {
   const { currentPage, limitData, handleChangePage } = useContext(SidebarContext);
+  const [isAscendingOrder, setIsAscendingOrder] = useState(false)
+  const [allCustomers, setAllCustomers] = useState();
+
   const { data, loading } = useAsync(() =>
     CustomerServices.getAllCustomers({
       page: currentPage,
       limit: limitData,
       customer: ""
     }));
+    useEffect(()=>{
+      setAllCustomers(data)
+    },[data])
     const {
     userRef,
     totalResults,
@@ -42,9 +48,24 @@ const Customers = () => {
     handleSelectFile,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data?.list?.data);
+  } = useFilter(allCustomers?.list?.data);
 
   const { t } = useTranslation();
+  const handleIDSorting = () => {
+    // console.log("HANDLE ID ",allCustomers?.list?.data)
+    let sortedData;
+    setIsAscendingOrder(!isAscendingOrder);
+    sortedData =  [...allCustomers?.list?.data].sort((a, b) => (isAscendingOrder ? a.id - b.id : b.id - a.id));
+    console.log(sortedData)
+    setAllCustomers(prevData => ({
+        ...prevData,
+        list: {
+          ...prevData.list,
+          data: sortedData
+        }
+      }));
+
+};
 
   return (
     <>
@@ -59,7 +80,7 @@ const Customers = () => {
             <div className="items-center">
               <UploadManyTwo
                 title="Customers"
-                exportData={data?.list?.data}
+                exportData={allCustomers?.list?.data}
                 filename={filename}
                 isDisabled={isDisabled}
                 handleSelectFile={handleSelectFile}
@@ -103,7 +124,7 @@ const Customers = () => {
           <Table>
             <TableHeader>
               <tr>
-                <TableCell>{t("CustomersId")}</TableCell>
+                <TableCell onClick={handleIDSorting}>{t("CustomersId")}</TableCell>
                 <TableCell>{t("CustomersJoiningDate")}</TableCell>
                 <TableCell>{t("CustomersName")}</TableCell>
                 <TableCell>{t("CustomersEmail")}</TableCell>
@@ -113,12 +134,12 @@ const Customers = () => {
                 </TableCell>
               </tr>
             </TableHeader>
-            <CustomerTable customers={serviceData? serviceData : data?.list?.data} />
+            <CustomerTable customers={serviceData? serviceData : allCustomers?.list?.data} />
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={data?.list?.total}
-              resultsPerPage={data?.list?.per_page}
+              totalResults={allCustomers?.list?.total}
+              resultsPerPage={allCustomers?.list?.per_page}
               onChange={handleChangePage}
               label="Table navigation"
             />

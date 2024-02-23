@@ -20,13 +20,13 @@ const useCustomerSubmit = (id) => {
     try {
       const customerData = {
         id: id,
-        name: data.first_name,
+        first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
-        phone: data.phone,
-        address: data.address,
+        contact_no: data.phone,
+        // address: data.address,
         city:data.city,
-        province: selectedProvince,
+        state: selectedProvince,
         zipcode:data.zipcode
         
 
@@ -34,9 +34,10 @@ const useCustomerSubmit = (id) => {
 
       if (id) {
         // notifyError("Admin can't update the user details only customers can update there info ");
-        // const res = await CustomerServices.updateCustomer(id, customerData);
-        // setIsUpdate(true);
-        // notifySuccess(res.message);
+        const res = await CustomerServices.updateCustomer(id, customerData);
+        // console.log("res",res)
+        setIsUpdate(true);
+        notifySuccess("Customer Update Successfully");
         closeDrawer();
       }
     } catch (err) {
@@ -54,15 +55,16 @@ const useCustomerSubmit = (id) => {
         try {
           const res = await CustomerServices.getCustomerById(id);
           if (res.status_code === 200) {
-            setValue('name', res.user.first_name);
+            // console.log(res.user)
+            setValue('first_name', res.user.first_name);
             setValue('last_name', res.user.last_name);
             setValue('phone', res.user.contact_no);
             setValue('email', res.user.email);
-            setValue('address', res.user.address);
+            // setValue('address', res.user.address);
             setValue('city', res.user.city);
             // setValue('province', res.user.address);
-            setSelectedProvince(res.user.province)
-            setValue('zipCode', res.user.address);
+            setSelectedProvince(res.user.state)
+            setValue('zipcode', res.user.zipcode);
 
           }
         } catch (err) {
