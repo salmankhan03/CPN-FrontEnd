@@ -8,6 +8,7 @@ const useCustomerSubmit = (id) => {
   const [imageUrl, setImageUrl] = useState('');
   const [selectedProvince, setSelectedProvince]= useState()
   const { closeDrawer, setIsUpdate } = useContext(SidebarContext);
+  const [userData,setUserData]= useState()
 
   const {
     register,
@@ -56,15 +57,16 @@ const useCustomerSubmit = (id) => {
           const res = await CustomerServices.getCustomerById(id);
           if (res.status_code === 200) {
             // console.log(res.user)
-            setValue('first_name', res.user.first_name);
-            setValue('last_name', res.user.last_name);
-            setValue('phone', res.user.contact_no);
-            setValue('email', res.user.email);
+            setValue('first_name', res.user[0].first_name);
+            setValue('last_name', res.user[0].last_name);
+            setValue('phone', res.user[0].contact_no);
+            setValue('email', res.user[0].email);
             // setValue('address', res.user.address);
-            setValue('city', res.user.city);
+            setValue('city', res.user[0].city);
             // setValue('province', res.user.address);
-            setSelectedProvince(res.user.state)
-            setValue('zipcode', res.user.zipcode);
+            setSelectedProvince(res.user[0].state)
+            setValue('zipcode', res.user[0].zipcode);
+            setUserData(res.user[0])
 
           }
         } catch (err) {
@@ -75,6 +77,7 @@ const useCustomerSubmit = (id) => {
   }, [id, setValue]);
 
   return {
+    userData,
     register,
     handleSubmit,
     onSubmit,

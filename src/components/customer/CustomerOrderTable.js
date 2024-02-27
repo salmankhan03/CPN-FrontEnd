@@ -33,7 +33,7 @@ const CustomerOrderTable = ({ orders }) => {
             </TableCell>
             <TableCell>
               {" "}
-              <span className="text-sm">{order.shipping_address?.phone}</span>{" "}
+              <span className="text-sm">{order.shipping_address?.contact_no}</span>{" "}
             </TableCell>
             <TableCell>
               <span className="text-sm font-semibold">
