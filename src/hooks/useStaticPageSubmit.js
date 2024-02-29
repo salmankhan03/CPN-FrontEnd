@@ -31,7 +31,7 @@ const useStaticPageSubmit = (id, data) => {
       // console.log(atob(templatesContent))
       // console.log(atob(defaultContent))
       setIsSubmitting(true);
-      var encodedString = btoa(templatesContent);
+      var encodedString = templatesContent;
 
       const templatesData = {
         id: id ? id: '',
@@ -61,7 +61,7 @@ const useStaticPageSubmit = (id, data) => {
   };
 
   const handleEditorChange = (data) => {
-    var encodedString = btoa(data);
+    var encodedString = encodeURIComponent(data);
     setTemplatesContent(encodedString);
 };
 
@@ -94,7 +94,7 @@ const useStaticPageSubmit = (id, data) => {
           console.log(res)
           if (res) {
             console.log(res.data.template)
-            var decodeString = atob(res?.data?.template)
+            var decodeString = decodeURIComponent(res?.data?.template)
             console.log("decodeString",decodeString);
             setResData(res.data);
             setValue("name", res.data.name);//[language ? language : "en"]

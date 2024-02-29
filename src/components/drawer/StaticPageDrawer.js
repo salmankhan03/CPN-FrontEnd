@@ -134,7 +134,7 @@ const StaticPageDrawer = ({ id, data, brandList, lang }) => {
                     },
                   }}
 
-                  data={defaultContent ? atob(defaultContent) : "<p> HELLO </p>"}
+                  data={defaultContent ? defaultContent : "<p> HELLO </p>"}
                   onChange={(event, editor) => {
                     const data = editor.getData();
                     handleEditorChange(data);
