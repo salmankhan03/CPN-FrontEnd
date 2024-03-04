@@ -509,6 +509,22 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
                 </div>
               </div>
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label="Visitor Counter" />
+                <div className="col-span-8 sm:col-span-4">
+                <Input
+                    {...register(`visitors_counter`, {
+                      required: "Visitor Count is required!",
+                    })}
+                    className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                    name="visitors_counter"
+                    type="number"
+                    placeholder={"Visitor Count is required!"}
+                    // onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.visitors_counter} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("Published")} />
                 <div className="col-span-8 sm:col-span-4">
                   <SwitchToggle
