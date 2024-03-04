@@ -217,7 +217,7 @@ const handleEditorChange = (data) => {
       formData.append("isCombination", updatedVariants?.length > 0 ? isCombination : false);
       formData.append("variants", isCombination ? updatedVariants : []);
       formData.append("is_tax_apply", addTax === true ? 1 : 0);
-      formData.append("visitors_counter", data?.visitors_counter);\
+      formData.append("visitors_counter", data?.visitors_counter);
 
       // await Promise.all(imageUrl.map(async (image, index) => {
       //   if(image.preview){
