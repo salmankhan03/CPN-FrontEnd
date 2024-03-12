@@ -52,6 +52,7 @@ const Orders = () => {
   } = useContext(SidebarContext);
   const [id, SetId] = useState()
   const [updatedStatus, SetUpdatedStatus] = useState()
+  const [previousStatus,SetPreviousStatus]= useState()
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { t } = useTranslation();
   const [loadingExport, setLoadingExport] = useState(false);
@@ -137,6 +138,8 @@ const Orders = () => {
     SetId(id)
     console.log(id, data)
     const selectedOrder = dataTable.find(order => order?.id === id);
+    console.log("selectedOrder",selectedOrder)
+    SetPreviousStatus(selectedOrder?.status)
     setCustomer(selectedOrder?.billing_address?.first_name)
     setCustomerEmail(selectedOrder?.billing_address?.email)
     SetUpdatedStatus(status)
@@ -152,6 +155,7 @@ const Orders = () => {
       {isUpdateModalOpen && (
         <CustomUpdateModal
           id={id}
+          previous_order_status={previousStatus}
           status={updatedStatus}
           title={updatedStatus}
           handleConfirmUpdate={isUpdateModalOpen}

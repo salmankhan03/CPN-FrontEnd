@@ -18,8 +18,8 @@ const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => 
     <>
       <TableBody className="dark:bg-gray-900">
         {orders?.map((order, i) =>{
-          console.log("shipp",order?.shipping_address?.first_name)
-          console.log("bill",order?.billing_address?.first_name)
+          // console.log("shipp",order?.shipping_address?.first_name)
+          // console.log("bill",order?.billing_address?.first_name)
 
           return (
           <TableRow key={i + 1}>

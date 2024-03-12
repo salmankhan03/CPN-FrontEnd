@@ -9,7 +9,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import UploadAdapter from "services/UploadAdapter";
 import { update } from "cloudinary/lib/api";
-const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,templatesList,customerName,customerEmail}) => {
+const CustomUpdateModal = ({ id, previous_order_status,status, title, handleConfirmUpdate, closeModal, templatesList, customerName, customerEmail }) => {
   const location = useLocation();
   const [isCheck, setIsCheck] = useState(true);
   const [readEmailTemplates, setReadEmailTemplates] = useState(false);
@@ -19,13 +19,13 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
 
   const handleSelectAll = () => {
     setIsCheck(!isCheck);
-    
+
   };
-  const showEmailTemplates = () =>{
-    if(isCheck){
+  const showEmailTemplates = () => {
+    if (isCheck) {
       const StatusId = getStatusId(status);
-        setReadEmailTemplates(true)
-    }else{
+      setReadEmailTemplates(true)
+    } else {
       handleConfirm()
     }
   }
@@ -33,18 +33,32 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
   function getStatusId(statusName) {
     const findStatus = templatesList.find(item => item.name === statusName);
     let decodeString = atob(findStatus.body)
-    let againdecodeString = atob(decodeString)    
+    let againdecodeString = atob(decodeString)
     const values = {
       customer_Name: customerName,
       order_Number: id,
       company_Name: 'http://kingsmankids.com/'
     };
-    againdecodeString = againdecodeString.replace(/\[(customer_Name|order_Number|company_Name)\]/g,  (match, p1) => values[p1]);
-    let newString = `<div>to : test@gmail.com</div><div>from : ${customerEmail}</div>`+againdecodeString
+    againdecodeString = againdecodeString.replace(/\[(customer_Name|order_Number|company_Name)\]/g, (match, p1) => values[p1]);
+    let newString = `<div>to : test@gmail.com</div><div>from : ${customerEmail}</div>` + againdecodeString
     setSelectedTemplates(newString)
     return findStatus ? findStatus.id : null;
   }
- 
+  function extractEmails(htmlContent) {
+    const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+    const toEmailMatches = htmlContent.match(/to\s*:\s*([^<]*)/i);
+    const toEmails = toEmailMatches ? toEmailMatches[1].match(emailRegex) : [];
+    const fromEmailMatches = htmlContent.match(/from\s*:\s*([^<]*)/i);
+    const fromEmails = fromEmailMatches ? fromEmailMatches[1].match(emailRegex) : [];
+    const uniqueToEmails = toEmails ? [...new Set(toEmails)] : [];
+    const uniqueFromEmails = fromEmails ? fromEmails[0] : "";
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = htmlContent;
+    const contentAfterFirstDiv = tempElement.innerHTML.split('</div>')[2];
+    return { to: uniqueToEmails, from: uniqueFromEmails, content: contentAfterFirstDiv};
+  }
+
+
   const handleConfirm = async () => {
     try {
       setConfirmOpen(false);
@@ -54,14 +68,19 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
         if (id) {
           console.log("updated data", selectedTemplates)
           // const StatusId = getStatusId(status);
-          var encodedString = btoa(selectedTemplates);
+          const { to, from,content } = extractEmails(selectedTemplates);
+
+          var encodedString = encodeURIComponent(content);
 
           let body = {
-            id: id,
-            status: status,
-            template: encodedString
+            order_id: id,
+            previous_order_status:previous_order_status,
+            current_order_status: status,
+            email_body: encodedString,
+            from_email: from,
+            to_email: to
           }
-          // console.log(body)
+          console.log("body", body)
           OrderServices.updateOrder(body)
             .then((res) => {
               notifySuccess(res.message);
@@ -70,35 +89,35 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
             .catch((err) => notifyError(err.message));
         }
       }
-      }catch (err) {
-        notifyError(err ? err?.response?.data?.message : err?.message);
-        closeModal();
-        setConfirmOpen(false);
-      }
-    };
-
-    const handleCancel = () => {
-      setConfirmOpen(false);
+    } catch (err) {
+      notifyError(err ? err?.response?.data?.message : err?.message);
       closeModal();
-    };
-
-    function CustomUploadAdapterPlugin(editor) {
-      editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-        return new UploadAdapter(loader);
-      };
+      setConfirmOpen(false);
     }
-
-    const handleEditorChange = (data) => {
-      console.log(data)
-      setSelectedTemplates(data)
-      // var encodedString = btoa(data);
-      // setTemplatesContent(encodedString);
   };
-  
 
-    return (
-      <>
-      {!readEmailTemplates ?(
+  const handleCancel = () => {
+    setConfirmOpen(false);
+    closeModal();
+  };
+
+  function CustomUploadAdapterPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+      return new UploadAdapter(loader);
+    };
+  }
+
+  const handleEditorChange = (data) => {
+    console.log(data)
+    setSelectedTemplates(data)
+    // var encodedString = btoa(data);
+    // setTemplatesContent(encodedString);
+  };
+
+
+  return (
+    <>
+      {!readEmailTemplates ? (
         <Modal isOpen={isConfirmOpen} onClose={() => setConfirmOpen(false)}>
           <ModalBody className="text-center custom-modal px-8 pt-6 pb-4">
             <span className="flex justify-center text-3xl mb-6 text-red-500">
@@ -114,16 +133,16 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
             </p>
             <div className="mt-3">
               <span className="mt-1">
-              <CheckBox
-                    type="checkbox"
-                    name="select"
-                    id="select"
-                    isChecked={isCheck}
-                    handleClick={handleSelectAll}
-                  />
-                </span>
-                <span className="ml-3"> Custom message!</span>
-          </div>
+                <CheckBox
+                  type="checkbox"
+                  name="select"
+                  id="select"
+                  isChecked={isCheck}
+                  handleClick={handleSelectAll}
+                />
+              </span>
+              <span className="ml-3"> Custom message!</span>
+            </div>
           </ModalBody>
           <ModalFooter className="justify-center">
             <Button
@@ -138,7 +157,7 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
             </Button>
           </ModalFooter>
         </Modal>
-        ):(
+      ) : (
 
         <Modal isOpen={isConfirmOpen} onClose={() => setConfirmOpen(false)}>
           <ModalBody className="text-center custom-modal px-8 pt-6 pb-4">
@@ -147,34 +166,34 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
             </span>
 
             <CKEditor
-                  type=""
-                  editor={ClassicEditor}
-                  config={{
-                    extraPlugins: [CustomUploadAdapterPlugin],     
-                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
-                      'imageStyle:alignLeft',
-                      'imageStyle:alignCenter',
-                      'imageStyle:alignRight', 'insertTable',
-                      'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
-                    heading: {
-                      options: [
-                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                      ]
-                    },
-                  }}
+              type=""
+              editor={ClassicEditor}
+              config={{
+                extraPlugins: [CustomUploadAdapterPlugin],
+                toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'link', 'numberedList', 'bulletedList', 'imageUpload', 'imageStyle:full',
+                  'imageStyle:alignLeft',
+                  'imageStyle:alignCenter',
+                  'imageStyle:alignRight', 'insertTable',
+                  'tableColumn', 'tableRow', 'mergeTableCells', 'mediaEmbed', '|', 'undo', 'redo', 'Subscript'],//'imageUpload','underline', 'strikethrough', 'code', 'subscript', 'superscript'
+                heading: {
+                  options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                    { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                    { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                  ]
+                },
+              }}
 
-                  data={selectedTemplates}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    handleEditorChange(data);
-                  }}
-                />
+              data={selectedTemplates}
+              onChange={(event, editor) => {
+                const data = editor.getData();
+                handleEditorChange(data);
+              }}
+            />
             {/* <div dangerouslySetInnerHTML={{ __html:selectedTemplates }} /> */}
 
           </ModalBody>
@@ -191,9 +210,9 @@ const CustomUpdateModal = ({ id,status, title, handleConfirmUpdate, closeModal,t
             </Button>
           </ModalFooter>
         </Modal>
-        )}
-      </>
-    );
-  };
+      )}
+    </>
+  );
+};
 
-  export default CustomUpdateModal;
+export default CustomUpdateModal;

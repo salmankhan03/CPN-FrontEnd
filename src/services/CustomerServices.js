@@ -4,7 +4,9 @@ const CustomerServices = {
   getAllCustomers: async ({ page, limit, body }) => {
     return requests.post(`/customer/list?page=${page}&pageSize=${limit}`,body);
   },
-
+  getSentEmailListByCustomer:async(id,page,limit) => {
+    return requests.get(`/${id}/order-status-update?page=${page}&pageSize=${limit}`)
+  },
   addAllCustomers: async (body) => {
     return requests.post("/customer/add/all", body);
   },
