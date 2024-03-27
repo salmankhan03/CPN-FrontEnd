@@ -18,7 +18,7 @@ const AttributeOptionTwo = ({
     setSelected(items);
     setValues({
       ...values,
-      [attributes._id]: items?.map((el) => el._id),
+      [attributes.id]: items?.map((el) => el.id),
     });
   };
 
@@ -27,7 +27,7 @@ const AttributeOptionTwo = ({
       return {
         ...val,
         label: showingTranslateValue(val?.name, lang),
-        value: val?._id,
+        value: val?.id,
       };
     });
     setAttributeOptions(options);

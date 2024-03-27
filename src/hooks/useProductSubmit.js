@@ -19,7 +19,7 @@ const useProductSubmit = (id) => {
   const { isDrawerOpen, closeDrawer, setIsUpdate, lang, currentPage, limitData } =
     useContext(SidebarContext);
 
-  const { data: attribue } = useAsync(AttributeServices.getShowingAttributes);
+  const { data: attribue } = useAsync(() => AttributeServices.getAllAttributes());
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const { data: getAllBrands, } = useAsync(() => BrandServices?.getAllBrands({
     page: currentPage,
@@ -72,31 +72,31 @@ const useProductSubmit = (id) => {
   const [selectedBrand, setSelectedBrand] = useState();
   const [filteredBrandOptions, setFilteredBrandOptions] = useState();
 
-const handleBrandSearch = (e) => {
-  const term = e.target.value;
+  const handleBrandSearch = (e) => {
+    const term = e.target.value;
 
-  setSearchTerm((prevSearchTerm) => ({
-    ...prevSearchTerm,
-    brandName: term,
-    brand_Id: null,
-  }));
-  const filtered = getAllBrands?.list?.data?.filter((item) =>
-    item.name?.toLowerCase().includes(term?.toLowerCase())
-  );
-  setFilteredBrandOptions(filtered);
-};
-const handleBrandsSelected = (data)=>{
-  setSearchTerm({
-    brandName: data?.name,
-    brand_Id: data?.id,
-  });
-};
-const handleEditorChange = (data) => {
-  console.log(data)  
-  var encodedString = encodeURIComponent(data);
-  // var encodedString = btoa(data);
-  setDescription(encodedString);
-};
+    setSearchTerm((prevSearchTerm) => ({
+      ...prevSearchTerm,
+      brandName: term,
+      brand_Id: null,
+    }));
+    const filtered = getAllBrands?.list?.data?.filter((item) =>
+      item.name?.toLowerCase().includes(term?.toLowerCase())
+    );
+    setFilteredBrandOptions(filtered);
+  };
+  const handleBrandsSelected = (data) => {
+    setSearchTerm({
+      brandName: data?.name,
+      brand_Id: data?.id,
+    });
+  };
+  const handleEditorChange = (data) => {
+    console.log(data)
+    var encodedString = encodeURIComponent(data);
+    // var encodedString = btoa(data);
+    setDescription(encodedString);
+  };
 
 
 
@@ -180,36 +180,36 @@ const handleEditorChange = (data) => {
       // console.log(newImages)
 
       // static 
-    //   let newImages =[];
+      //   let newImages =[];
 
-    //   let obj ={
-    //     "id": "",
-    //     "product_id": "",
-    //     "name": "https://backend.kingsmankids.com/uploads/products/2023/10/laravel-f5011e53b385f2def4749b89ee09b524.jpg",
-    //     "original_name": "istockphoto-1080057124-612x612.jpg"
-    // }
-    // newImages.push(obj);
-    // console.log(newImages)
+      //   let obj ={
+      //     "id": "",
+      //     "product_id": "",
+      //     "name": "https://backend.kingsmankids.com/uploads/products/2023/10/laravel-f5011e53b385f2def4749b89ee09b524.jpg",
+      //     "original_name": "istockphoto-1080057124-612x612.jpg"
+      // }
+      // newImages.push(obj);
+      // console.log(newImages)
 
-    // let newImages =["blob:http://localhost:3000/28632b9c-6026-4207-a987-3f3511ac3b84"];
-
-
+      // let newImages =["blob:http://localhost:3000/28632b9c-6026-4207-a987-3f3511ac3b84"];
 
 
-    //
+
+
+      //
 
       let formData = new FormData();
 
-      formData.append("id", productId ? productId :"");
+      formData.append("id", productId ? productId : "");
       formData.append("name", data?.title);
       formData.append("price", Number(data.originalPrice) || 0);
       formData.append("sell_price", Number(data.price) || 0);
       formData.append("bar_code", data.barcode || "");
       formData.append("brand", searchTerm?.brandName);
-      formData.append("brand_id", searchTerm.brand_Id ?  searchTerm.brand_Id  : '');
+      formData.append("brand_id", searchTerm.brand_Id ? searchTerm.brand_Id : '');
       formData.append("description", description);
       formData.append("slug", data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"));
-      formData.append("quantity",  data.stock);
+      formData.append("quantity", data.stock);
       formData.append("tags", tag?.map(tag => `${tag}`).join(','));
       formData.append("sku", data.sku || "");
       formData.append("category_id", selectedCategory[0].id);
@@ -250,31 +250,31 @@ const handleEditorChange = (data) => {
         }
       }));
 
-      
+
       const imageCount = imageUrl.length;
       const productData = {
         ...Array.from({ length: imageCount }, (_, index) => ({
           [`file${index + 1}`]: imageUrl[index]
         })).reduce((acc, val) => ({ ...acc, ...val }), {}),
-        id: productId ? productId :"",
+        id: productId ? productId : "",
         name: data?.title,
         price: Number(data.originalPrice) || 0,
         bar_code: data.barcode || "",
         brand: searchTerm?.brandName,
-        brand_id : searchTerm.brand_Id ?  searchTerm.brand_Id  : null,
+        brand_id: searchTerm.brand_Id ? searchTerm.brand_Id : null,
         description: data.description,
         slug: data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"),
-        quantity:variants?.length < 1 ? data.stock : Number(totalStock),
+        quantity: variants?.length < 1 ? data.stock : Number(totalStock),
         tags: tag?.map(tag => `${tag}`).join(','),
         sku: data.sku || "",
-        category_id:selectedCategory[0].id,
+        category_id: selectedCategory[0].id,
         status: published ? "show" : "hide",
         // category: defaultCategory[0].id,
         isCombination: updatedVariants?.length > 0 ? isCombination : false,
         variants: isCombination ? updatedVariants : [],
         is_tax_apply: addTax === true ? 1 : 0
       };
-      
+
       // return setIsSubmitting(false);
 
       if (updatedId) {
@@ -442,7 +442,7 @@ const handleEditorChange = (data) => {
             setSlug(res.data.slug);
             setUpdatedId(res.data.id);
             setValue("title", res.data.name);
-            setValue("description",res.data.description);
+            setValue("description", res.data.description);
             setValue("slug", res.data.slug);
             setValue("show", res.data.show);
             setValue("sku", res.data.sku);
@@ -454,7 +454,7 @@ const handleEditorChange = (data) => {
             setValue("stock", res.data.quantity);
             setValue("visitors_counter", res?.data?.visitors_counter);
             const tagsArray = res?.data?.tags?.split(',');
-            setTag(tagsArray ? tagsArray :[]);   
+            setTag(tagsArray ? tagsArray : []);
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
@@ -464,14 +464,14 @@ const handleEditorChange = (data) => {
               ...prevData,
               brandName: res.data.brand,
               brand_Id: res.data.brand_id,
-          }));
-        
-        let categorySelected={
-          id:res?.data?.category?.id,
-          name:res?.data?.category?.name
-        }
-          setSelectedCategory([categorySelected]);
-          setDefaultCategory([categorySelected]);
+            }));
+
+            let categorySelected = {
+              id: res?.data?.category?.id,
+              name: res?.data?.category?.name
+            }
+            setSelectedCategory([categorySelected]);
+            setDefaultCategory([categorySelected]);
 
             setBarcode(res.data.barcode);
             setSku(res.data.sku);
@@ -480,7 +480,7 @@ const handleEditorChange = (data) => {
               const imageNames = imagesData.map(image => image.name);
               setImageUrl(imageNames);
             }
-          
+
             console.log(res?.data)
 
             // res.categories.map((category) => {
@@ -494,10 +494,10 @@ const handleEditorChange = (data) => {
             //   lang
             // );
 
-            
-    
-              
-            setVariants(res.variants);
+
+
+
+            // setVariants(res.variants);
             setIsCombination(res.isCombination);
             setQuantity(res?.stock);
             setTotalStock(res.stock);
@@ -522,34 +522,37 @@ const handleEditorChange = (data) => {
 
   //for filter related attribute and extras for every product which need to update
   useEffect(() => {
-    const result = attribue
-      ?.filter((att) => att.option !== "Checkbox")
-      .map((v) => {
-        return {
-          label: showingTranslateValue(v?.title, lang),
-          value: showingTranslateValue(v?.title, lang),
-        };
-      });
+    if (attribue?.list) {
+      const result = attribue?.list?.data
+        ?.filter((att) => att.option !== "Checkbox")
+        .map((v) => {
+          return {
+            label: v?.title,
+            value: v?.title,
+          };
+        });
 
-    setAttTitle([...result]);
-    let res ;
-    // const res = Object?.keys(Object.assign({}, ...variants));
-    if (variants && typeof variants === 'object') {
-       res = Object.keys(Object.assign({}, ...Object.values(variants)));
-      console.log(res);
-    } 
-    const varTitle = attribue?.filter((att) => res.includes(att._id));
+      setAttTitle([...result]);
+      let res;
+      // const res = Object?.keys(Object.assign({}, ...variants));
+      if (attribue?.list?.data && typeof attribue?.list?.data === 'object') {
+        res = Object.keys(Object.assign({}, ...Object.values(attribue?.list?.data)));
+        console.log(res);
+      }
+      console.log("res")
+      const varTitle = attribue?.list?.data?.filter((att) => attribue?.list?.data.includes(att.id));
 
-    if (variants?.length > 0) {
-      const totalStock = variants?.reduce((pre, acc) => pre + acc.quantity, 0);
-      setTotalStock(Number(totalStock));
+      if (attribue?.list?.data?.length > 0) {
+        const totalStock = attribue?.list?.data?.reduce((pre, acc) => pre + acc.quantity, 0);
+        setTotalStock(Number(totalStock));
+      }
+      setVariantTitle(varTitle);
     }
-    setVariantTitle(varTitle);
-  }, [attribue, variants, language, lang]);
+  }, [attribue]);//getAllBrands
 
   //for adding attribute values
   const handleAddAtt = (v, el) => {
-    const result = attribue.filter((att) => {
+    const result = attribue?.list?.data?.filter((att) => {
       const attribueTItle = showingTranslateValue(att?.title, lang);
       return v.some((item) => item.label === attribueTItle);
     });
@@ -643,9 +646,8 @@ const handleEditorChange = (data) => {
     // console.log("handleRemoveVariant", vari, ext);
     swal({
       title: `Are you sure to delete this ${ext ? "Extra" : "combination"}!`,
-      text: `(If Okay, It will be delete this ${
-        ext ? "Extra" : "combination"
-      })`,
+      text: `(If Okay, It will be delete this ${ext ? "Extra" : "combination"
+        })`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -832,7 +834,7 @@ const handleEditorChange = (data) => {
     setDescription,
     addTax,
     setAddTax,
-    defaultContent, 
+    defaultContent,
     setDefaultContent,
     handleEditorChange,
     handleSelectLanguage,

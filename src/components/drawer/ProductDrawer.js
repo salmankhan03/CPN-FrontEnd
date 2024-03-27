@@ -172,6 +172,8 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
     }
   }
 
+  console.log("attributes",attributes)
+  console.log("attribue",attribue)
   return (
     <>
       <Modal
@@ -547,7 +549,7 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
 
           {tapValue === "Combination" &&
             isCombination &&
-            (attribue.length < 1 ? (
+            (attribue?.list.length < 1 ? (
               <div
                 className="bg-teal-100 border border-teal-600 rounded-md text-teal-900 px-4 py-3 m-4"
                 role="alert"
@@ -585,10 +587,10 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
                   />
 
                   {attributes?.map((attribute, i) => (
-                    <div key={attribute._id}>
+                    <div key={attribute.id}>
                       <div className="flex w-full h-10 justify-between font-sans rounded-tl rounded-tr bg-gray-200 px-4 py-3 text-left text-sm font-normal text-gray-700 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
                         {"Select"}
-                        {showingTranslateValue(attribute?.title, language)}
+                        {attribute?.title}
                       </div>
 
                       <AttributeOptionTwo
