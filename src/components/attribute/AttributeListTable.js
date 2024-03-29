@@ -72,7 +72,7 @@ const AttributeListTable = ({
                         );
 
                         const attributeName = attributeData?.find(
-                          (v) => v._id === variant[att?._id]
+                          (v) => v.id === variant[att?.id]
                         )?.name;
                         if (attributeName === undefined) {
                           return attributeName?.en;
@@ -129,11 +129,11 @@ const AttributeListTable = ({
             <TableCell className="font-medium text-sm">
               <CombinationInput
                 id={i}
-                name="price"
+                name="sell_price"
                 placeholder="Sale price"
                 variant={variant}
                 isBulkUpdate={isBulkUpdate}
-                value={variant.price || ""}
+                value={variant.sell_price || ""}
                 handleQuantityPrice={handleQuantityPrice}
               />
             </TableCell>
