@@ -137,7 +137,7 @@ const useProductSubmit = (id) => {
         return notifyError("Default Category is required!");
       }
       console.log("submit VV",variant)
-      const updatedVariants = variants?.map((v, i) => {
+      const updatedVariants = await Promise.all( variants?.map((v, i) => {
         const newObj = {
           ...v,
           sell_price: Number(v?.sell_price || 0),
@@ -147,8 +147,9 @@ const useProductSubmit = (id) => {
         };
         return newObj;
         // return JSON.stringify(newObj);
-      });
-      console.log("updatedVariants ==>", updatedVariants)
+      }));
+      const variantsSting = JSON.stringify(updatedVariants);
+      console.log("updatedVariants ==>",variantsSting )
       setIsBasicComplete(true);
       setSell_price(data.sell_price);
       setQuantity(data.quantity);
@@ -173,7 +174,7 @@ const useProductSubmit = (id) => {
       formData.append("category_id", selectedCategory[0].id);
       formData.append("status", published ? "show" : "hide");
       formData.append("is_combination", updatedVariants?.length > 0 ? 1 : 0);
-      formData.append("variants", isCombination ? updatedVariants : []);
+      formData.append("variants", isCombination ? variantsSting : []);
       formData.append("is_tax_apply", addTax === true ? 1 : 0);
       formData.append("visitors_counter", data?.visitors_counter);
 
@@ -426,9 +427,17 @@ const useProductSubmit = (id) => {
               const imageNames = imagesData.map(image => image.name);
               setImageUrl(imageNames);
             }
-            console.log("variants 2", res?.data.variants)
-
-            setVariants(res?.data?.variants ? res?.data?.variants : []);
+          //   console.log("variants 2", res?.data.variants)
+          //  console.log(JSON.parse(res?.data?.variants))
+          //  let stringifyVarinats = JSON.parse(res?.data?.variants)
+          let stringifyVarinats= [];
+          for (let index = 0; index < res?.data?.variants.length; index++) {
+            const element = res?.data?.variants[index];
+            // console.log(element)
+            stringifyVarinats.push(element)
+          }
+          // console.log("stringifyVarinats",stringifyVarinats)
+            setVariants(res?.data?.variants ? JSON.parse(res?.data?.variants) : []);
             setIsCombination(res?.data?.variants ? 1 :0);
             setQuantity(res?.data.quantity);
             setTotalStock(res.quantity);
