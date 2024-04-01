@@ -430,12 +430,12 @@ const useProductSubmit = (id) => {
           //   console.log("variants 2", res?.data.variants)
           //  console.log(JSON.parse(res?.data?.variants))
           //  let stringifyVarinats = JSON.parse(res?.data?.variants)
-          let stringifyVarinats= [];
-          for (let index = 0; index < res?.data?.variants.length; index++) {
-            const element = res?.data?.variants[index];
-            // console.log(element)
-            stringifyVarinats.push(element)
-          }
+          // let stringifyVarinats= [];
+          // for (let index = 0; index < res?.data?.variants.length; index++) {
+          //   const element = res?.data?.variants[index];
+          //   // console.log(element)
+          //   stringifyVarinats.push(element)
+          // }
           // console.log("stringifyVarinats",stringifyVarinats)
             setVariants(res?.data?.variants ? JSON.parse(res?.data?.variants) : []);
             setIsCombination(res?.data?.variants ? 1 :0);
