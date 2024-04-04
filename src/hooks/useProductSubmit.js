@@ -136,8 +136,7 @@ const useProductSubmit = (id) => {
         setIsSubmitting(false);
         return notifyError("Default Category is required!");
       }
-      console.log("submit VV",variant)
-      const updatedVariants = await Promise.all( variants?.map((v, i) => {
+      const updatedVariants = await Promise.all(variants?.map((v, i) => {
         const newObj = {
           ...v,
           sell_price: Number(v?.sell_price || 0),
@@ -149,7 +148,7 @@ const useProductSubmit = (id) => {
         // return JSON.stringify(newObj);
       }));
       const variantsSting = JSON.stringify(updatedVariants);
-      console.log("updatedVariants ==>",variantsSting )
+      console.log("updatedVariants ==>", variantsSting)
       setIsBasicComplete(true);
       setSell_price(data.sell_price);
       setQuantity(data.quantity);
@@ -177,6 +176,7 @@ const useProductSubmit = (id) => {
       formData.append("variants", isCombination ? variantsSting : []);
       formData.append("is_tax_apply", addTax === true ? 1 : 0);
       formData.append("visitors_counter", data?.visitors_counter);
+      formData.append("variants_array", JSON.stringify(variantTitle));
 
       await Promise.all(imageUrl.map(async (image, index) => {
         if (image.preview) {
@@ -427,18 +427,18 @@ const useProductSubmit = (id) => {
               const imageNames = imagesData.map(image => image.name);
               setImageUrl(imageNames);
             }
-          //   console.log("variants 2", res?.data.variants)
-          //  console.log(JSON.parse(res?.data?.variants))
-          //  let stringifyVarinats = JSON.parse(res?.data?.variants)
-          // let stringifyVarinats= [];
-          // for (let index = 0; index < res?.data?.variants.length; index++) {
-          //   const element = res?.data?.variants[index];
-          //   // console.log(element)
-          //   stringifyVarinats.push(element)
-          // }
-          // console.log("stringifyVarinats",stringifyVarinats)
+            //   console.log("variants 2", res?.data.variants)
+            //  console.log(JSON.parse(res?.data?.variants))
+            //  let stringifyVarinats = JSON.parse(res?.data?.variants)
+            // let stringifyVarinats= [];
+            // for (let index = 0; index < res?.data?.variants.length; index++) {
+            //   const element = res?.data?.variants[index];
+            //   // console.log(element)
+            //   stringifyVarinats.push(element)
+            // }
+            // console.log("stringifyVarinats",stringifyVarinats)
             setVariants(res?.data?.variants ? JSON.parse(res?.data?.variants) : []);
-            setIsCombination(res?.data?.variants ? 1 :0);
+            setIsCombination(res?.data?.variants ? 1 : 0);
             setQuantity(res?.data.quantity);
             setTotalStock(res.quantity);
           }
@@ -552,19 +552,6 @@ const useProductSubmit = (id) => {
         }) => JSON.stringify({ ...rest }) !== "{}"
 
       ) : [];
-    // const result = CustomVariants?.filter(
-    //   ({
-    //     originalPrice,
-    //     discount,
-    //     price,
-    //     quantity,
-    //     barcode,
-    //     sku,
-    //     productId,
-    //     image,
-    //     ...rest
-    //   }) => JSON.stringify({ ...rest }) !== "{}"
-    // );
 
     console.log("result", result);
     setVariants(result);

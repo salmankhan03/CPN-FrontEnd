@@ -23,27 +23,27 @@ const AttributeListTable = ({
 }) => {
   // console.log("variants", variants)
   // console.log("variantTitle", variantTitle)
-  if (variantTitle.length > 0) {
-    for (let index = 0; index < variantTitle.length; index++) {
-      getAttributeIDByOptions(variantTitle[index]?.id, index)
-    }
-  }
-  // 
-  async function getAttributeIDByOptions(id, index) {
-    await AttributeServices.getAttributeIdByOptions(id)
-      .then((resp) => {
-        console.log(resp)
-        if (resp?.status_code === 200) {
-          let options = resp?.list?.data
-          // console.log("options",options)
-          variantTitle[index]['variants']= options
-        }
+  // if (variantTitle.length > 0) {
+  //   for (let index = 0; index < variantTitle.length; index++) {
+  //     // getAttributeIDByOptions(variantTitle[index]?.id, index)
+  //   }
+  // }
+  // // 
+  // async function getAttributeIDByOptions(id, index) {
+  //   await AttributeServices.getAttributeIdByOptions(id)
+  //     .then((resp) => {
+  //       console.log(resp)
+  //       if (resp?.status_code === 200) {
+  //         let options = resp?.list?.data
+  //         // console.log("options",options)
+  //         variantTitle[index]['variants']= options
+  //       }
 
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
   const { t } = useTranslation();
 
   return (

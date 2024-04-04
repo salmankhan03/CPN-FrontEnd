@@ -165,6 +165,7 @@ const useAttributeSubmit = (id) => {
             setValue('title', res?.attribute?.title);
             setValue('name', res?.attribute?.name);
             setValue('option', res?.attribute?.option);
+            setVariants(res?.attribute?.variants)
           }
         } catch (err) {
           notifyError(err ? err?.response?.data?.message : err.message);
