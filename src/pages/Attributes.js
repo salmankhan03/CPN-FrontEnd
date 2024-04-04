@@ -34,11 +34,7 @@ import AttributeServices from "services/AttributeServices";
 const Attributes = () => {
   const { toggleDrawer, lang } = useContext(SidebarContext);
   const { data, loading } = useAsync(() =>
-    AttributeServices.getAllAttributes({
-      type: "attribute",
-      option: "Dropdown",
-      option1: "Radio",
-    })
+    AttributeServices.getAllAttributes()
   );
 
   const { handleDeleteMany, allId, handleUpdateMany } = useToggleDrawer();
@@ -58,7 +54,7 @@ const Attributes = () => {
     handleSubmitAttribute,
     handleUploadMultiple,
     handleRemoveSelectFile,
-  } = useFilter(data);
+  } = useFilter(data?.list?.data);
 
   // react hooks
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -66,7 +62,7 @@ const Attributes = () => {
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
-    setIsCheck(data.map((value) => value._id));
+    setIsCheck(data?.list?.data.map((value) => value.id));
     if (isCheckAll) {
       setIsCheck([]);
     }

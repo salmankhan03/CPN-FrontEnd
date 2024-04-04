@@ -206,9 +206,10 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
 
       if (location.pathname === "/attributes") {
         if (ids) {
-          const res = await AttributeServices.deleteManyAttribute({
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await AttributeServices.deleteManyAttribute(apiRequestBody);
           setIsUpdate(true);
           notifySuccess(res.message);
           setIsCheck([]);
@@ -229,10 +230,10 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
         location.pathname === `/attributes/${location.pathname.split("/")[2]}`
       ) {
         if (ids) {
-          const res = await AttributeServices.deleteManyChildAttribute({
-            id: location.pathname.split("/")[2],
-            ids: ids,
-          });
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await AttributeServices.deleteManyChildAttribute(apiRequestBody);
           setIsUpdate(true);
           notifySuccess(res.message);
           setServiceId();
@@ -242,10 +243,7 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
         } else {
           console.log("att value delete", id, location.pathname.split("/")[2]);
 
-          const res = await AttributeServices.deleteChildAttribute({
-            id: id,
-            ids: location.pathname.split("/")[2],
-          });
+          const res = await AttributeServices.deleteChildAttribute(id);
           setIsUpdate(true);
           notifySuccess(res.message);
           setServiceId();
