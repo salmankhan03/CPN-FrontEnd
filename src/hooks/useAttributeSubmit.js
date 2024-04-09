@@ -66,6 +66,7 @@ const useAttributeSubmit = (id) => {
         closeDrawer();
         setServiceId();
       } else {
+        attributeData.variants = attributeData.variants.map(variant => ({name: variant}));
         const res = await AttributeServices.addAttribute(attributeData);
         setIsUpdate(true);
         setIsSubmitting(false);
