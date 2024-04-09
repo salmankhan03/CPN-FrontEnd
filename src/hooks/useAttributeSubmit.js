@@ -22,7 +22,7 @@ const useAttributeSubmit = (id) => {
 
   let variantArrayOfObject = [];
 
-  for (let i = 0; i < variants.length; i++) {
+  for (let i = 0; i < variants?.length; i++) {
     console.log("variants",variants)
     variantArrayOfObject = [
       ...variantArrayOfObject,variants[i],
