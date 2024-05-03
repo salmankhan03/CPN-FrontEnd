@@ -385,6 +385,9 @@ const useProductSubmit = (id) => {
 
           if (res) {
             var decodeString = decodeURIComponent(res?.data?.description)
+
+            var decodeStringValue = (decodeString === "null") ? "" : decodeString;
+
             // console.log("decodeString",decodeString);
             setResData(res.data);
             setSlug(res.data.slug);
@@ -406,7 +409,7 @@ const useProductSubmit = (id) => {
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
-            setDefaultContent(decodeString)
+            setDefaultContent(decodeStringValue)
             setSearchTerm((prevData) => ({
               ...prevData,
               brandName: res.data.brand,
