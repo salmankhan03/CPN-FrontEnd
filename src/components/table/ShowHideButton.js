@@ -14,12 +14,12 @@ import { notifyError, notifySuccess } from "utils/toast";
 import BrandServices from "services/BrandServices";
 
 const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
-  console.log('from staf', id,status)
+  // console.log('from staf', id,status)
   const location = useLocation();
   const { setIsUpdate } = useContext(SidebarContext);
   //  console.log('coupns')
   const handleChangeStatus = async (id) => {
-    console.log("CALL",status)
+    // console.log("CALL",status)
     // return notifyError("CRUD operation is disabled for this option!");
     try {
       let newStatus;
@@ -29,8 +29,8 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
         newStatus = status === 0 ? 1: status === "hide" ? "show":'';
       }
 
-      console.log(newStatus)
-      console.log(location.pathname,"path")
+      // console.log(newStatus)
+      // console.log(location.pathname,"path")
       if (location.pathname === "/categories" || category) {
         if(!data?.parent_id){
           data['parent_id'] = null
