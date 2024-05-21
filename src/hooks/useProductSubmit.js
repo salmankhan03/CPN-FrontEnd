@@ -62,8 +62,13 @@ const useProductSubmit = (id) => {
   const [slug, setSlug] = useState("");
   const [published, setPublished] = useState(true);
   const [addTax, setAddTax] = useState(true);
+  const [featuredProducts, setFeaturedProducts] = useState(false);
+
   const [description, setDescription] = useState()
   const [defaultContent, setDefaultContent] = useState()
+  const [prev_Ratings, setPrev_Ratings] = useState(0);
+  const [prev_Featured, setPrev_Featured] = useState(0);
+
 
   const [searchTerm, setSearchTerm] = useState({
     brandName: '',
@@ -156,6 +161,7 @@ const useProductSubmit = (id) => {
       setSku(data.sku);
       setOriginalPrice(data.originalPrice);
 
+      let updatedSellPrice = Number(data.sell_price)
       let formData = new FormData();
 
       formData.append("id", productId ? productId : "");
@@ -177,6 +183,11 @@ const useProductSubmit = (id) => {
       formData.append("is_tax_apply", addTax === true ? 1 : 0);
       formData.append("visitors_counter", data?.visitors_counter);
       formData.append("variants_array", JSON.stringify(variantTitle));
+      formData.append("ratings", data?.ratings);
+      formData.append("sell_price_is_change", Number(sell_price) === updatedSellPrice ? 0 :1 );
+      formData.append("ratings_is_change", data?.ratings ===  prev_Ratings ? "0" :"1" );       
+      formData.append("is_featured", featuredProducts ? 1:0);
+      formData.append("is_featured_is_change",prev_Featured === featuredProducts ? 0 : 1)
 
       await Promise.all(imageUrl.map(async (image, index) => {
         if (image.preview) {
@@ -270,6 +281,7 @@ const useProductSubmit = (id) => {
           setSku(res.sku);
           setPublished(res?.status)
           setAddTax(res?.is_tax_apply)
+          setFeaturedProducts(res?.is_featured)
           const result = res.variants.map(
             ({
               originalPrice,
@@ -331,8 +343,10 @@ const useProductSubmit = (id) => {
       setValue("barcode");
       setValue("productId");
       setValue("visitors_counter")
+      setValue("ratings")
       setPublished(true);
       setAddTax(true);
+      setFeaturedProducts(false)
 
       setProductId("");
       // setValue('show');
@@ -404,12 +418,16 @@ const useProductSubmit = (id) => {
             setValue("originalPrice", res?.data?.price);
             setValue("quantity", res.data.quantity);
             setValue("visitors_counter", res?.data?.visitors_counter);
+            setValue("ratings", res?.data?.ratings);
             const tagsArray = res?.data?.tags?.split(',');
             setTag(tagsArray ? tagsArray : []);
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
+            setFeaturedProducts(res.data?.is_featured)
+            setPrev_Featured(res.data?.is_featured)
             setDefaultContent(decodeStringValue)
+            setPrev_Ratings(res.data?.ratings)
             setSearchTerm((prevData) => ({
               ...prevData,
               brandName: res.data.brand,
@@ -803,6 +821,8 @@ const useProductSubmit = (id) => {
     setDescription,
     addTax,
     setAddTax,
+    featuredProducts,
+    setFeaturedProducts,
     defaultContent,
     setDefaultContent,
     handleEditorChange,
