@@ -173,7 +173,14 @@ const Banners = () => {
                 {/*<TableCell>{t("CoupTblCampaignsName")}</TableCell>*/}
                 <TableCell>{"id"}</TableCell>
                 <TableCell>{"Slide"}</TableCell>
-                <TableCell>{"Align"}</TableCell>
+                <TableCell>{"Banner Position"}</TableCell>
+                <TableCell>{"Banner Heading"}</TableCell>
+                <TableCell>{"Banner Content"}</TableCell>
+                <TableCell>{"Button Label"}</TableCell>
+
+                
+
+
                 <TableCell className="text-right">{t("CoupTblActions")}</TableCell>
               </tr>
             </TableHeader>

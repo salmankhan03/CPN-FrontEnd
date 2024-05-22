@@ -84,22 +84,42 @@ const SliderTable = ({ lang, isCheck, sliders, setIsCheck }) => {
                 />
               </TableCell>
               <TableCell>
-
                 {" "}
                 <span className="text-sm"> {slides.id}</span>{" "}
               </TableCell>
-              <TableCell>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+              {/* <TableCell >
+                <div className="w-full md:w-1/2 lg:w-1/3 p-2 ">
                   <img
                     src={slides?.image}
                     alt="Placeholder Image 2"
                     className="rounded-lg shadow-md"
                   />
                 </div>
-
+                
+              </TableCell> */}
+               <TableCell>
+              <div className="flex items-center">
+                  <img
+                    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"
+                    style={{maxWidth:250}}
+                    src={slides?.image}
+                    alt="product"
+                  />
+              </div>
+            </TableCell>
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.heading}</span>{" "}
               </TableCell>
-
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.content}</span>{" "}
+              </TableCell>
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.button_label}</span>{" "}
+              </TableCell>
+             
               {/* {coupon?.calculation_type ? (
               <TableCell>
                 {" "}
@@ -134,7 +154,7 @@ const SliderTable = ({ lang, isCheck, sliders, setIsCheck }) => {
                   handleUpdate={handleUpdate}
                   handleModalOpen={handleModalOpen}
                   title={showingTranslateValue(slides?.title, lang)}
-                  hideDeleteButton={true}
+                  hideDeleteButton={false}
                 />
               </TableCell>
             </TableRow>

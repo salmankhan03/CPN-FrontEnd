@@ -23,10 +23,8 @@ import PageTitle from "components/Typography/PageTitle";
 import DeleteModal from "components/modal/DeleteModal";
 import BulkActionDrawer from "components/drawer/BulkActionDrawer";
 import MainDrawer from "components/drawer/MainDrawer";
-import CouponDrawer from "components/drawer/CouponDrawer";
 import TableLoading from "components/preloader/TableLoading";
 import CheckBox from "components/form/CheckBox";
-import CouponTable from "components/coupon/CouponTable";
 import NotFound from "components/table/NotFound";
 import  UploadManyTwo  from 'components/common/UploadManyTwo';
 import SliderTable from "components/slider/SliderTable";
@@ -72,7 +70,7 @@ const Sliders = () => {
     <>
       <PageTitle>{"Slider"}</PageTitle>
       <DeleteModal ids={allId} setIsCheck={setIsCheck} title="Selected Coupon" />
-      <BulkActionDrawer ids={allId} title="Coupons" />
+      <BulkActionDrawer ids={allId} title="Slider" />
 
       <MainDrawer>
         <SliderDrawer id={serviceId} />
@@ -83,7 +81,7 @@ const Sliders = () => {
           <form onSubmit={handleSubmitSlider} className="py-3 grid gap-4 lg:gap-6 xl:gap-6  xl:flex">
             <div className="flex justify-start xl:w-1/2  md:w-full">
               <UploadManyTwo
-                title="Coupon"
+                title="Slider"
                 exportData={data1}
                 filename={filename}
                 isDisabled={isDisabled}
@@ -126,7 +124,7 @@ const Sliders = () => {
                   <span className="mr-2">
                     <FiPlus />
                   </span>
-                  {t("AddCouponsBtn")}
+                  {"Add Slider"}
                 </Button>
               </div>
             </div>
@@ -173,7 +171,11 @@ const Sliders = () => {
                 {/*<TableCell>{t("CoupTblCampaignsName")}</TableCell>*/}
                 <TableCell>{"id"}</TableCell>
                 <TableCell>{"Slide"}</TableCell>
-               {/*  <TableCell>{t("CoupTblStatus")}</TableCell> */}
+                <TableCell>{"Heading"}</TableCell>
+                <TableCell>{"Content"}</TableCell>
+                <TableCell>{"Button Label"}</TableCell>
+
+
                 <TableCell className="text-right">{t("CoupTblActions")}</TableCell>
               </tr>
             </TableHeader>

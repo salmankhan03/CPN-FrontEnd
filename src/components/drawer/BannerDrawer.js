@@ -1,4 +1,4 @@
-import { Select } from "@windmill/react-ui";
+import { Select,Input,} from "@windmill/react-ui";
 import DrawerButton from "components/form/DrawerButton";
 import LabelArea from "components/form/LabelArea";
 import Title from "components/form/Title";
@@ -6,6 +6,7 @@ import Uploader from "components/image-uploader/Uploader";
 import useBannerSubmit from "hooks/useBannerSubmit";
 import useSliderSubmit from "hooks/useSliderSubmit";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import Error from "components/form/Error";
 
 const BannerDrawer = ({ id }) => {
   const {
@@ -61,6 +62,54 @@ const BannerDrawer = ({ id }) => {
               </div>
             </div>
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={" Banner Align/Position"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Select
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="bannerOption"
+                  {...register(`bannerOption`, {
+                    required: `Option is required!`,
+                  })}
+                >
+                  <option value="" defaultValue hidden>
+                    {"Select Position"}
+                  </option>
+                  <option value="LEFT">{"LEFT"}</option>
+                  <option value="RIGHT">{"RIGHT"}</option>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Heading"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Input
+                  {...register(`title`, {
+                    required: "TItle is required!",
+                  })}
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="title"
+                  type="text"
+                  placeholder={"Heading / Lable"}
+                />
+                <Error errorName={errors.title} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Content"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Input
+                  {...register(`content`, {
+                    required: "Content is required!",
+                  })}
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="content"
+                  type="text"
+                  placeholder={"Content"}
+                />
+                <Error errorName={errors.content} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Align / Position"} />
               <div className="col-span-8 sm:col-span-4">
                 <Select
@@ -74,8 +123,39 @@ const BannerDrawer = ({ id }) => {
                     {"Select Position"}
                   </option>
                   <option value="LEFT">{"LEFT"}</option>
+                  <option value="CENTER">{"CENTER"}</option>
                   <option value="RIGHT">{"RIGHT"}</option>
                 </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Button Label"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Input
+                  {...register(`buttonLabel`, {
+                    required: "Content is required!",
+                  })}
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="buttonLabel"
+                  type="text"
+                  placeholder={"buttons Label"}
+                />
+                <Error errorName={errors.buttonLabel} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Button Url"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Input
+                  {...register(`buttonUrl`, {
+                    required: "Content is required!",
+                  })}
+                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                  name="buttonUrl"
+                  type="text"
+                  placeholder={"buttons Url"}
+                />
+                <Error errorName={errors.buttonUrl} />
               </div>
             </div>
           </div>

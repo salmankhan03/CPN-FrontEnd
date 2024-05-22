@@ -81,21 +81,36 @@ const BannersTable = ({ lang, isCheck, sliders, setIsCheck }) => {
                 <span className="text-sm"> {slides.id}</span>{" "}
               </TableCell>
               <TableCell>
-
-                <div className="w-full md:w-1/2 lg:w-1/3 p-2">
+                <div className="flex items-center">
                   <img
+                    className="hidden p-1 mr-2 md:block bg-gray-50 shadow-none"
+                    style={{maxWidth:250}}
                     src={slides?.link}
-                    alt="Placeholder Image 2"
-                    className="rounded-lg shadow-md"
+                    alt="product"
                   />
-                </div>
-
+              </div>
               </TableCell>
               <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.side}</span>{" "}
+              </TableCell>
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.heading}</span>{" "}
+              </TableCell>
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.content}</span>{" "}
+              </TableCell>
+              <TableCell>
+                {" "}
+                <span className="text-sm"> {slides?.button_label}</span>{" "}
+              </TableCell>
+              {/* <TableCell>
 
                 {" "}
                 <span className="text-sm"> {slides.side}</span>{" "}
-              </TableCell>
+              </TableCell> */}
               <TableCell>
                 <EditDeleteButton
                   id={slides?.id}
@@ -103,7 +118,7 @@ const BannersTable = ({ lang, isCheck, sliders, setIsCheck }) => {
                   handleUpdate={handleUpdate}
                   handleModalOpen={handleModalOpen}
                   title={showingTranslateValue(slides?.title, lang)}
-                  hideDeleteButton={true}
+                  hideDeleteButton={false}
                 />
               </TableCell>
             </TableRow>

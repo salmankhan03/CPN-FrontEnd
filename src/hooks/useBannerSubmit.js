@@ -3,9 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { SidebarContext } from 'context/SidebarContext';
-import CouponServices from 'services/CouponServices';
 import { notifyError, notifySuccess } from 'utils/toast';
-import SliderServices from 'services/SliderServices';
 import BannerServices from 'services/BannerServices';
 
 const useBannerSubmit = (id) => {
@@ -34,35 +32,31 @@ const useBannerSubmit = (id) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data,) => {
-    console.log('coupon data',data)
+  const onSubmit = async (data) => {
+    console.log("data", data)
     try {
       setIsSubmitting(true);
       let formData = new FormData();
-      // const couponData = {
-      //   id: id ? id : null,
-      //   code: data.couponCode,
-      //   expires_at: data.endTime,
-      //   minimum_amount: data.minimumAmount,
-      //   amount: data.discountPercentage,
-      //   calculation_type: discountType ? 'percentage' : 'fixed',
-      //   productType:data.title,
-      //   is_eligible_for_free_shipping: data.is_eligible_for_free_shipping
-      // };
-      formData.append('side', data?.option);
+
+      formData.append(`id`, id ? id : '')
+      formData.append('side', data?.bannerOption);
+      formData.append(`heading`, data?.title);
+      formData.append(`content`, data?.content);
+      formData.append(`contentPosition`, data?.option);
+      formData.append(`buttonLabel`, data?.buttonLabel);
+      formData.append(`buttonUrl`, data?.buttonUrl);
       await Promise.all(imageUrl.map(async (image, index) => {
-        if(image.preview){
+        if (image.preview) {
           const response = await fetch(image.preview);
           const blob = await response.blob();
-
           const file = new File([blob], image.name, { type: blob.type });
-          console.log("file",file)
+          console.log("file", file)
           formData.append(`image`, file, file.name);
         }
       }));
 
 
-      console.log("formData",formData)
+      console.log("formData", formData)
       if (id) {
         const res = await BannerServices.addBanners(formData);
         setIsUpdate(true);
@@ -94,38 +88,53 @@ const useBannerSubmit = (id) => {
   useEffect(() => {
     if (!isDrawerOpen) {
       setResData({});
+      setValue('title');
+      setValue('content');
       setValue('option');
-
+      setValue('buttonLabel');
+      setValue('buttonUrl');
+      setValue('bannerOption')
       setImageUrl('');
-    
+      clearErrors('title');
+      clearErrors('content');
+      clearErrors('bannerOption');
+      clearErrors('option');
+      clearErrors('buttonLabel');
+      clearErrors('buttonUrl');
+
       return;
     }
     //GET BY ID
-    // if (id) {
-    //   (async () => {
-    //     try {
-    //       const res = await CouponServices.getCouponById(id);
-    //       if (res) {
-    //         console.log('res coupon', res);
-    //         setResData(res.data);
-    //         // setValue('title', res?.title[language ? language : 'en']);
-    //         // setValue('productType', res?.productType);
-    //         setValue('couponCode', res?.data?.code);
-    //         setValue('endTime', dayjs(res.data.expires_at).format('YYYY-MM-DD HH:mm'));
-    //         setValue('discountPercentage', res.data.amount);
-    //         setValue('minimumAmount', res.data.minimum_amount);
-    //         setPublished(res.status === 'show' ? true : false);
-    //         setDiscountType(
-    //           res.data.calculation_type === 'percentage' ? true : false
-    //         );
-    //         setValue('is_eligible_for_free_shipping', res?.data?.is_eligible_for_free_shipping);
-    //         // setImageUrl(res.logo);
-    //       }
-    //     } catch (err) {
-    //       notifyError(err ? err?.response?.data?.message : err.message);
-    //     }
-    //   })();
-    // }
+    if (id) {
+      (async () => {
+        try {
+          const res = await BannerServices.getBannersById(id);
+          if (res) {
+            console.log('res coupon', res);
+            setResData(res.data);
+            setValue('title', res?.data.heading);
+            setValue('content', res?.data?.content);
+            setValue('bannerOption', res?.data?.side);
+            setValue('option', res?.data?.content_position);
+            setValue('buttonLabel', res.data.button_label);
+            setValue('buttonUrl', res.data.button_url);
+            const { image: imagesData } = res.data || {}; // Destructure directly from res.data
+            if (imagesData) {
+              const imageNames = Array.isArray(imagesData) ? imagesData : [imagesData]; // Ensure it's an array
+              setImageUrl(imageNames); // Set the image URLs
+            }
+            setPublished(res.status === 'show' ? true : false);
+            setDiscountType(
+              res.data.calculation_type === 'percentage' ? true : false
+            );
+            setValue('is_eligible_for_free_shipping', res?.data?.is_eligible_for_free_shipping);
+            // setImageUrl(res.logo);
+          }
+        } catch (err) {
+          notifyError(err ? err?.response?.data?.message : err.message);
+        }
+      })();
+    }
   }, [id, setValue, isDrawerOpen, clearErrors, language, lang]);
 
   return {
