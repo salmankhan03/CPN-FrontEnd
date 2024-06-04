@@ -26,6 +26,7 @@ import EmailTemplateServices from "services/EmailTemplateServices";
 import PermissionServices from "services/PermissionServices";
 import SliderServices from "services/SliderServices";
 import BannerServices from "services/BannerServices";
+import HeaderSloganServices from "services/HeaderSloganServices";
 
 const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
   const { isModalOpen, closeModal, setIsUpdate } = useContext(SidebarContext);
@@ -120,6 +121,27 @@ const DeleteModal = ({ id, ids, setIsCheck, category, title, useParamId }) => {
           setIsSubmitting(false);
         } else {
           const res = await BannerServices.deleteBanner(id);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        }
+      }
+      if (location.pathname === "/header-slogan") {
+        if (ids) {
+          const  apiRequestBody= {
+            ids: ids.join(',')
+          };
+          const res = await HeaderSloganServices.deleteManySlogan(apiRequestBody);
+          setIsUpdate(true);
+          notifySuccess(res.message);
+          setIsCheck([]);
+          setServiceId();
+          closeModal();
+          setIsSubmitting(false);
+        } else {
+          const res = await HeaderSloganServices.deleteSlogan(id);
           setIsUpdate(true);
           notifySuccess(res.message);
           setServiceId();

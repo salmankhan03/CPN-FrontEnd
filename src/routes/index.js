@@ -28,6 +28,7 @@ const StaticPage = lazy(() => import("../pages/StaticPage"));
 const EmailTemplate = lazy(() => import("../pages/EmailTemplate"));
 const Sliders = lazy(() => import("../pages/Sliders"));
 const Banners = lazy(() => import("../pages/Banners"));
+const HeaderSlogan = lazy(() => import("../pages/HeaderSlogan"));
 
 
 
@@ -119,9 +120,12 @@ const routes = [
   {
     path: "/slider",
     component: Sliders,
-  },  {
-    path: "/banners",
-    component: Banners,
+  },  
+  {
+    path: "/banners", component: Banners,
+  },
+  {
+    path: "/header-slogan",component: HeaderSlogan,
   },
   { path: "/settings", component: Setting },
   { path: "/emailTemplate", component: EmailTemplate },

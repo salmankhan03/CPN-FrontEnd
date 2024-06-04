@@ -88,6 +88,7 @@ const useFilter = (data) => {
   const [searchCoupon, setSearchCoupon] = useState("");
   const [searchSlider, setSearchSlider] = useState("");
   const [searchBanner, setSearchBannerr] = useState("");
+  const [searchSlogan, setSearchSlogan] = useState("");
 
   const [searchCategory,setSearchCategory] =useState("")
   const [filterCategory,setFilterCategory] =useState("")
@@ -130,6 +131,7 @@ const useFilter = (data) => {
   const shippingRef = useRef("");
   const sliderRef = useRef("");
   const bannerRef = useRef("");
+  const sloganRef = useRef("");
 
 
 
@@ -259,6 +261,14 @@ const useFilter = (data) => {
           search?.couponCode
             ?.toLowerCase()
             .includes(searchCoupon?.toLowerCase())
+      );
+    }
+    if(searchSlogan){
+      services = services?.filter(
+        (search) =>
+          search?.text
+            ?.toLowerCase()
+            ?.includes(searchCoupon?.toLowerCase()) 
       );
     }
     //searchCategory filtering
@@ -397,6 +407,10 @@ const useFilter = (data) => {
   const handleSubmitBanner = (e) => {
     e.preventDefault();
     setSearchBannerr(bannerRef.current.value);
+  };
+  const handleSubmitSlogan = (e) => {
+    e.preventDefault();
+    setSearchSlogan(sloganRef.current.value);
   };
   const handleSubmitOrder = (e) => {
     e.preventDefault();
@@ -842,6 +856,7 @@ const useFilter = (data) => {
     couponRef,
     sliderRef,
     bannerRef,
+    sloganRef,
     brandRef,
     orderRef,
     categoryRef,
@@ -870,6 +885,7 @@ const useFilter = (data) => {
     handleSubmitCoupon,
     handleSubmitSlider,
     handleSubmitBanner,
+    handleSubmitSlogan,
     handleSubmitOrder,
     handleSubmitBrands,
     handleSubmitCategory,

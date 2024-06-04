@@ -55,6 +55,10 @@ const sidebar = [
         path: "/banners",
         name: "Banners",
       },
+      {
+        path: "/header-slogan",
+        name: "Header Slogan",
+      },
     ],
   },
 
