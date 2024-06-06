@@ -77,6 +77,7 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
     attributes,
     attTitle,
     handleAddAtt,
+    title,
     // productId,
     onCloseModal,
     isBulkUpdate,
@@ -111,7 +112,8 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
     handleSelectInlineImage,
     handleGenerateCombination,
     handleBrandSearch,
-    handleBrandsSelected
+    handleBrandsSelected,
+    handleTitleChange
   } = useProductSubmit(id);
 
   const currency = globalSetting?.default_currency || "$";
@@ -267,7 +269,10 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
                     name="title"
                     type="text"
                     placeholder={t("ProductTitleName")}
-                    onBlur={(e) => handleProductSlug(e.target.value)}
+                    onBlur={(e) => {
+                      handleProductSlug(e.target.value)
+                      handleTitleChange(e.target.value);
+                    }}
                   />
                   <Error errorName={errors.title} />
                 </div>
@@ -507,7 +512,7 @@ const ProductDrawer = ({ id, handleUpdateStatus }) => {
                   <ReactTagInput
                     placeholder={t("ProductTagPlaseholder")}
                     tags={tag}
-                    onChange={(newTags) => setTag(newTags)}
+                    onChange={(newTags) => setTag([title, ...newTags.filter((t, index) => index !== 0)])}
                   />
                 </div>
               </div>

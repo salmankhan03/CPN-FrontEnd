@@ -76,6 +76,12 @@ const useProductSubmit = (id) => {
   });
   const [selectedBrand, setSelectedBrand] = useState();
   const [filteredBrandOptions, setFilteredBrandOptions] = useState();
+  const [title, setTitle] = useState('');
+
+  const handleTitleChange = (value) => {
+    setTitle(value);
+    setTag([value, ...tag.filter((t, index) => index !== 0)]);
+  };
 
   const handleBrandSearch = (e) => {
     const term = e.target.value;
@@ -174,7 +180,7 @@ const useProductSubmit = (id) => {
       formData.append("description", description);
       formData.append("slug", data.slug ? data.slug : data.title.toLowerCase().replace(/[^A-Z0-9]+/gi, "-"));
       formData.append("quantity", data.quantity);
-      formData.append("tags", tag?.map(tag => `${tag}`).join(','));
+      formData.append("tags", JSON.stringify(tag));
       formData.append("sku", data.sku || "");
       formData.append("category_id", selectedCategory[0].id);
       formData.append("status", published ? "show" : "hide");
@@ -419,8 +425,8 @@ const useProductSubmit = (id) => {
             setValue("quantity", res.data.quantity);
             setValue("visitors_counter", res?.data?.visitors_counter);
             setValue("ratings", res?.data?.ratings);
-            const tagsArray = res?.data?.tags?.split(',');
-            setTag(tagsArray ? tagsArray : []);
+            const tagsArray = JSON.parse(res?.data?.tags || '[]');
+            setTag(tagsArray);
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
@@ -825,6 +831,7 @@ const useProductSubmit = (id) => {
     setFeaturedProducts,
     defaultContent,
     setDefaultContent,
+    title,
     handleEditorChange,
     handleSelectLanguage,
     handleIsCombination,
@@ -836,7 +843,8 @@ const useProductSubmit = (id) => {
     handleSelectInlineImage,
     handleGenerateCombination,
     handleBrandSearch,
-    handleBrandsSelected
+    handleBrandsSelected,
+    handleTitleChange
   };
 };
 
