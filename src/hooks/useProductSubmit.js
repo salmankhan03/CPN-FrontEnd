@@ -425,8 +425,9 @@ const useProductSubmit = (id) => {
             setValue("quantity", res.data.quantity);
             setValue("visitors_counter", res?.data?.visitors_counter);
             setValue("ratings", res?.data?.ratings);
-            const tagsArray = JSON.parse(res?.data?.tags || '[]');
-            setTag(tagsArray);
+            // const tagsArray = JSON.parse(res?.data?.tags || '[]');
+            const getNames = res?.data?.tags.map(item => item.name);
+            setTag(getNames);
             setProductId(res.data.id);
             setPublished(res.data.status === "show" ? true : false);
             setAddTax(res.data?.is_tax_apply === 1 ? true : false)
