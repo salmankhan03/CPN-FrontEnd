@@ -15,6 +15,8 @@ const useBannerSubmit = (id) => {
   const [published, setPublished] = useState(false);
   const [discountType, setDiscountType] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isBannerButton, setIsBannerButton] = useState(false);
+
 
   const settings = useSelector((state) => state.setting);
   const { settingItem } = settings;
@@ -149,6 +151,8 @@ const useBannerSubmit = (id) => {
     currency,
     discountType,
     isSubmitting,
+    isBannerButton,
+    setIsBannerButton,
     setDiscountType,
     handleSelectLanguage,
   };
