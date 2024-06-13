@@ -1,12 +1,13 @@
-
+import React from "react";
 import DrawerButton from "components/form/DrawerButton";
 import LabelArea from "components/form/LabelArea";
 import Title from "components/form/Title";
 import Uploader from "components/image-uploader/Uploader";
 import useSliderSubmit from "hooks/useSliderSubmit";
 import { Scrollbars } from "react-custom-scrollbars-2";
-import { Select,Input,} from "@windmill/react-ui";
+import { Select, Input, } from "@windmill/react-ui";
 import Error from "components/form/Error";
+import SwitchToggle from "components/form/SwitchToggle";
 
 const SliderDrawer = ({ id }) => {
   const {
@@ -22,6 +23,8 @@ const SliderDrawer = ({ id }) => {
     discountType,
     setDiscountType,
     isSubmitting,
+    isButton,
+    setIsButton,
     handleSelectLanguage,
   } = useSliderSubmit(id);
 
@@ -111,36 +114,53 @@ const SliderDrawer = ({ id }) => {
               </div>
             </div>
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Button Label"} />
+              <LabelArea label={"Add Button & Add Url"} />
               <div className="col-span-8 sm:col-span-4">
-                <Input
-                  {...register(`buttonLabel`, {
-                    required: "Content is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="buttonLabel"
-                  type="text"
-                  placeholder={"buttons Label"}
+                <SwitchToggle
+                  handleProcess={setIsButton}
+                  processOption={isButton}
                 />
-                <Error errorName={errors.buttonLabel} />
               </div>
             </div>
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Button Url"} />
-              <div className="col-span-8 sm:col-span-4">
-                <Input
-                  {...register(`buttonUrl`, {
+            {isButton ? (
+              <React.Fragment>
+                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                  <LabelArea label={"Button Label"} />
+                  <div className="col-span-8 sm:col-span-4">
+                    {/*  */}
+                    <Input
+                      {...register(`buttonLabel`,{
+                        required: "Button Label is required!",
+                      })}
+                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                      name="buttonLabel"
+                      type="text"
+                      placeholder={"buttons Label"}
+                    />
+                    <Error errorName={errors.buttonLabel} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                  <LabelArea label={"Button Url"} />
+                  <div className="col-span-8 sm:col-span-4">
+                    {/* {
                     required: "Content is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="buttonUrl"
-                  type="text"
-                  placeholder={"buttons Url"}
-                />
-                <Error errorName={errors.buttonUrl} />
-              </div>
-            </div>
-          
+                  } */}
+                    <Input
+                      {...register(`buttonUrl`,{
+                        required: "Button Url is required!",
+                      })}
+                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                      name="buttonUrl"
+                      type="text"
+                      placeholder={"buttons Url"}
+                    />
+                    <Error errorName={errors.buttonUrl} />
+                  </div>
+                </div>
+              </React.Fragment>
+            ) : null}
+
           </div>
 
           <DrawerButton id={id} title="Slider" isSubmitting={isSubmitting} />

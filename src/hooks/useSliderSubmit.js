@@ -14,6 +14,7 @@ const useSliderSubmit = (id) => {
   const [published, setPublished] = useState(false);
   const [discountType, setDiscountType] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isButton, setIsButton] = useState(false)
 
   const settings = useSelector((state) => state.setting);
   const { settingItem } = settings;
@@ -145,6 +146,8 @@ const useSliderSubmit = (id) => {
     currency,
     discountType,
     isSubmitting,
+    isButton,
+    setIsButton,
     setDiscountType,
     handleSelectLanguage,
   };
