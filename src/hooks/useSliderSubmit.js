@@ -15,6 +15,7 @@ const useSliderSubmit = (id) => {
   const [discountType, setDiscountType] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isButton, setIsButton] = useState(false)
+  const [htmlContent, setHtmlContent] = useState()
 
   const settings = useSelector((state) => state.setting);
   const { settingItem } = settings;
@@ -31,6 +32,9 @@ const useSliderSubmit = (id) => {
     clearErrors,
     formState: { errors },
   } = useForm();
+  const handleHtmlChange = (e) => {
+    setHtmlContent(e.target.value);
+  };
 
   const onSubmit = async (data) => {
     console.log('Slider data', data)
@@ -150,6 +154,8 @@ const useSliderSubmit = (id) => {
     setIsButton,
     setDiscountType,
     handleSelectLanguage,
+    htmlContent,
+    handleHtmlChange,
   };
 };
 

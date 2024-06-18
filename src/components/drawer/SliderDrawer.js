@@ -8,6 +8,7 @@ import { Scrollbars } from "react-custom-scrollbars-2";
 import { Select, Input, } from "@windmill/react-ui";
 import Error from "components/form/Error";
 import SwitchToggle from "components/form/SwitchToggle";
+import '../../assets/css/tailwind.css'
 
 const SliderDrawer = ({ id }) => {
   const {
@@ -26,6 +27,8 @@ const SliderDrawer = ({ id }) => {
     isButton,
     setIsButton,
     handleSelectLanguage,
+    htmlContent,
+    handleHtmlChange,
   } = useSliderSubmit(id);
 
   return (
@@ -64,7 +67,7 @@ const SliderDrawer = ({ id }) => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+            {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Heading"} />
               <div className="col-span-8 sm:col-span-4">
                 <Input
@@ -78,11 +81,11 @@ const SliderDrawer = ({ id }) => {
                 />
                 <Error errorName={errors.title} />
               </div>
-            </div>
+            </div> */}
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Content"} />
               <div className="col-span-8 sm:col-span-4">
-                <Input
+                {/* <Input
                   {...register(`content`, {
                     required: "Content is required!",
                   })}
@@ -90,82 +93,108 @@ const SliderDrawer = ({ id }) => {
                   name="content"
                   type="text"
                   placeholder={"Content"}
-                />
+                /> */}
+                <textarea
+                  value={htmlContent}
+                  onChange={handleHtmlChange}
+                  className="form-control "
+                  rows="10"
+                  style={{width:'100%',border:'1px solid #ccc'}}
+                ></textarea>
                 <Error errorName={errors.content} />
               </div>
             </div>
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Align / Position"} />
+              <LabelArea label={"Preview"} />
               <div className="col-span-8 sm:col-span-4">
-                <Select
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="option"
-                  {...register(`option`, {
-                    required: `Option is required!`,
-                  })}
-                >
-                  <option value="" defaultValue hidden>
-                    {"Select Position"}
-                  </option>
-                  <option value="LEFT">{"LEFT"}</option>
-                  <option value="CENTER">{"CENTER"}</option>
-                  <option value="RIGHT">{"RIGHT"}</option>
-                </Select>
-              </div>
-            </div>
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Add Button & Add Url"} />
-              <div className="col-span-8 sm:col-span-4">
-                <SwitchToggle
-                  handleProcess={setIsButton}
-                  processOption={isButton}
-                />
-              </div>
-            </div>
-            {isButton ? (
-              <React.Fragment>
-                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                  <LabelArea label={"Button Label"} />
-                  <div className="col-span-8 sm:col-span-4">
-                    {/*  */}
-                    <Input
-                      {...register(`buttonLabel`,{
-                        required: "Button Label is required!",
-                      })}
-                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                      name="buttonLabel"
-                      type="text"
-                      placeholder={"buttons Label"}
-                    />
-                    <Error errorName={errors.buttonLabel} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                  <LabelArea label={"Button Url"} />
-                  <div className="col-span-8 sm:col-span-4">
-                    {/* {
-                    required: "Content is required!",
-                  } */}
-                    <Input
-                      {...register(`buttonUrl`,{
-                        required: "Button Url is required!",
-                      })}
-                      className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                      name="buttonUrl"
-                      type="text"
-                      placeholder={"buttons Url"}
-                    />
-                    <Error errorName={errors.buttonUrl} />
-                  </div>
-                </div>
-              </React.Fragment>
-            ) : null}
+                {/* <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div> */}
+                <div>
+                  {imageUrl && imageUrl.map((image, index) => (
+                    <div key={index} className="relative w-full max-w-lg  border border-gray-300 rounded-md overflow-hidden shadow-sm">
+                      <img
+                        src={image.preview}
+                        alt={image.path}
+                        className="object-contain w-full h-full"
+                      />
+                      <div
+                        className="absolute top-0 left-0 w-full h-full p-4 text-white bg-black bg-opacity-50"
+                        dangerouslySetInnerHTML={{ __html: htmlContent }}
+                      />
+                    </div>
+                  ))}
 
-          </div>
+                </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Align / Position"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Select
+                    className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                    name="option"
+                    {...register(`option`, {
+                      required: `Option is required!`,
+                    })}
+                  >
+                    <option value="" defaultValue hidden>
+                      {"Select Position"}
+                    </option>
+                    <option value="LEFT">{"LEFT"}</option>
+                    <option value="CENTER">{"CENTER"}</option>
+                    <option value="RIGHT">{"RIGHT"}</option>
+                  </Select>
+                </div>
+              </div>
+              {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Add Button & Add Url"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <SwitchToggle
+                    handleProcess={setIsButton}
+                    processOption={isButton}
+                  />
+                </div>
+              </div>
+              {isButton ? (
+                <React.Fragment>
+                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                    <LabelArea label={"Button Label"} />
+                    <div className="col-span-8 sm:col-span-4">
+                      <Input
+                        {...register(`buttonLabel`, {
+                          required: "Button Label is required!",
+                        })}
+                        className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                        name="buttonLabel"
+                        type="text"
+                        placeholder={"buttons Label"}
+                      />
+                      <Error errorName={errors.buttonLabel} />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                    <LabelArea label={"Button Url"} />
+                    <div className="col-span-8 sm:col-span-4">
+                     
+                      <Input
+                        {...register(`buttonUrl`, {
+                          required: "Button Url is required!",
+                        })}
+                        className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                        name="buttonUrl"
+                        type="text"
+                        placeholder={"buttons Url"}
+                      />
+                      <Error errorName={errors.buttonUrl} />
+                    </div>
+                  </div>
+                </React.Fragment>
+              ) : null} */}
 
-          <DrawerButton id={id} title="Slider" isSubmitting={isSubmitting} />
+            </div>
+
+            <DrawerButton id={id} title="Slider" isSubmitting={isSubmitting} />
         </form>
-      </Scrollbars>
+      </Scrollbars >
     </>
   );
 };
