@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import DrawerButton from "components/form/DrawerButton";
 import LabelArea from "components/form/LabelArea";
 import Title from "components/form/Title";
@@ -30,6 +30,12 @@ const SliderDrawer = ({ id }) => {
     htmlContent,
     handleHtmlChange,
   } = useSliderSubmit(id);
+
+  const [alignPosition, setAlignPosition] = useState("");
+
+  const handleSelectChange = (e) => {
+    setAlignPosition(e.target.value);
+  };
 
   return (
     <>
@@ -67,33 +73,9 @@ const SliderDrawer = ({ id }) => {
                 />
               </div>
             </div>
-            {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Heading"} />
-              <div className="col-span-8 sm:col-span-4">
-                <Input
-                  {...register(`title`, {
-                    required: "TItle is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="title"
-                  type="text"
-                  placeholder={"Heading / Lable"}
-                />
-                <Error errorName={errors.title} />
-              </div>
-            </div> */}
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Content"} />
               <div className="col-span-8 sm:col-span-4">
-                {/* <Input
-                  {...register(`content`, {
-                    required: "Content is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="content"
-                  type="text"
-                  placeholder={"Content"}
-                /> */}
                 <textarea
                   value={htmlContent}
                   onChange={handleHtmlChange}
@@ -102,6 +84,26 @@ const SliderDrawer = ({ id }) => {
                   style={{width:'100%',border:'1px solid #ccc'}}
                 ></textarea>
                 <Error errorName={errors.content} />
+              </div>
+            </div>
+            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Align / Position"} />
+              <div className="col-span-8 sm:col-span-4">
+                <Select
+                    className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
+                    name="option"
+                    {...register(`option`, {
+                      required: `Option is required!`,
+                    })}
+                    onChange={handleSelectChange}
+                >
+                  <option value="" defaultValue hidden>
+                    {"Select Position"}
+                  </option>
+                  <option value="LEFT">{"LEFT"}</option>
+                  <option value="CENTER">{"CENTER"}</option>
+                  <option value="RIGHT">{"RIGHT"}</option>
+                </Select>
               </div>
             </div>
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
@@ -118,6 +120,7 @@ const SliderDrawer = ({ id }) => {
                       />
                       <div
                         className="absolute top-0 left-0 w-full h-full p-4 text-white bg-black bg-opacity-50"
+                        style={{display:'flex', flexDirection: 'column', justifyContent: 'center', alignItems: `${alignPosition === 'CENTER' ? 'center' : alignPosition === "RIGHT" ? 'flex-end' : 'flex-start' }`}}
                         dangerouslySetInnerHTML={{ __html: htmlContent }}
                       />
                     </div>
@@ -126,69 +129,6 @@ const SliderDrawer = ({ id }) => {
                 </div>
                 </div>
               </div>
-              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                <LabelArea label={"Align / Position"} />
-                <div className="col-span-8 sm:col-span-4">
-                  <Select
-                    className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                    name="option"
-                    {...register(`option`, {
-                      required: `Option is required!`,
-                    })}
-                  >
-                    <option value="" defaultValue hidden>
-                      {"Select Position"}
-                    </option>
-                    <option value="LEFT">{"LEFT"}</option>
-                    <option value="CENTER">{"CENTER"}</option>
-                    <option value="RIGHT">{"RIGHT"}</option>
-                  </Select>
-                </div>
-              </div>
-              {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                <LabelArea label={"Add Button & Add Url"} />
-                <div className="col-span-8 sm:col-span-4">
-                  <SwitchToggle
-                    handleProcess={setIsButton}
-                    processOption={isButton}
-                  />
-                </div>
-              </div>
-              {isButton ? (
-                <React.Fragment>
-                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                    <LabelArea label={"Button Label"} />
-                    <div className="col-span-8 sm:col-span-4">
-                      <Input
-                        {...register(`buttonLabel`, {
-                          required: "Button Label is required!",
-                        })}
-                        className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                        name="buttonLabel"
-                        type="text"
-                        placeholder={"buttons Label"}
-                      />
-                      <Error errorName={errors.buttonLabel} />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-                    <LabelArea label={"Button Url"} />
-                    <div className="col-span-8 sm:col-span-4">
-                     
-                      <Input
-                        {...register(`buttonUrl`, {
-                          required: "Button Url is required!",
-                        })}
-                        className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                        name="buttonUrl"
-                        type="text"
-                        placeholder={"buttons Url"}
-                      />
-                      <Error errorName={errors.buttonUrl} />
-                    </div>
-                  </div>
-                </React.Fragment>
-              ) : null} */}
 
             </div>
 
