@@ -45,7 +45,7 @@ const useSliderSubmit = (id) => {
       // formData.append("id", id ? id : '');
       formData.append(`id`, id ? id : '')
       formData.append(`heading`, data?.title);
-      formData.append(`content`, data?.content);
+      formData.append(`content`, htmlContent);
       formData.append(`contentPosition`, data?.option);
       formData.append(`buttonLabel`, data?.buttonLabel);
       formData.append(`buttonUrl`, data?.buttonUrl);
@@ -92,18 +92,19 @@ const useSliderSubmit = (id) => {
   useEffect(() => {
     if (!isDrawerOpen) {
       setResData({});
-      setValue('title');
+      // setValue('title');
       setValue('content');
       setValue('option');
-      setValue('buttonLabel');
-      setValue('buttonUrl');
+      // setValue('buttonLabel');
+      // setValue('buttonUrl');
+      setHtmlContent('');
 
       setImageUrl('');
-      clearErrors('title');
+      // clearErrors('title');
       clearErrors('content');
       clearErrors('option');
-      clearErrors('buttonLabel');
-      clearErrors('buttonUrl');
+      // clearErrors('buttonLabel');
+      // clearErrors('buttonUrl');
       setLanguage(lang);
       setValue('language', language);
       return;
@@ -117,14 +118,16 @@ const useSliderSubmit = (id) => {
             console.log('res coupon', res);
             setResData(res.data);
             // setImageUrl(res?.data?.image)
-            setValue('title', res?.data.heading);
+            // setValue('title', res?.data.heading);
             setValue('content', res?.data?.content);
             setValue('option', res?.data?.content_position);
-            setValue('buttonLabel', res.data.button_label);
-            setValue('buttonUrl', res.data.button_url);
+            // setValue('buttonLabel', res.data.button_label);
+            // setValue('buttonUrl', res.data.button_url);
+            setHtmlContent(res?.data?.content)
             const { image: imagesData } = res.data || {}; // Destructure directly from res.data
             if (imagesData) {
               const imageNames = Array.isArray(imagesData) ? imagesData : [imagesData]; // Ensure it's an array
+             console.log("imageNames",imageNames);
               setImageUrl(imageNames); // Set the image URLs
             }
             // setPublished(res.status === 'show' ? true : false);

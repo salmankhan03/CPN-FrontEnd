@@ -107,18 +107,15 @@ const SliderTable = ({ lang, isCheck, sliders, setIsCheck }) => {
                   />
               </div>
             </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 {" "}
                 <span className="text-sm"> {slides?.heading}</span>{" "}
-              </TableCell>
+              </TableCell> */}
               <TableCell>
                 {" "}
-                <span className="text-sm"> {slides?.content}</span>{" "}
+                <span className="text-sm" style={{maxWidth:'50%'}}> {slides?.content}</span>{" "}
               </TableCell>
-              <TableCell>
-                {" "}
-                <span className="text-sm"> {slides?.button_label}</span>{" "}
-              </TableCell>
+             
              
               {/* {coupon?.calculation_type ? (
               <TableCell>

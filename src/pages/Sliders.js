@@ -171,9 +171,9 @@ const Sliders = () => {
                 {/*<TableCell>{t("CoupTblCampaignsName")}</TableCell>*/}
                 <TableCell>{"id"}</TableCell>
                 <TableCell>{"Slide"}</TableCell>
-                <TableCell>{"Heading"}</TableCell>
+                {/* <TableCell>{"Heading"}</TableCell> */}
                 <TableCell>{"Content"}</TableCell>
-                <TableCell>{"Button Label"}</TableCell>
+                {/* <TableCell>{"Button Label"}</TableCell> */}
 
 
                 <TableCell className="text-right">{t("CoupTblActions")}</TableCell>
