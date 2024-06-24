@@ -1,4 +1,4 @@
-import {Input,} from "@windmill/react-ui";
+import { Input, } from "@windmill/react-ui";
 import DrawerButton from "components/form/DrawerButton";
 import LabelArea from "components/form/LabelArea";
 import Title from "components/form/Title";
@@ -15,6 +15,9 @@ const HeaderSloganDrawer = ({ id }) => {
     // published,
     // setPublished,
     isSubmitting,
+    handleHtmlChange,
+    htmlContent,
+    setHtmlContent,
     handleSelectLanguage,
   } = useSloganSubmit(id);
 
@@ -40,37 +43,37 @@ const HeaderSloganDrawer = ({ id }) => {
 
       <Scrollbars className="w-full md:w-7/12 lg:w-8/12 xl:w-8/12 relative dark:bg-gray-700 dark:text-gray-200">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="px-6 pt-8 flex-grow scrollbar-hide w-full max-h-full pb-40">         
+          <div className="px-6 pt-8 flex-grow scrollbar-hide w-full max-h-full pb-40">
             <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
               <LabelArea label={"Slogan"} />
               <div className="col-span-8 sm:col-span-4">
-                <Input
-                  {...register(`title`, {
-                    required: "TItle is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="title"
-                  type="text"
-                  placeholder={"Slogan"}
-                />
+                <textarea
+                  value={htmlContent}
+                  onChange={handleHtmlChange}
+                  className="form-control "
+                  rows="10"
+                  style={{ width: '100%', border: '1px solid #ccc' }}
+                ></textarea>
                 <Error errorName={errors.title} />
               </div>
             </div>
-            <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
-              <LabelArea label={"Button Url"} />
+            {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+              <LabelArea label={"Preview"} />
               <div className="col-span-8 sm:col-span-4">
-                <Input
-                  {...register(`buttonUrl`, {
-                    required: "Content is required!",
-                  })}
-                  className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
-                  name="buttonUrl"
-                  type="text"
-                  placeholder={"Slogan Url"}
-                />
-                <Error errorName={errors.buttonUrl} />
+                <div>
+
+                  <div  className="relative w-full max-w-lg border border-gray-300 rounded-md overflow-hidden shadow-sm">
+
+                    <div
+                      className="w-full h-full text-white bg-opacity-50 dynamic-html"
+                      style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                      dangerouslySetInnerHTML={{ __html: htmlContent }}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            </div> */}
+        
           </div>
 
           <DrawerButton id={id} title="Slogan" isSubmitting={isSubmitting} />

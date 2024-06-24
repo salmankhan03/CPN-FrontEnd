@@ -12,6 +12,8 @@ const useSloganSubmit = (id) => {
   const [resData, setResData] = useState({});
   // const [published, setPublished] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [htmlContent, setHtmlContent] = useState()
+
 
   const settings = useSelector((state) => state.setting);
   const { settingItem } = settings;
@@ -29,13 +31,16 @@ const useSloganSubmit = (id) => {
     formState: { errors },
   } = useForm();
 
+  const handleHtmlChange = (e) => {
+    setHtmlContent(e.target.value);
+  };
   const onSubmit = async (data) => {
     try {
       setIsSubmitting(true);
       let formData = new FormData();
       formData.append(`id`, id ? id : '')
-      formData.append(`text`, data?.title);
-      formData.append(`url`, data?.buttonUrl);
+      formData.append(`text`, htmlContent);
+      formData.append(`url`, '');
       
       if (id) {
         const res = await HeaderSloganServices.addSlogan(formData);
@@ -70,8 +75,12 @@ const useSloganSubmit = (id) => {
       setResData({});
       setValue('title');
       setValue('buttonUrl');
+      setHtmlContent('');
+
       clearErrors('title');
       clearErrors('buttonUrl'); 
+
+
       return;
     }
     //GET BY ID
@@ -82,8 +91,9 @@ const useSloganSubmit = (id) => {
           if (res) {
             console.log('res coupon', res);
             setResData(res.data);
-            setValue('title', res?.data.text);
-            setValue('buttonUrl', res.data.url);
+            // setValue('title', res?.data.text);
+            // setValue('buttonUrl', res.data.url);
+            setHtmlContent(res?.data.text)
            
             // setPublished(res.status === 'show' ? true : false);
           }
@@ -102,6 +112,9 @@ const useSloganSubmit = (id) => {
     // published,
     // setPublished,
     isSubmitting,
+    handleHtmlChange,
+    htmlContent,
+    setHtmlContent,
     handleSelectLanguage,
   };
 };
