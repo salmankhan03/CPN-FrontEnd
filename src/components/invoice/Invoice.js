@@ -12,9 +12,9 @@ const Invoice = ({ data, currency }) => {
               {i + 1}{" "}
             </TableCell>
             <TableCell className="px-6 py-1 whitespace-nowrap font-normal text-gray-500">
-              {item?.product?.name && item.product.name.length > 20
-                ? `${item.product.name.substring(0, 20)}...`
-                : item.product.name}
+              {item?.product?.name && item?.product?.name?.length > 20
+                ? `${item?.product?.name.substring(0, 20)}...`
+                : item?.product?.name}
             </TableCell>
             <TableCell className="px-6 py-1 whitespace-nowrap font-bold text-center">
               {item.quantity}{" "}
