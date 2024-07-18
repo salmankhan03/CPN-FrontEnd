@@ -46,11 +46,11 @@ const OrderTable = ({ orders, currency, globalSetting ,handleUpdateStatus }) => 
               <span className="text-sm">{order?.billing_address?.first_name}</span>{" "}
             </TableCell>
 
-            <TableCell>
+            {/* <TableCell>
               <span className="text-sm font-semibold">
                 {order?.paymentMethod}
               </span>
-            </TableCell>
+            </TableCell> */}
 
             <TableCell>
               <span className="text-sm font-semibold">

@@ -278,7 +278,7 @@ const Orders = () => {
                 <TableCell>{t("InvoiceNo")}</TableCell>
                 <TableCell>{t("TimeTbl")}</TableCell>
                 <TableCell>{t("CustomerName")}</TableCell>
-                <TableCell>{t("MethodTbl")}</TableCell>
+                {/* <TableCell>{t("MethodTbl")}</TableCell> */}
                 <TableCell>{t("AmountTbl")}</TableCell>
                 <TableCell>{t("OderStatusTbl")}</TableCell>
                 <TableCell>{t("ActionTbl")}</TableCell>
