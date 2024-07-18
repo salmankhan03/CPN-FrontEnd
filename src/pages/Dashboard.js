@@ -50,12 +50,29 @@ const Dashboard = () => {
   const [yesterdayCashPayment, setYesterdayCashPayment] = useState(0);
   const [yesterdayCardPayment, setYesterdayCardPayment] = useState(0);
   const [yesterdayCreditPayment, setYesterdayCreditPayment] = useState(0);
+  const [orderTotalCounts, setOrderTotalCounts] = useState(0)
+  const [statusCount, setStatusCount] = useState({
+    Delivered: 0,
+    Pending: 0,
+    Processing: 0,
+    Total:0
+  });
 
   const { data: bestSellerProductChart, loading: loadingBestSellerProduct } =
     useAsync(OrderServices.getBestSellerProductChart);
 
   const { data: dashboardRecentOrder, loading: loadingRecentOrder } = useAsync(
-    () => OrderServices.getDashboardRecentOrder({ page: currentPage, limit: 8 })
+    () =>
+      // OrderServices.getAllOrderList({ page: currentPage, limit: 3 })
+      OrderServices.getAllOrders({
+        customerName: "",
+        status: 'Pending',
+        page: currentPage,
+        limit: 20,
+        day: "",
+        startDate: '',
+        endDate: '',
+      })
   );
 
   const { data: dashboardOrderCount, loading: loadingOrderCount } = useAsync(
@@ -70,7 +87,7 @@ const Dashboard = () => {
 
   // console.log("dashboardOrderCount", dashboardOrderCount);
 
-  const { dataTable, serviceData } = useFilter(dashboardRecentOrder?.orders);
+  const { dataTable, serviceData } = useFilter(dashboardRecentOrder?.list?.data);
 
   const { t } = useTranslation();
 
@@ -233,7 +250,35 @@ const Dashboard = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardOrderAmount]);
+  useEffect(() => {
+    getAlloordersData()
+  }, [])
+  async function getAlloordersData() {
+    const res = await OrderServices.getAllOrders({
+      customerName: "",
+      status: null,
+      page: 1,
+      limit: 500,
+      day: null,
+      startDate: null,
+      endDate: null,
+    });
+    setOrderTotalCounts(res?.list?.total)
+    if (res?.list?.data?.length > 0) {
 
+      const counts = {
+        Delivered: 0,
+        Pending: 0,
+        Processing: 0,
+      };
+      res?.list?.data.forEach(order => {
+        if (order.status in counts) {
+          counts[order.status]++;
+        }
+      });
+      setStatusCount(counts);
+    }
+  }
   return (
     <>
       <PageTitle>{t("DashboardOverview")}</PageTitle>
@@ -293,14 +338,14 @@ const Dashboard = () => {
           title="Total Order"
           Icon={FiShoppingCart}
           loading={loadingOrderCount}
-          quantity={dashboardOrderCount?.totalOrder || 0}
+          quantity={orderTotalCounts || 0}
           className="text-orange-600 dark:text-orange-100 bg-orange-100 dark:bg-orange-500"
         />
         <CardItem
           title={t("OrderPending")}
           Icon={FiRefreshCw}
           loading={loadingOrderCount}
-          quantity={dashboardOrderCount?.totalPendingOrder?.count || 0}
+          quantity={statusCount?.Pending || 0}
           amount={dashboardOrderCount?.totalPendingOrder?.total || 0}
           className="text-blue-600 dark:text-blue-100 bg-blue-100 dark:bg-blue-500"
         />
@@ -308,14 +353,14 @@ const Dashboard = () => {
           title={t("OrderProcessing")}
           Icon={FiTruck}
           loading={loadingOrderCount}
-          quantity={dashboardOrderCount?.totalProcessingOrder || 0}
+          quantity={statusCount?.Processing || 0}
           className="text-teal-600 dark:text-teal-100 bg-teal-100 dark:bg-teal-500"
         />
         <CardItem
           title={t("OrderDelivered")}
           Icon={FiCheck}
           loading={loadingOrderCount}
-          quantity={dashboardOrderCount?.totalDeliveredOrder || 0}
+          quantity={statusCount?.Delivered || 0}
           className="text-green-600 dark:text-green-100 bg-green-100 dark:bg-green-500"
         />
       </div>
@@ -352,7 +397,7 @@ const Dashboard = () => {
                 <TableCell>{t("InvoiceNo")}</TableCell>
                 <TableCell>{t("TimeTbl")}</TableCell>
                 <TableCell>{t("CustomerName")} </TableCell>
-                <TableCell> {t("MethodTbl")} </TableCell>
+                {/* <TableCell> {t("MethodTbl")} </TableCell> */}
                 <TableCell> {t("AmountTbl")} </TableCell>
                 <TableCell>{t("OderStatusTbl")}</TableCell>
                 <TableCell>{t("ActionTbl")}</TableCell>
@@ -369,8 +414,8 @@ const Dashboard = () => {
           </Table>
           <TableFooter>
             <Pagination
-              totalResults={dashboardRecentOrder?.totalOrder}
-              resultsPerPage={8}
+              totalResults={dashboardRecentOrder?.list?.total}
+              resultsPerPage={dashboardRecentOrder?.list?.per_page}
               onChange={handleChangePage}
               label="Table navigation"
             />
