@@ -1499,3 +1499,9 @@ input[type="file"] {
 .cards-title {
   padding: 15px 5px 15px 10px;
 }
+
+/*product ckEditor*/
+
+.ck-editor__editable_inline p{
+  color: black !important;
+}
