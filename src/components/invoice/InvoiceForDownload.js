@@ -10,7 +10,7 @@ import {
 } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
 import logoDark from "../../assets/img/logo/logo-dark.png";
-import { showDateFormat } from "utils/dateFormate";
+import moment from "moment";
 
 Font.register({
   family: "Open Sans",
@@ -289,33 +289,34 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
               </Text>
               <Text style={styles.info}>
                 Status :{" "}
-                {data?.status === "Merged" && (
-                  <span style={{ color: "#eab308" }}>{data?.status}</span>
+                {/* {data?.order?.status === "Merged" && (
+                  <span style={{ color: "#eab308" }}>{data?.order?.status}</span>
+                )} */}
+                {data?.order?.status === "Pending" && (
+                  <span style={{ color: "#eab308" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Pending" && (
-                  <span style={{ color: "#eab308" }}>{data?.status}</span>
+                 {data?.order?.status === "Delivered" && (
+                  <span style={{ color: "#22c55e" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Processing" && (
-                  <span style={{ color: "#14b8a6" }}>{data?.status}</span>
+                {data?.order?.status === "Cancel" && (
+                  <span style={{ color: "#f43f5e" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "POS-Completed" && (
-                  <span style={{ color: "#14b8a6" }}>{data?.status}</span>
+                {data?.order?.status === "Processing" && (
+                  <span style={{ color: "#14b8a6" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Fully Returned" && (
-                  <span style={{ color: "#14b8a6" }}>{data?.status}</span>
+                {/* {data?.order?.status === "POS-Completed" && (
+                  <span style={{ color: "#14b8a6" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Partial Returned" && (
-                  <span style={{ color: "#14b8a6" }}>{data?.status}</span>
+                {data?.order?.status === "Fully Returned" && (
+                  <span style={{ color: "#14b8a6" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Delivered" && (
-                  <span style={{ color: "#22c55e" }}>{data?.status}</span>
+                {data?.order?.status === "Partial Returned" && (
+                  <span style={{ color: "#14b8a6" }}>{data?.order?.status}</span>
                 )}
-                {data?.status === "Cancel" && (
-                  <span style={{ color: "#f43f5e" }}>{data?.status}</span>
-                )}
-                {data?.status === "Deleted" && (
-                  <span style={{ color: "#f43f5e" }}>{data?.status}</span>
-                )}
+               
+                {data?.order?.status === "Deleted" && (
+                  <span style={{ color: "#f43f5e" }}>{data?.order?.status}</span>
+                )} */}
               </Text>
               {globalSetting?.vat_number && (
                 <Text style={styles.info}>
@@ -358,39 +359,40 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
             <View>
               <Text style={styles.title}>{t("date")}</Text>
               <Text style={styles.info}>
-                {data?.createdAt !== undefined && (
+                {data?.order?.created_at !== undefined && (
                   <span>
-                    {showDateFormat(
+                    {moment(data?.order?.created_at).format("MM/D/YYYY")}
+                    {/* {showDateFormat(
                       data?.createdAt,
                       globalSetting?.default_date_format
-                    )}
+                    )} */}
                   </span>
                 )}
               </Text>
             </View>
             <View>
               <Text style={styles.title}> {t("InvoiceNo")}</Text>
-              <Text style={styles.invoiceNum}>#{data?.invoice}</Text>
+              <Text style={styles.invoiceNum}>#{data?.order?.id}</Text>
             </View>
 
             <View>
               <Text style={styles.titleRight}>{t("InvoiceTo")}</Text>
               {/* <Text style={styles.infoRight}>{data?.user_info?.name}</Text> */}
 
-              <Text style={styles.infoRight}>{data?.user_info?.name}</Text>
+              <Text style={styles.infoRight}>{data?.order?.billing_address?.first_name}</Text>
               <Text style={styles.infoRight}>
-                {data?.user_info?.email}{" "}
-                <span className="ml-2">{data?.user_info?.contact}</span>
+                {data?.order?.billing_address?.email}{" "}<br/>
+                <span className="ml-2">{data?.order?.billing_address?.contact_no}</span>
               </Text>
               <Text style={styles.infoRight}>
                 {" "}
-                {data?.user_info?.address?.substring(0, 30)}
+                {/* {data?.order?.billing_address?.substring(0, 30)} */}
                 <br />
-                {data?.user_info?.city}, {data?.user_info?.country},{" "}
-                {data?.user_info?.zipCode}
+                {data?.order?.billing_address?.city}, {data?.order?.billing_address?.country},{" "}
+                {data?.order?.billing_address?.zipCode}
               </Text>
 
-              {data?.sellFrom === "SHOP" && (
+              {/* {data?.sellFrom === "SHOP" && (
                 <>
                   <Text style={styles.infoRight}>
                     {data?.user_info?.address?.substring(0, 25)}
@@ -400,7 +402,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                     {data?.user_info?.zipCode}
                   </Text>
                 </>
-              )}
+              )} */}
             </View>
           </View>
           <View style={styles.table}>
@@ -476,11 +478,11 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                 </Text>
               </View>
             </View>
-            {data?.cart?.map((item, i) => (
+            {data?.order?.items?.map((item, i) => (
               <View key={i} style={styles.tableRow}>
                 <View style={styles.tableCol}>
                   <Text style={styles.tableCell}>
-                    {item.title?.substring(0, 20)}
+                    {item?.product?.name?.substring(0, 20)}
                   </Text>
                 </View>
                 <View style={styles.tableCol}>
@@ -538,7 +540,8 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
             <View style={{ width: "25%", alignItems: "baseline" }}>
               <Text style={styles.title}>{t("InvoicepaymentMethod")}</Text>
               <Text style={{ fontSize: 10, color: "#0e9f6e" }}>
-                {data?.paymentMethod}
+                {/* {data?.order?.payment?.type} */}
+                CASH
               </Text>
             </View>
             <View style={{ width: "25%", alignItems: "baseline" }}>
@@ -552,7 +555,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                   <span style={styles.infoCost}>
                     {currency}
 
-                    {parseFloat(data?.subTotal).toFixed(2) || 0}
+                    {parseFloat(data?.order?.payment?.amount).toFixed(2) || 0}
                   </span>
                 </div>
               </Text>
@@ -566,7 +569,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                 <div style={{ textAlign: "left" }}>
                   <span style={styles.infoCost}>
                     {currency}
-                    {parseFloat(data?.shippingCost).toFixed(2) || 0}
+                    {parseFloat(data?.order?.shipping_price).toFixed(2) || 0}
                   </span>
                 </div>
               </Text>
@@ -580,7 +583,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                   <span style={styles.infoCost}>
                     {" "}
                     {currency}
-                    {parseFloat(data?.discount).toFixed(2) || 0}
+                    {parseFloat(data?.order?.discount_price).toFixed(2) || 0}
                   </span>
                 </div>
               </Text>
@@ -597,7 +600,7 @@ const InvoiceForDownload = ({ data, currency, globalSetting }) => {
                 <span style={styles.totalAmount}>
                   {currency}
 
-                  {parseFloat(data?.total).toFixed(2) || 0}
+                  {parseFloat(data?.order?.total_amount).toFixed(2) || 0}
                 </span>
               </Text>
             </View>
