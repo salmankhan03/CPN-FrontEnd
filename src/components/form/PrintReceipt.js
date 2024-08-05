@@ -59,7 +59,7 @@ const PrintReceipt = ({ orderId }) => {
   const handlePrintReceipt = async (id) => {
     try {
       const res = await OrderServices.getOrderById(id);
-      setOrderData(res);
+      setOrderData(res?.order);
       handlePrint();
     } catch (err) {
       console.log("order by user id error", err);
