@@ -192,7 +192,7 @@ const Orders = () => {
                   <option value="Delivered">{t("PageOrderDelivered")}</option>
                   <option value="Pending">{t("PageOrderPending")}</option>
                   <option value="Processing">{t("PageOrderProcessing")}</option>
-                  <option value="Cancel">{t("OrderCancel")}</option>
+                  <option value="Cancelled">{t("OrderCancel")}</option>
                 </Select>
               </div>
 
