@@ -32,7 +32,7 @@ import CustomerEmailListTable from "components/customer/CustomerEmailListTable";
 
 const InputField = ({ label, value, name, isDisabled, onChange }) => (
   <div className="">
-    <label>{label}</label>
+    <label className="dark:text-gray-300">{label}</label>
     <Input
       value={value}
       type="text" // Adjust type as needed
@@ -198,10 +198,10 @@ const CustomerOrder = () => {
   console.log("Customer Order", customerData)
   return (
     <>
-      <div className="tab-buttons" style={{ width: '100%' }}>
-        <button style={{ border: 'none' }} className={activeTab === 'cus_profile' ? 'active' : ''} onClick={() => handleTabChange('cus_profile')}>Customer Profile</button>
-        <button className={activeTab === 'cus_order' ? 'active' : ''} onClick={() => handleTabChange('cus_order')}>Customer Order List</button>
-        <button className={activeTab === 'cus_emails' ? 'active' : ''} onClick={() => handleTabChange('cus_emails')}>Customer Email List</button>
+      <div className="tab-buttons dark:bg-gray-800" style={{ width: '100%' }}>
+        <button style={{ border: 'none' }} className={`${activeTab === 'cus_profile' ? 'active' : ''} dark:text-gray-300`} onClick={() => handleTabChange('cus_profile')}>Customer Profile</button>
+        <button className={`${activeTab === 'cus_order' ? 'active' : ''} dark:text-gray-300`} onClick={() => handleTabChange('cus_order')}>Customer Order List</button>
+        <button className={`${activeTab === 'cus_emails' ? 'active' : ''} dark:text-gray-300`} onClick={() => handleTabChange('cus_emails')}>Customer Email List</button>
       </div>
 
       <div className="tab-content mb-10">
@@ -223,10 +223,10 @@ const CustomerOrder = () => {
 
               <div>
                 <div className="mt-5">
-                  <div className="collapse-cards" onClick={() => basicDeatilsToggleSection()}>
-                    <h2 className="cards-title">Customer Basic Details</h2>
+                  <div className="collapse-cards dark:bg-gray-800" onClick={() => basicDeatilsToggleSection()}>
+                    <h2 className="cards-title dark:text-gray-300">Customer Basic Details</h2>
                     <span className="mr-5">
-                      {expandedBasicSections ? <IoChevronDownOutline /> : <IoChevronForwardOutline />}
+                      {expandedBasicSections ? <IoChevronDownOutline className="dark:text-gray-300"  /> : <IoChevronForwardOutline  className="dark:text-gray-300" />}
                     </span>
                   </div>
                   {expandedBasicSections && (
@@ -272,7 +272,8 @@ const CustomerOrder = () => {
                           />
                           {/* Reusable region dropdown component */}
                           <div className="">
-                            <label>Province</label>
+                            <label className="dark:text-gray-300">Province</label>
+                            {/* border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white */}
                             <RegionDropdown
                               className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 dark:bg-white border-transparent focus:bg-white"
                               defaultOptionLabel="Select state"
@@ -296,10 +297,10 @@ const CustomerOrder = () => {
                 </div>
                 {customerData?.billing_address && (
                   <div className="mt-5">
-                    <div className="collapse-cards" onClick={() => toggleSection()}>
-                      <h2 className="cards-title">Billing Details</h2>
+                    <div className="collapse-cards dark:bg-gray-800" onClick={() => toggleSection()}>
+                      <h2 className="cards-title dark:text-gray-300">Billing Details</h2>
                       <span className="mr-5">
-                        {expandedSections ? <IoChevronDownOutline /> : <IoChevronForwardOutline />}
+                        {expandedSections ? <IoChevronDownOutline  className="dark:text-gray-300" /> : <IoChevronForwardOutline className="dark:text-gray-300"  />}
                       </span>
                     </div>
                     {expandedSections && (
@@ -379,10 +380,10 @@ const CustomerOrder = () => {
                 {customerData?.shipping_address?.map((data, index) => {
                   return (
                     <div className="mt-5">
-                      <div className="collapse-cards" onClick={() => shippingToggleSection(index)}>
-                        <h2 className="cards-title">Shipping Details {index + 1}</h2>
+                      <div className="collapse-cards dark:bg-gray-800" onClick={() => shippingToggleSection(index)}>
+                        <h2 className="cards-title dark:text-gray-300">Shipping Details {index + 1}</h2>
                         <span className="mr-5">
-                          {expandedShippingSections[index] ? <IoChevronDownOutline /> : <IoChevronForwardOutline />}
+                          {expandedShippingSections[index] ? <IoChevronDownOutline className="dark:text-gray-300" /> : <IoChevronForwardOutline className="dark:text-gray-300" />}
                         </span>
                       </div>
 
