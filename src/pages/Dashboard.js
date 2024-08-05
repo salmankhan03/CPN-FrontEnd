@@ -25,7 +25,7 @@ import useAsync from "hooks/useAsync";
 import useFilter from "hooks/useFilter";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiCheck, FiRefreshCw, FiShoppingCart, FiTruck } from "react-icons/fi";
+import { FiCheck, FiDelete, FiRefreshCw, FiShoppingCart, FiTruck } from "react-icons/fi";
 import { ImCreditCard, ImStack } from "react-icons/im";
 import OrderServices from "services/OrderServices";
 //internal import
@@ -55,6 +55,7 @@ const Dashboard = () => {
     Delivered: 0,
     Pending: 0,
     Processing: 0,
+    Cancelled:0,
     Total:0
   });
 
@@ -270,6 +271,7 @@ const Dashboard = () => {
         Delivered: 0,
         Pending: 0,
         Processing: 0,
+        Cancelled:0
       };
       res?.list?.data.forEach(order => {
         if (order.status in counts) {
@@ -333,7 +335,7 @@ const Dashboard = () => {
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <CardItem
           title="Total Order"
           Icon={FiShoppingCart}
@@ -362,6 +364,13 @@ const Dashboard = () => {
           loading={loadingOrderCount}
           quantity={statusCount?.Delivered || 0}
           className="text-green-600 dark:text-green-100 bg-green-100 dark:bg-green-500"
+        />
+         <CardItem
+          title={"Orders Canceld"}
+          Icon={FiDelete}
+          loading={loadingOrderCount}
+          quantity={statusCount?.Cancelled || 0}
+          className="text-teal-600 dark:text-teal-100 bg-teal-100 dark:bg-teal-500"
         />
       </div>
 
