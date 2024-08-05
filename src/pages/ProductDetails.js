@@ -40,7 +40,7 @@ const ProductDetails = () => {
 
   const { handleChangePage, totalResults, resultsPerPage, dataTable } =
     useFilter(data?.data?.variants);
-  // console.log('data',data)
+  console.log('data',data)
 
   useEffect(() => {
     if (!loading) {
@@ -59,10 +59,11 @@ const ProductDetails = () => {
   }, [attribue, data?.data?.variants, loading, lang]);
   useEffect(()=>{
 
-    if(data?.data?.tags){
-      const tagsArray = data.data.tags.split(',');
-      setTags(tagsArray)
+    if(data?.data?.tags){ 
+      const tagsArray = data.data.tags.map(tag => tag.name);
+      setTags(tagsArray);
     }
+    
   },[data])
 
   console.log("data.variants", globalSetting);
