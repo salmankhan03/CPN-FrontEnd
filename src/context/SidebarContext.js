@@ -9,6 +9,10 @@ export const SidebarProvider = ({ children }) => {
   const resultsPerPage = 10;
   const searchRef = useRef("");
   const invoiceRef = useRef("");
+  const statusSelectRef = useRef(null);
+  const timeSelectRef = useRef(null);
+  const startDateRef = useRef(null);
+  const endDateRef = useRef(null);
 
   const [limitData, setLimitData] = useState(10);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -68,6 +72,19 @@ export const SidebarProvider = ({ children }) => {
     setSearchText(searchRef?.current?.value);
     setCategory(null);
   };
+  const handleResetData = (e) =>{
+    setSearchText('');
+    setStatus('')
+    setStartDate('')
+    setEndDate('')
+    setTime('');
+    searchRef.current.value = "";
+    statusSelectRef.current.value = 'Status';
+    timeSelectRef.current.value = 'Order limits';
+    startDateRef.current.value = '';
+    endDateRef.current.value = '';
+    setCategory(null);
+  }
   useEffect(() => {
     const language = Cookies.get("i18next");
     // console.log("lang", language);
@@ -158,6 +175,11 @@ export const SidebarProvider = ({ children }) => {
         navBar,
         tabIndex,
         setTabIndex,
+        handleResetData,
+        statusSelectRef,
+        timeSelectRef,
+        startDateRef,
+        endDateRef,
       }}
     >
       {children}

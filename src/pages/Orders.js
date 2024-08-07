@@ -48,7 +48,12 @@ const Orders = () => {
     endDate,
     setEndDate,
     lang,
-    limitData
+    limitData,
+    handleResetData,
+    statusSelectRef,
+    timeSelectRef,
+    startDateRef,
+    endDateRef,
   } = useContext(SidebarContext);
   const [id, SetId] = useState()
   const [updatedStatus, SetUpdatedStatus] = useState()
@@ -177,6 +182,7 @@ const Orders = () => {
                   name="search"
                   className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                   placeholder="Search by Customer Name"
+                  value={searchText}
                   onChange={handleSubmitForAll}
                 />
               </div>
@@ -184,6 +190,8 @@ const Orders = () => {
               <div>
                 <Select
                   onChange={(e) => setStatus(e.target.value)}
+                  value={status}
+                  ref={statusSelectRef}
                   className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 >
                   <option value="Status" defaultValue hidden>
@@ -199,6 +207,8 @@ const Orders = () => {
               <div>
                 <Select
                   onChange={(e) => setTime(e.target.value)}
+                  value={time}
+                  ref={timeSelectRef}
                   className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
                 >
                   <option value="Order limits" defaultValue hidden>
@@ -216,9 +226,11 @@ const Orders = () => {
               <div>
                 <Label>Start Date</Label>
                 <Input
+                  ref={startDateRef}
                   type="date"
                   name="startDate"
                   className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                  value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
               </div>
@@ -226,15 +238,17 @@ const Orders = () => {
               <div>
                 <Label>End Date</Label>
                 <Input
+                  ref={endDateRef}
                   type="date"
                   name="startDate"
                   className="border h-12 text-sm focus:outline-none block w-full bg-gray-100 border-transparent focus:bg-white"
+                  value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                 />
               </div>
 
               <div>
-                <Label style={{ visibility: "hidden" }}>{t("Download")}</Label>
+                {/* <Label style={{ visibility: "hidden" }}>{t("Download")}</Label>
                 {loadingExport ? (
                   <Button disabled={true} type="button" className="h-12 w-full">
                     <img
@@ -261,8 +275,21 @@ const Orders = () => {
                       <IoCloudDownloadOutline />
                     </span>
                   </button>
-                )}
-              </div>
+                )} */}
+                    <button
+                    onClick={handleResetData}
+                    // disabled={}
+                    type="button"
+                    className={`
+                      ${status || startDate || searchText || endDate || time? 'text-white bg-green-500' :'btn-gray text-gray-600' }
+                      mt-5 flex items-center justify-center text-sm w-full rounded-md border border-transparent h-12 sm:mb-3 `}
+                  >
+                    Reset All Orders
+                    {/* <span className="ml-2 text-base">
+                      <IoCloudDownloadOutline />
+                    </span> */}
+                  </button>
+              </div>           
             </div>
           </form>
         </CardBody>
