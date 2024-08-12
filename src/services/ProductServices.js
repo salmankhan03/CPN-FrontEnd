@@ -17,6 +17,7 @@ if (price === "low" || price === "high") {
 const searchCategory = category !== null ? category : "";
 const searchTitle = title !== null ? title : "";
 const body = {
+  forAdminPanel:1,
   category: searchCategory,
   title: searchTitle,
   ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
