@@ -51,8 +51,12 @@ const ShowHideButton = ({ id, status, category, currencyStatusName,data }) => {
       }
 
       if (location.pathname === "/products") {
-        data.status = newStatus
-
+        data.status = newStatus;
+        data['tags'] = JSON.stringify(data?.tag);
+        data['sell_price_is_change'] = 0;
+        data['ratings_is_change'] = '0';
+        data['is_featured_is_change'] = 0;
+        console.log("data ==>" ,data)
         const res = await ProductServices.updateProduct(id, data);
         setIsUpdate(true);
         notifySuccess('Products Status update Successfull');
