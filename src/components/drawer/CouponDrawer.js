@@ -163,7 +163,7 @@ const CouponDrawer = ({ id }) => {
                   product
                   register={register}
                   maxValue={200000}
-                  minValue={100}
+                  minValue={10}
                   label="Minimum Amount"
                   name="minimumAmount"
                   type="number"
