@@ -56,6 +56,7 @@ const Dashboard = () => {
   const [statusCount, setStatusCount] = useState({
     Delivered: 0,
     Pending: 0,
+    Confirmed:0,
     Processing: 0,
     Cancelled:0,
     Total:0
@@ -284,6 +285,7 @@ const Dashboard = () => {
       const counts = {
         Delivered: 0,
         Pending: 0,
+        Confirmed:0,
         Processing: 0,
         Cancelled:0
       };
@@ -413,15 +415,15 @@ const Dashboard = () => {
           className="text-blue-600 dark:text-blue-100 bg-blue-100 dark:bg-blue-500"
         />
         <CardItem
-          title={t("OrderProcessing")}
-          Icon={FiTruck}
+          title={"Orders Confirmed"}
+          Icon={FiCheck}
           loading={loadingOrderCount}
-          quantity={statusCount?.Processing || 0}
+          quantity={statusCount?.Confirmed || 0}
           className="text-teal-600 dark:text-teal-100 bg-teal-100 dark:bg-teal-500"
         />
         <CardItem
           title={t("OrderDelivered")}
-          Icon={FiCheck}
+          Icon={FiTruck}
           loading={loadingOrderCount}
           quantity={statusCount?.Delivered || 0}
           className="text-green-600 dark:text-green-100 bg-green-100 dark:bg-green-500"
