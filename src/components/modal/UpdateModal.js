@@ -51,7 +51,7 @@ const CustomUpdateModal = ({ id, previous_order_status,status, title, handleConf
     const fromEmailMatches = htmlContent.match(/from\s*:\s*([^<]*)/i);
     const fromEmails = fromEmailMatches ? fromEmailMatches[1].match(emailRegex) : [];
     const uniqueToEmails = toEmails ? [...new Set(toEmails)] : [];
-    const uniqueFromEmails = fromEmails ? fromEmails[0] : "";
+    const uniqueFromEmails = fromEmails ? fromEmails[0] :customerEmail;
     const tempElement = document.createElement('div');
     tempElement.innerHTML = htmlContent;
     const contentAfterFirstDiv = tempElement.innerHTML.split('</div>')[2];
@@ -62,31 +62,27 @@ const CustomUpdateModal = ({ id, previous_order_status,status, title, handleConf
   const handleConfirm = async () => {
     try {
       setConfirmOpen(false);
-      // console.log("templatesList ORDER CONFIRm",templatesList)
-
-      if (location.pathname === "/orders") {
+      if (location.pathname === "/orders" || location.pathname ===  "/dashboard") {
         if (id) {
           console.log("updated data", selectedTemplates)
           // const StatusId = getStatusId(status);
           const { to, from,content } = extractEmails(selectedTemplates);
-
           var encodedString = encodeURIComponent(content);
-
           let body = {
             order_id: id,
             previous_order_status:previous_order_status,
             current_order_status: status,
             email_body: encodedString,
-            from_email: from,
+            from_email: from ? from : customerEmail,
             to_email: to
           }
           console.log("body", body)
-          OrderServices.updateOrder(body)
-            .then((res) => {
-              notifySuccess(res.message);
-              closeModal()
-            })
-            .catch((err) => notifyError(err.message));
+            OrderServices.updateOrder(body)
+              .then((res) => {
+                notifySuccess(res.message);
+                closeModal()
+              })
+              .catch((err) => notifyError(err.message));
         }
       }
     } catch (err) {

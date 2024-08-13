@@ -28,6 +28,8 @@ import { useTranslation } from "react-i18next";
 import { FiCheck, FiDelete, FiRefreshCw, FiShoppingCart, FiTruck } from "react-icons/fi";
 import { ImCreditCard, ImStack } from "react-icons/im";
 import OrderServices from "services/OrderServices";
+import CustomUpdateModal from "components/modal/UpdateModal";
+import EmailTemplateServices from "services/EmailTemplateServices";
 //internal import
 
 const Dashboard = () => {
@@ -38,7 +40,7 @@ const Dashboard = () => {
   dayjs.extend(isToday);
   dayjs.extend(isYesterday);
 
-  const { currentPage, handleChangePage, lang } = useContext(SidebarContext);
+  const { currentPage, handleChangePage, lang, limitData,  } = useContext(SidebarContext);
 
   // react hook
   const [todayOrderAmount, setTodayOrderAmount] = useState(0);
@@ -58,6 +60,14 @@ const Dashboard = () => {
     Cancelled:0,
     Total:0
   });
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [id, SetId] = useState()
+  const [updatedStatus, SetUpdatedStatus] = useState()
+  const [previousStatus,SetPreviousStatus]= useState()
+  const [emailTemplateList, SetEmailTemplateList] = useState()
+  const [customer, setCustomer] = useState()
+  const [customerEmail, setCustomerEmail] = useState()
+  const [dataTable, setDataTable] = useState([])
 
   const { data: bestSellerProductChart, loading: loadingBestSellerProduct } =
     useAsync(OrderServices.getBestSellerProductChart);
@@ -88,7 +98,7 @@ const Dashboard = () => {
 
   // console.log("dashboardOrderCount", dashboardOrderCount);
 
-  const { dataTable, serviceData } = useFilter(dashboardRecentOrder?.list?.data);
+  // const { dataTable, serviceData } = useFilter(dashboardRecentOrder?.list?.data);
 
   const { t } = useTranslation();
 
@@ -251,10 +261,14 @@ const Dashboard = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboardOrderAmount]);
+  useEffect(()=>{
+    setDataTable(dashboardRecentOrder?.list?.data)
+  },[dashboardRecentOrder?.list?.data])
   useEffect(() => {
-    getAlloordersData()
+    getAllOrdersData()
+    getAllTemplatesList()
   }, [])
-  async function getAlloordersData() {
+  async function getAllOrdersData() {
     const res = await OrderServices.getAllOrders({
       customerName: "",
       status: null,
@@ -281,9 +295,56 @@ const Dashboard = () => {
       setStatusCount(counts);
     }
   }
+  const getAllTemplatesList = async () => {
+    let EmailTemplateListData = await EmailTemplateServices.getAllTemplates({
+      page: currentPage,
+      limit: limitData,
+    })
+    if (EmailTemplateListData?.status_code === 200)
+      SetEmailTemplateList(EmailTemplateListData.list.data)
+
+  }
+  const updateStatus = (id, status) => {
+    SetId(id)
+    // console.log(id, data)
+    const selectedOrder = dataTable.find(order => order?.id === id);
+    SetPreviousStatus(selectedOrder?.status)
+    setCustomer(selectedOrder?.billing_address?.first_name)
+    setCustomerEmail(selectedOrder?.billing_address?.email)
+    SetUpdatedStatus(status)
+    setIsUpdateModalOpen(true);
+  };
+  const closeModalFunc = async () => {
+    setIsUpdateModalOpen(false)
+    const res = await   OrderServices.getAllOrders({
+      customerName: "",
+      status: 'Pending',
+      page: currentPage,
+      limit: 20,
+      day: "",
+      startDate: '',
+      endDate: '',
+    })
+    // console.log(res)
+    setDataTable(res?.list?.data)
+  }
   return (
     <>
       <PageTitle>{t("DashboardOverview")}</PageTitle>
+      {isUpdateModalOpen && (
+        <CustomUpdateModal
+          id={id}
+          previous_order_status={previousStatus}
+          status={updatedStatus}
+          title={updatedStatus}
+          handleConfirmUpdate={isUpdateModalOpen}
+          closeModal={closeModalFunc}
+          templatesList={emailTemplateList}
+          customerName={customer}
+          customerEmail={customerEmail}
+        />
+      )}
+
 
       <div className="grid gap-4 mb-8 md:grid-cols-4 xl:grid-cols-4">
         <CardItemTwo
@@ -398,7 +459,8 @@ const Dashboard = () => {
 
       {loadingRecentOrder ? (
         <TableLoading row={5} col={4} />
-      ) : serviceData?.length !== 0 ? (
+      ) : 
+      dataTable?.length !== 0 ? (
         <TableContainer className="mb-8">
           <Table>
             <TableHeader>
@@ -419,6 +481,7 @@ const Dashboard = () => {
               orders={dataTable}
               globalSetting={globalSetting}
               currency={globalSetting?.default_currency || "$"}
+              handleUpdateStatus={updateStatus}
             />
           </Table>
           <TableFooter>
