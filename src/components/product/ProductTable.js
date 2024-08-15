@@ -44,7 +44,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
       )}
 
       <TableBody>
-        {products?.map((product, i) =>(
+        {products?.map((product, i) => (
           <TableRow key={i + 1}>
             <TableCell>
               <CheckBox
@@ -72,7 +72,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
                 )}
                 <div>
                   <h2 className="text-sm font-medium">
-                    {product?.name.substring(0,28)}
+                    {product?.name.substring(0, 28)}
                   </h2>
                 </div>
               </div>
@@ -103,7 +103,13 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
             </TableCell>
             <TableCell>
               {product.quantity > 0 ? (
-                <Badge type="success">{t("Selling")}</Badge>
+                <>
+                  {product?.status === "hide" ? (
+                    <Badge type="primary">{"Deactive"}</Badge>
+                  ) : (
+                    <Badge type="success">{t("Selling")}</Badge>
+                  )}
+                </>
               ) : (
                 <Badge type="danger">{t("SoldOut")}</Badge>
               )}
@@ -122,7 +128,7 @@ const ProductTable = ({ products, isCheck, setIsCheck, currency, lang }) => {
               </Link>
             </TableCell>
             <TableCell className="text-center">
-              <ShowHideButton id={product.id} status={product.status} data={product}/>
+              <ShowHideButton id={product.id} status={product.status} data={product} />
               {/* {product.status} */}
             </TableCell>
             <TableCell>
