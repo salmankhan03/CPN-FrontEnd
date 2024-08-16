@@ -22,8 +22,8 @@ const useProductSubmit = (id) => {
   const { data: attribue } = useAsync(() => AttributeServices.getAllAttributes());
   const { data: globalSetting } = useAsync(SettingServices.getGlobalSetting);
   const { data: getAllBrands, } = useAsync(() => BrandServices?.getAllBrands({
-    page: currentPage,
-    limit: limitData
+    page: 1,
+    limit: 500
   }));
 
   // react ref
