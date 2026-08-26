@@ -2,12 +2,12 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const instance = axios.create({
-  baseURL:`https://backend.i-healthcare.ca/api`, //`https://backend.canadasentinel.ca/api`,
-  timeout: 50000,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
+    baseURL: `https://cpn-backend.intellimanagement.com/api`,
+    timeout: 50000,
+    headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+    },
 });
 
 // Add a request interceptor
