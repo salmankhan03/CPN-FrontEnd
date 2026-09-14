@@ -15,7 +15,7 @@ const SettingServices = {
   },
     // multidelete Media
   removeMultiDeleteMedia: async (body) => {
-    // return requests.post("/image/multiple-delete", body);
+    return requests.post("/image/multiple-delete", body);
   },
 };
 
